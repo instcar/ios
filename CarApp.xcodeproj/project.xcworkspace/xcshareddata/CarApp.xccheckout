@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>B57C87E7-9C93-4C8B-9C33-D8B50D1C3FB2</string>
+	<key>IDESourceControlProjectName</key>
+	<string>CarApp</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>13B241FB-ABF3-4A24-9349-BBF5FA3946B0</key>
+		<string>https://github.com/instcar/ios.git</string>
+		<key>9097C65C-459F-4728-87C5-33FD92042344</key>
+		<string>svn://115.28.40.43/InstCar</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>CarApp/CarApp.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>13B241FB-ABF3-4A24-9349-BBF5FA3946B0</key>
+		<string>../..</string>
+		<key>9097C65C-459F-4728-87C5-33FD92042344</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>9097C65C-459F-4728-87C5-33FD92042344</key>
+		<string>svn://115.28.40.43</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/instcar/ios.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>9097C65C-459F-4728-87C5-33FD92042344</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>13B241FB-ABF3-4A24-9349-BBF5FA3946B0</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CarApp</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9097C65C-459F-4728-87C5-33FD92042344</string>
+			<key>IDESourceControlWCCName</key>
+			<string>InstCar(11</string>
+		</dict>
+	</array>
+</dict>
+</plist>

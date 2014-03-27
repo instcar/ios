@@ -1,0 +1,64 @@
+//
+// Prefix header for all source files of the 'CarApp' target in the 'CarApp' project
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_4_0
+  #warning "This project uses features only available in iOS SDK 4.0 and later."
+#endif
+
+#ifdef __OBJC__
+
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import <QuartzCore/QuartzCore.h>
+    #import "AppDelegate.h"
+    #import "UIColor+MLPFlatColors.h"
+    #import "UIColor+AppColor.h"
+    #import "UIFont+AppFont.h"
+    #import "UIAlertView+Utility.h"
+    #import "SafetyRelease.h"
+    #import "InstantCarRelease.h"
+
+    #import "AppUtility.h"
+    #import "NetWorkManager.h"
+    #import "LocationServer.h"
+    #import "SVProgressHUD.h"
+    #import "MBProgressHUD+Add.h"
+    #import "JDStatusBarNotification.h"
+    #import "UIImageView+WebCache.h"
+    #import "User.h"
+    #import "WarnView.h"
+
+    #ifdef DEBUG
+    #define DLog( s, ...) NSLog(@"<%@ :%d> %@",[[NSString stringWithUTF8String:__FILE__]lastPathComponent],__LINE__,[NSString stringWithFormat:(s),##__VA_ARGS__]);
+    #else
+    #define DLog(s,...)
+    #endif
+
+    #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
+    #define SCREEN_HEIGHT       ([AppDelegate shareDelegate].window.frame.size.height)
+    #define SCREEN_WIDTH        ([AppDelegate shareDelegate].window.frame.size.width)
+    #define APPKEY				@"instcar"          // 客户端用户名(appkey)
+    #define SECRETCODE			@"1astehla1lcgqh7zvs3dxhwbzqn7rzk5"	// 密钥(secretcode)。
+
+    #define kBaiDuMapKey @"1yAg7GtBz2GA6IQ2OXqmoDpg" //百度地图key 2.1.2
+    #define kBaiDuWebAPIKey @"59e811598044836a49bc592b109e6f18" //百度网页api解析位置 key 暂时没有使用
+    #define kBaiDuIpAK @"D3a6bc4a5df4ef907521d7591386f0e9" //百度ip定位 暂时未使用
+
+    //1838865	  易行	  So1a2FIzKWDiGGRIGZEZ12Kl 百度地图
+    #define kUmengAppKey @"52ada35f56240b08aa172477"
+
+    #define kServerHost			@"http://115.28.231.132:8080/"
+    #define KPlistUser          @"UserData"
+    #define kAppVersion			[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]	// 应用版本
+    #define kDeviceVersion		[[UIDevice currentDevice].systemVersion floatValue]		// IOS版本
+    #define kApp_source			@"appStroe"												//渠道
+    #define kPhotoType          [NSString stringWithFormat:@"IOS %@",[UIDevice currentDevice].systemVersion]    //系统版本
+    #define kHarpyAppID         @"743564913" //@"691955620" 测试
+    #define kFangZhengFont      @"FZY3JW--GB1-0"
+    #define kDefaultHoldPlaceImage @""
+
+#endif	/* ifdef __OBJC__ */
+
