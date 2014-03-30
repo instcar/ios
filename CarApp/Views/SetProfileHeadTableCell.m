@@ -39,6 +39,8 @@
         [photoImgView setHidden:YES];
         [photoImgView setOpaque:YES];
         [self.contentView addSubview:photoImgView];
+        [photoImgView setContentMode:UIViewContentModeScaleAspectFill];
+        [photoImgView setContentScaleFactor:[UIScreen mainScreen].scale];
         [self setPhotoImgView:photoImgView];
         [photoImgView release];
         

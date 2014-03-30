@@ -11,6 +11,7 @@
 #import "Harpy.h"
 #import "ADWebViewController.h"
 #import "SDImageCache.h"
+#import "NetWorkManager.h"
 
 #define kSettingTableTag 2000
 #define kClearCachaTag 3000
@@ -162,14 +163,6 @@
     [self.navigationController setNavigationBarHidden:YES];
     //获取缓存大小
     self.cacheSize = [[SDImageCache sharedImageCache] getSize];
-    
-    //版本号
-    [Harpy checkVersion:^(NSString *version, NSString *updataContent) {
-        self.version = version;
-        [[User shareInstance] setVersion:version];
-    } failse:^(NSError *error) {
-        
-    }];
 }
 
 #pragma mark - 获取广告接口
@@ -269,7 +262,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 4;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -302,7 +295,7 @@
 //    [cell.lineView setHidden:NO];
     [cell.switchhh setHidden:NO];
     [cell.detailLable setHidden:YES];
-    
+    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
     /*
     if (indexPath.row == 0) {
 
@@ -360,13 +353,14 @@
     if (indexPath.row == 1) {
         [cell.titleLabel setText:@"清除缓存"];
         [cell.switchhh setHidden:YES];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
         [cell setAccessoryType: UITableViewCellAccessoryDisclosureIndicator];
         [cell.detailLable setHidden:NO];
-        if (cell.detailLable < 0) {
+        if (self.cacheSize <= 0) {
             [cell.detailLable setText:@"0M"];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         }
-        [cell.detailLable setText:[NSString stringWithFormat:@"%.2lfM",self.cacheSize/1024.0/1024.0]];
+        else
+            [cell.detailLable setText:[NSString stringWithFormat:@"%.2lfM",self.cacheSize/1024.0/1024.0]];
         
         return cell;
     }
@@ -377,15 +371,26 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         [cell.detailLable setHidden:NO];
-        if (self.version && ![self.version isEqualToString:@""]) {
-           [cell.detailLable setText:[NSString stringWithFormat:@"v%@",self.version]];
+        if ([[User shareInstance].version isEqualToString:kAppVersion]) {
+            [cell.detailLable setText:@"当前版本为最新版本"];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         }
         else
         {
-            [cell.detailLable setText:[User shareInstance].version];
+            [cell.detailLable setText:[NSString stringWithFormat:@"v%@",[User shareInstance].version]];
         }
         
 //        [cell.lineView setHidden:YES];
+        return cell;
+    }
+    
+    if (indexPath.row == 3) {
+        [cell.titleLabel setText:@"给易行评分"];
+        [cell.switchhh setHidden:YES];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        [cell.detailLable setHidden:YES];
+    
+        //        [cell.lineView setHidden:YES];
         return cell;
     }
     
@@ -412,6 +417,10 @@
     if (indexPath.row == 2) {
         [Harpy checkVersion:NO];
     }
+    
+    if (indexPath.row == 3) {
+        [self goToAppStore];
+    }
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -422,28 +431,21 @@
         [[SDImageCache sharedImageCache] clearMemory];
         [[SDImageCache sharedImageCache] clearDisk];
         self.cacheSize = 0;
+        
+        //刷新列表
+        UITableView *tableView = (UITableView *)[self.view viewWithTag:kSettingTableTag];
+        [tableView reloadData];
+        
         [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
     }
 }
 
--(void)setVersion:(NSString *)version
+//去给易行评分
+-(void)goToAppStore
 {
-    if (version) {
-        _version = [version copy];
-    }
-    UITableView *tableView = (UITableView *)[self.view viewWithTag:kSettingTableTag];
-    SettingTableCell *cell = (SettingTableCell *)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0]];
-    [cell.detailLable setText:[NSString stringWithFormat:@"v%@",version]];
-}
-
--(void)setCacheSize:(long long)cacheSize
-{
-    if (cacheSize) {
-        _cacheSize = cacheSize ;
-    }
-    UITableView *tableView = (UITableView *)[self.view viewWithTag:kSettingTableTag];
-    SettingTableCell *cell = (SettingTableCell *)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
-    [cell.detailLable setText:[NSString stringWithFormat:@"%.2lfM",cacheSize/1024.0/1024.0]];
+    NSString *str = [NSString stringWithFormat:
+                     @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%@",kHarpyAppID];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
 }
 
 -(void)soundChanged:(UISwitch *)sender

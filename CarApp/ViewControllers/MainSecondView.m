@@ -629,6 +629,8 @@
                     [SVProgressHUD showSuccessWithStatus:@"评论成功"];
                     [alertView dismissWithClickedButtonIndex:0 animated:YES];
                 }
+                //更新表单
+                [self refreshTable];
             } failure:^(NSError *error) {
                 
             }];
@@ -644,6 +646,8 @@
                     [SVProgressHUD showSuccessWithStatus:@"评论成功"];
                     [alertView dismissWithClickedButtonIndex:0 animated:YES];
                 }
+                //更新表单
+                [self refreshTable];
             } failure:^(NSError *error) {
                 
             }];

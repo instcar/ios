@@ -17,9 +17,9 @@
 //@property (retain, nonatomic)NSMutableArray * selectImages; //选中的照片
 
 //照相机器选择
-+ (void)selectPhotoFromCamreWithDelegate:(id<UIImagePickerControllerDelegate>)delegate withVC:(UIViewController *)viewController;
++ (void)selectPhotoFromCamreWithDelegate:(id<UIImagePickerControllerDelegate>)delegate withVC:(UIViewController *)viewController withEdit:(BOOL)edit;
 
-+ (void)selectPhotoFromPhotoWithDelegate:(id<UIImagePickerControllerDelegate,UINavigationControllerDelegate>)delegate withVC:(UIViewController *)viewController;
++ (void)selectPhotoFromPhotoWithDelegate:(id<UIImagePickerControllerDelegate,UINavigationControllerDelegate>)delegate withVC:(UIViewController *)viewController withEdit:(BOOL)edit;
 @end
 
 /*@protocol PhotoSelectManagerDelegate<NSObject>

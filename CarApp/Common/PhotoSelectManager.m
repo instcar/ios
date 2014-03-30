@@ -12,7 +12,7 @@
 @implementation PhotoSelectManager
 
 //相机照片选择
-+(void)selectPhotoFromCamreWithDelegate:(id<UIImagePickerControllerDelegate,UINavigationControllerDelegate>)delegate withVC:(UIViewController *)viewController
++(void)selectPhotoFromCamreWithDelegate:(id<UIImagePickerControllerDelegate,UINavigationControllerDelegate>)delegate withVC:(UIViewController *)viewController withEdit:(BOOL)edit
 {
     @try {
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
@@ -21,7 +21,7 @@
             [cameraVC setSourceType:UIImagePickerControllerSourceTypeCamera];
             [cameraVC.navigationBar setBarStyle:UIBarStyleBlack];
             [cameraVC setDelegate:delegate];
-            [cameraVC setAllowsEditing:NO];
+            [cameraVC setAllowsEditing:edit];
 //            [cameraVC setShowsCameraControls:NO];
             [cameraVC setModalPresentationStyle:UIModalPresentationCurrentContext];
             [cameraVC setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
@@ -59,14 +59,14 @@
 
 
 //选择照片
-+(void)selectPhotoFromPhotoWithDelegate:(id<UIImagePickerControllerDelegate,UINavigationControllerDelegate>)delegate withVC:(UIViewController *)viewController
++(void)selectPhotoFromPhotoWithDelegate:(id<UIImagePickerControllerDelegate,UINavigationControllerDelegate>)delegate withVC:(UIViewController *)viewController withEdit:(BOOL)edit
 {
     @try {
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
         {
             UIImagePickerController * picker_library = [[UIImagePickerController alloc] init];
             [picker_library setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-            [picker_library setAllowsEditing:NO];
+            [picker_library setAllowsEditing:edit];
             [picker_library setDelegate:delegate];
             
             if (kDeviceVersion >= 7.0) {

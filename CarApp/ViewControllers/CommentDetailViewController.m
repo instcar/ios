@@ -226,7 +226,7 @@
             if (flag) {
                 [SVProgressHUD showSuccessWithStatus:@"评论成功"];
                 [alertView dismissWithClickedButtonIndex:0 animated:YES];
-                [self dismissViewControllerAnimated:YES completion:nil];
+                [self.navigationController popViewControllerAnimated:YES];
             }
         } failure:^(NSError *error) {
             

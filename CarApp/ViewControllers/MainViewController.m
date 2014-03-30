@@ -64,6 +64,26 @@
     [self.navigationController setNavigationBarHidden:YES];
 //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector() name:@"XmppStreamWillConnnect" object:nil];
 //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector() name:@"XmppStreamWillConnnect" object:nil];
+    
+    [self reloadViewData];
+}
+
+- (void)reloadViewData
+{
+    MainSecondView *mainsecondView = (MainSecondView *)[self.view viewWithTag:1002];
+    CommonRouteView *mainThirdView = (CommonRouteView *)[self.view viewWithTag:1003];
+    switch ((int)self.mainScrollView.contentOffset.x/320) {
+        case 0:
+            break;
+        case 1:
+            [mainsecondView autoRefreshTable];
+            break;
+        case 2:
+            [mainThirdView autoRefreshTable];
+            break;
+        default:
+            break;
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated

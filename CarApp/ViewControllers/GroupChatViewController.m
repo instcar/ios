@@ -639,11 +639,11 @@
 {
     //照片
     if (index == 0) {
-        [PhotoSelectManager selectPhotoFromPhotoWithDelegate:self withVC:self];
+        [PhotoSelectManager selectPhotoFromPhotoWithDelegate:self withVC:self withEdit:NO];
     }
     //拍摄
     if (index == 1) {
-        [PhotoSelectManager selectPhotoFromCamreWithDelegate:self withVC:self];
+        [PhotoSelectManager selectPhotoFromCamreWithDelegate:self withVC:self withEdit:NO];
     }
 }
 
@@ -1014,7 +1014,7 @@
     if (self.isRoomMaster == YES) {
         [[AppDelegate shareDelegate].mainVC.mainScrollView setContentOffset:CGPointMake(320, 0) animated:NO];
         [self.navigationController popToViewController:[AppDelegate shareDelegate].mainVC animated:YES];
-        [[AppDelegate shareDelegate].mainVC showRouteView];
+//        [[AppDelegate shareDelegate].mainVC showRouteView];
     }
     else
     if (self.userState == 2 ) {

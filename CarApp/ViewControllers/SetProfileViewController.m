@@ -17,6 +17,7 @@
 #import "PeopleManager.h"
 #import "SetProfileHeadTableCell.h"
 #import "ChangerNameViewController.h"
+#import "NetWorkManager.h"
 
 @interface SetProfileViewController ()<CompanyAddressDelegate,HomeAddressDelegate,GDCustomAlertDelegate,ChangerPhoneViewControllerDelegate,ChangerNameDelegate>
 
@@ -155,10 +156,10 @@
     [confirmAgeBtn addTarget:self action:@selector(saveAge) forControlEvents:UIControlEventTouchUpInside];
     
     UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 39, 320, 216)];
-    [self.pickerView setDelegate:self];
-    [self.pickerView setDataSource:self];
-    [self.pickerView setBackgroundColor:[UIColor whiteColor]];
-    [self.pickerView setShowsSelectionIndicator:YES];
+    [pickerView setDelegate:self];
+    [pickerView setDataSource:self];
+    [pickerView setBackgroundColor:[UIColor whiteColor]];
+    [pickerView setShowsSelectionIndicator:YES];
     [self setPickerView:pickerView];
     [pickerView release];
 
@@ -172,13 +173,18 @@
     
     [mainView addSubview:self.pickerConstionView];
     
-    _ageArray = [[NSMutableArray alloc]init];
+    self.ageArray = [[[NSMutableArray alloc]init]autorelease];
     for (int i = 0; i < 43; i++) {
         NSString * age = [NSString stringWithFormat:@"%d",18+i];
         [self.ageArray addObject:age];
     }
+}
 
-    [self performSelector:@selector(getUserInfo) withObject:nil afterDelay:0.1];
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    //更新数据
+    [self getUserInfo];
 }
 
 -(void)getUserInfo
@@ -556,7 +562,7 @@
     [picker dismissViewControllerAnimated:YES completion:^{
         [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     }];
-    UIImage *image = [[info objectForKey:UIImagePickerControllerOriginalImage] retain];
+    UIImage *image = [[info objectForKey:UIImagePickerControllerEditedImage] retain];
     [self performSelector:@selector(saveImage:)
                withObject:image
                afterDelay:0.5];
@@ -661,12 +667,12 @@
 {
     //选择拍照
     if (style == 0) {
-        [PhotoSelectManager selectPhotoFromCamreWithDelegate:self withVC:self];
+        [PhotoSelectManager selectPhotoFromCamreWithDelegate:self withVC:self withEdit:YES];
     }
     
     //选择相册
     if (style == 1) {
-        [PhotoSelectManager selectPhotoFromPhotoWithDelegate:self withVC:self];
+        [PhotoSelectManager selectPhotoFromPhotoWithDelegate:self withVC:self withEdit:YES];
     }
 }
 

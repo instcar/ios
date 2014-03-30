@@ -52,7 +52,7 @@
 
     #define kServerHost			@"http://115.28.231.132:8080/"
     #define KPlistUser          @"UserData"
-    #define kAppVersion			[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]	// 应用版本
+    #define kAppVersion			[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]	// 应用版本
     #define kDeviceVersion		[[UIDevice currentDevice].systemVersion floatValue]		// IOS版本
     #define kApp_source			@"appStroe"												//渠道
     #define kPhotoType          [NSString stringWithFormat:@"IOS %@",[UIDevice currentDevice].systemVersion]    //系统版本

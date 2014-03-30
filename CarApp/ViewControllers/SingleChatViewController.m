@@ -359,11 +359,11 @@
 {
     //照片
     if (index == 0) {
-        [PhotoSelectManager selectPhotoFromPhotoWithDelegate:self withVC:self];
+        [PhotoSelectManager selectPhotoFromPhotoWithDelegate:self withVC:self withEdit:NO];
     }
     //拍摄
     if (index == 1) {
-        [PhotoSelectManager selectPhotoFromCamreWithDelegate:self withVC:self];
+        [PhotoSelectManager selectPhotoFromCamreWithDelegate:self withVC:self withEdit:NO];
     }
 }
 

@@ -43,13 +43,14 @@
                     }
                     else
                     {
-                        [SVProgressHUD showSuccessWithStatus:@"当前版本是最新的"];
+                        [SVProgressHUD showSuccessWithStatus:@"暂无版本"];
                     }
-                    
+                    [[User shareInstance] setVersion:nil];
                 } else {
 
                     NSString *currentAppStoreVersion = [versionsInAppStore objectAtIndex:0];
                     NSString * message =[[[appData valueForKey:@"results"] objectAtIndex:0] valueForKey:@"releaseNotes"];
+                    [[User shareInstance] setVersion:currentAppStoreVersion];
                     if ([kHarpyCurrentVersion compare:currentAppStoreVersion options:NSNumericSearch] == NSOrderedAscending) {
 		                
                         [Harpy showAlertWithAppStoreVersion:currentAppStoreVersion withMessage:message];

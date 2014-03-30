@@ -132,7 +132,13 @@
     [self setProfileTable:profileTable];
     [profileTable release];
     
-    [self performSelector:@selector(getUserInfo) withObject:nil afterDelay:0.1];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+     [self.navigationController setNavigationBarHidden:YES];
+    [self getUserInfo];
 }
 
 -(void)getUserInfo
@@ -492,11 +498,6 @@
             [[UIApplication sharedApplication]openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",self.userInfo.phone]]];
         }
     }
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [self.navigationController setNavigationBarHidden:YES];
 }
 
 - (void)didReceiveMemoryWarning

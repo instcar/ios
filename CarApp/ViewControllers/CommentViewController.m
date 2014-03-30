@@ -152,7 +152,11 @@
 //    [footerBackgroundView release];
 
     self.warnView = [WarnView initWarnViewWithText:@"非常抱歉,暂无数据..." withView:_tableView height:120 withDelegate:nil];
-    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     [self.tableView launchRefreshing];
 }
 
@@ -355,6 +359,7 @@
                     [SVProgressHUD showSuccessWithStatus:@"评论成功"];
                     [alertView dismissWithClickedButtonIndex:0 animated:YES];
                 }
+                [self refreshTable];//更新数据
             } failure:^(NSError *error) {
                 
             }];
@@ -370,6 +375,7 @@
                     [SVProgressHUD showSuccessWithStatus:@"评论成功"];
                     [alertView dismissWithClickedButtonIndex:0 animated:YES];
                 }
+                [self refreshTable];//更新数据
             } failure:^(NSError *error) {
                 
             }];

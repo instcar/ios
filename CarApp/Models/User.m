@@ -93,8 +93,8 @@ static User *user = nil;
     [dict setObject:[AppUtility getStrByNil:self.session] forKey:@"session"];
     [dict setObject:[AppUtility getStrByNil:self.phoneNum] forKey:@"userPhone"];
     [dict setValue:[AppUtility getStrByNil:self.address] forKey:@"address"];
-    [dict setObject:[NSNumber numberWithDouble:self.lon] forKey:@"lon"];
-    [dict setObject:[NSNumber numberWithDouble:self.lat] forKey:@"lat"];
+    [dict setObject:[NSString stringWithFormat:@"%lf",self.lon] forKey:@"lon"];
+    [dict setObject:[NSString stringWithFormat:@"%lf",self.lat] forKey:@"lat"];
     
     if (self.userData!=nil) {
         [dict setObject:self.userData forKey:@"userData"];
