@@ -67,7 +67,7 @@ typedef enum
  *           @param useable：手机号是否可用，true可用 false不可用
  *  @failuse error  请求失败错误
  */
-+(void)networkCheckPhone:(NSString *)phoneNum success:(void (^)(BOOL flag,BOOL userable,NSString *msg))success failure:(void (^)(NSError * error))failure;
++(void)networkCheckPhone:(NSString *)phoneNum success:(void (^)(int status,NSObject *data,NSString *msg))success failure:(void (^)(NSError * error))failure;
 
 /**
  *	请求取得验证码

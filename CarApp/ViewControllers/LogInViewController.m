@@ -306,15 +306,13 @@
     {
         //继续使用网络检测手机号（检查用户是否使用手机号作为用户名来登入）
         //检测手机号码
-        [NetWorkManager networkCheckPhone:account success:^(BOOL flag, BOOL userable, NSString *msg) {
-            if (flag) {
-                if (userable) {
-                    accountType(1);
-                }
-                else
-                {
-                    accountType(2);
-                }
+        [NetWorkManager networkCheckPhone:account success:^(int status, NSObject *data, NSString *msg) {
+            if (status == 200) {
+                accountType(1);
+            }
+            else
+            {
+                accountType(2);
             }
         } failure:^(NSError *error) {
             

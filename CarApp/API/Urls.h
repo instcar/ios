@@ -10,7 +10,7 @@
 #define Temp_Pro_Urls_h
 
     #define HOST @"http://115.28.231.132:8080/"
-
+    #define PHPHOST @"http://qd00.shopbigbang.com:8086"
     /**
      *@brief api
      */
@@ -40,10 +40,36 @@
     //得到常用路线列表
     #define api_getUserfavlineList(page,rows,uid,sign) [NSString stringWithFormat:@"%@yx/api/userfavline/list?appkey=%@&page=%d&rows=%d&uid=%ld&sign=%@",HOST,APPKEY,page,rows,uid,sign]
 
-//    #define api_get
+    //    #define api_get
     /**
      *@brief api
      */
     //段子: post
+
+
+//PHPServer RequestUrl
+    /**
+     检测手机号是否可用
+     @pram   phone (NSString *)
+     */
+    #define API_POST_CheckUserPhone [NSString stringWithFormat:@"%@server/user/checkuserphone",PHPHOST]
+
+    /**
+     检测手机号是否可用
+     @pram   phone (NSString *)
+     */
+    #define API_POST_CheckUserName [NSString stringWithFormat:@"%@server/user/checkusername",PHPHOST]
+
+    /**
+     获取验证码
+     @pram phone (NSString *)
+     */
+    #define API_POST_GetAuthCode [NSString stringWithFormat:@"%@server/user/getauthcode",PHPHOST]
+
+    /**
+     获取用户信息
+     @pram uid (lond)
+     */
+    #define API_POST_GetUserDetail [NSString stringWithFormat:@"%@server/user/detail",PHPHOST]
 
 #endif

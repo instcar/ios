@@ -362,32 +362,26 @@
 -(void)checkPhone:(NSString *)phone success:(void (^)(void))success failure:(void (^)(NSString *message))failure
 {
 //    GDInputView * phoneInputView = (GDInputView *)[self.view viewWithTag:kGDInputViewTag];
-    [NetWorkManager networkCheckPhone:phone success:^(BOOL flag, BOOL userable, NSString *msg) {
-        if (flag) {
-            if (userable) {
-                [UIAlertView showAlertViewWithTitle:@"此号码还没有注册" tag:80000 cancelTitle:@"确定" ensureTitle:nil delegate:nil];
-            }
-            else
-            {
-                //请求获取手机验证码
-                [NetWorkManager networkGetauthcodeWithPhone:phone type:1 mode:kNetworkrequestModeRequest success:^(BOOL flag, NSString *authcode, NSString *sequenceNo, NSString *msg) {
-                    if (flag) {
-                        _phoneNum = [phone copy];
-                        _authCode = [authcode copy];
-                        _sequenceNo = [sequenceNo copy];
-                        //测试用，短信回执比较慢，直接显示验证密码
-                        UILabel * warnLable = (UILabel *)[self.view viewWithTag:12345];
-                        warnLable.text = [NSString stringWithFormat:@"序列号:%@ 验证码:%@ ",_sequenceNo,_authCode];
-                        success();
-                    }
-                } failure:^(NSError *error) {
-                    failure(error.description);
-                }];
-            }
+    [NetWorkManager networkCheckPhone:phone success:^(int status, NSObject *data, NSString *msg) {
+        if (status == 200) {
+            [SVProgressHUD showWithStatus:@"此号码还没有注册"];
         }
         else
         {
-            [UIAlertView showAlertViewWithTitle:msg tag:80000 cancelTitle:@"确定" ensureTitle:nil delegate:nil];
+            //请求获取手机验证码
+            [NetWorkManager networkGetauthcodeWithPhone:phone type:1 mode:kNetworkrequestModeRequest success:^(BOOL flag, NSString *authcode, NSString *sequenceNo, NSString *msg) {
+                if (flag) {
+                    _phoneNum = [phone copy];
+                    _authCode = [authcode copy];
+                    _sequenceNo = [sequenceNo copy];
+                    //测试用，短信回执比较慢，直接显示验证密码
+                    UILabel * warnLable = (UILabel *)[self.view viewWithTag:12345];
+                    warnLable.text = [NSString stringWithFormat:@"序列号:%@ 验证码:%@ ",_sequenceNo,_authCode];
+                    success();
+                }
+            } failure:^(NSError *error) {
+                failure(error.description);
+            }];
         }
     } failure:^(NSError *error) {
         

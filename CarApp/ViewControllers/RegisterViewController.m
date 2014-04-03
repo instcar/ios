@@ -173,27 +173,22 @@
 -(void)checkPhone:(NSString *)phone success:(void (^)(void))success failure:(void (^)(NSString *message))failure
 {
     GDInputView * inputView = (GDInputView *)[self.view viewWithTag:kGDInputViewTag];
-    [NetWorkManager networkCheckPhone:phone success:^(BOOL flag, BOOL userable, NSString *msg) {
-        if (flag) {
-            if (userable) {
-                //保存手机号
+    [NetWorkManager networkCheckPhone:phone success:^(int status, NSObject *data, NSString *msg)
+     {
+        if (status == 200) {
+
                 _phoneNum = [phone copy];
                 [self getAuthCode:phone type:1 success:^{
                     success();
                 } failure:^(NSString *message) {
                     failure(message);
                 }];
-            }
-            else
-            {
-                [inputView setResult:kGDInputViewStatusError];
-                [UIAlertView showAlertViewWithTitle:@"此号码已经被注册" tag:80000 cancelTitle:@"确定" ensureTitle:nil delegate:nil];
-            }
+
         }
         else
         {
             [inputView setResult:kGDInputViewStatusError];
-            [UIAlertView showAlertViewWithTitle:msg tag:80000 cancelTitle:@"确定" ensureTitle:nil delegate:nil];
+            [UIAlertView showAlertViewWithTitle:@"此号码已经被注册" tag:80000 cancelTitle:@"确定" ensureTitle:nil delegate:nil];
             failure(msg);
         }
     } failure:^(NSError *error) {
@@ -214,12 +209,10 @@
             UILabel * warnLable = (UILabel *)[self.view viewWithTag:12345];
             warnLable.text = [NSString stringWithFormat:@"序列号:%@ 验证码:%@ ",_sequenceNo,_authCode];
             success();
-
         }
         else
         {
             [inputView setResult:kGDInputViewStatusError];
-             [UIAlertView showAlertViewWithTitle:msg tag:80000 cancelTitle:@"确定" ensureTitle:nil delegate:nil];
             failure(msg);
         }
     } failure:^(NSError *error) {
@@ -247,7 +240,7 @@
             _leftSeconds = 60;
 
         } failure:^(NSString *message) {
-            
+            [SVProgressHUD showWithStatus:message];
         }];
     }
     else{

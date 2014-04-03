@@ -131,6 +131,19 @@ static User *user = nil;
     });
 }
 
+- (void)setCookies:(NSMutableArray *)cookies
+{
+    [[NSUserDefaults standardUserDefaults] setObject:cookies forKey:@"Cookies"];
+}
+
+- (NSMutableArray *)getCookies
+{
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"Cookies"]) {
+        return [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"Cookies"]];
+    }
+    return nil;
+}
+
 //系统设置
 //声音
 -(void)setSoundEnable:(BOOL)soundEnable

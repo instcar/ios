@@ -9,18 +9,24 @@
 #import "NetTool.h"
 
 
+
 @implementation NetTool
 
 + (void)httpGetRequest:(NSString *)url WithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure
 {
     NSURL *rurl = [NSURL URLWithString:url];
     __unsafe_unretained __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:rurl];
+    [request setUseCookiePersistence:YES];
+    NSMutableArray *cookies = [User shareInstance].cookies;
+    [request setRequestCookies:cookies];
     [request setCachePolicy:ASIAskServerIfModifiedCachePolicy|ASIFallbackToCacheIfLoadFailsCachePolicy];
     [request setCacheStoragePolicy:ASICachePermanentlyCacheStoragePolicy];
     [request setDownloadCache:[ASIDownloadCache sharedCache]];
     [request setRequestMethod:@"GET"];
     [request setCompletionBlock:^{
         NSString *responseString = [request responseString];
+        //保存cookies
+        [[User shareInstance]setCookies:[NSMutableArray arrayWithArray:[request responseCookies]]];
         NSDictionary *jsonDic = [responseString objectFromJSONString];
         success(jsonDic);
     }];
@@ -40,10 +46,15 @@
     {
         [request setPostValue:[formdata valueForKey:key] forKey:key];
     }
+    [request setUseCookiePersistence:YES];
+    NSMutableArray *cookies = [User shareInstance].cookies;
+    [request setRequestCookies:cookies];
     [request setRequestMethod:@"POST"];
     [request setCompletionBlock:^{
         NSString *responseString = [request responseString];
         NSDictionary *jsonDic = [responseString objectFromJSONString];
+        //保存cookies
+        [[User shareInstance]setCookies:[NSMutableArray arrayWithArray:[request responseCookies]]];
         success(jsonDic);
     }];
     [request setFailedBlock:^{
@@ -59,7 +70,9 @@
     NSURL *rurl = [NSURL URLWithString:url];
     
     __unsafe_unretained __block ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:rurl];
-    
+    [request setUseCookiePersistence:YES];
+    NSMutableArray *cookies = [User shareInstance].cookies;
+    [request setRequestCookies:cookies];
     NSString *type = [data valueForKey:@"formate"];
     NSString *key = [data valueForKey:@"key"];
     NSArray *fileData = (NSArray *)[data objectForKey:@"data"];
@@ -77,7 +90,10 @@
     
     [request setRequestMethod:@"POST"];
     [request setCompletionBlock:^{
+        
         NSString *responseString = [request responseString];
+        //保存cookies
+        [[User shareInstance]setCookies:[NSMutableArray arrayWithArray:[request responseCookies]]];
         NSDictionary *jsonDic = [responseString objectFromJSONString];
         success(jsonDic);
     }];
@@ -96,6 +112,9 @@
     
     __unsafe_unretained __block ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:rurl];
     
+    [request setUseCookiePersistence:YES];
+    NSMutableArray *cookies = [User shareInstance].cookies;
+    [request setRequestCookies:cookies];
     NSString *type = [data valueForKey:@"formate"];
     NSString *key = [data valueForKey:@"key"];
     NSArray *fileData = (NSArray *)[data objectForKey:@"data"];
@@ -114,6 +133,8 @@
     [request setRequestMethod:@"POST"];
     [request setCompletionBlock:^{
         NSString *responseString = [request responseString];
+        //保存cookies
+        [[User shareInstance]setCookies:[NSMutableArray arrayWithArray:[request responseCookies]]];
         NSDictionary *jsonDic = [responseString objectFromJSONString];
         success(jsonDic);
     }];

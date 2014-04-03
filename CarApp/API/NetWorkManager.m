@@ -100,42 +100,18 @@ static NetWorkManager *networkManager = nil;
     return [ASIHTTPRequest isNetworkInUse];
 }
 
-+(void)networkCheckPhone:(NSString *)phoneNum success:(void (^)(BOOL,BOOL,NSString *))success failure:(void (^)(NSError *))failure
++(void)networkCheckPhone:(NSString *)phoneNum success:(void (^)(int,NSObject *,NSString *))success failure:(void (^)(NSError *))failure
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@yx/api/user/checkphone", kServerHost]];
-    
-    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&phone=%@",APPKEY,phoneNum];
-    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
-    
-    __block ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    [request addPostValue:APPKEY forKey:@"appkey"];
-    [request addPostValue:phoneNum forKey:@"phone"];
-    [request addPostValue:sign forKey:@"sign"];
-    [request setRequestMethod:@"POST"];
-    [request setCompletionBlock:^{
-        // Use when fetching text data
-        NSString *responseString = [request responseString];
-        NSDictionary * dic = [responseString objectFromJSONString];
-        BOOL flag = [[dic valueForKey:@"flag"]boolValue];
-        BOOL userable = NO;
-        NSString *msg = @"";
-        if (flag) {
-            userable = [[dic valueForKey:@"useable"]boolValue];
-        }
-        else
-        {
-            msg = [dic valueForKey:@"msg"];
-            [SVProgressHUD showErrorWithStatus:msg];
-        }
-        success(flag,userable,msg);
-    }];
-    [request setFailedBlock:^{
-        NSError *error = [request error];
-        [self handleAsiHttpNetworkError:error];
+    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:phoneNum,@"phone", nil];
+    [NetTool httpPostRequest:API_POST_CheckUserPhone WithFormdata:formData WithSuccess:^(NSDictionary *resultDic) {
+        int status = [[resultDic valueForKey:@"status"]intValue];
+        NSObject *data = [resultDic objectForKey:@"data"];
+        NSString *msg = [resultDic valueForKey:@"msg"];
+        success(status,data,msg);
+
+    } failure:^(NSError *error) {
         failure(error);
-        [request clearDelegatesAndCancel];
     }];
-    [request startAsynchronous];
 }
 
 +(ASIFormDataRequest *)networkGetauthcodeWithPhone:(NSString *)phoneNum type:(int)type mode:(kNetworkrequestMode)mode success:(void (^)(BOOL, NSString *, NSString *, NSString *))success failure:(void (^)(NSError *))failure

@@ -308,29 +308,23 @@
 {
     GDInputView * inputView = (GDInputView *)[self.view viewWithTag:kGDInputViewTag];
 
-    [NetWorkManager networkCheckPhone:phone success:^(BOOL flag, BOOL userable, NSString *msg) {
-        if (flag) {
-            if (userable) {
-                //保存手机号
-                self.phoneNum = [phone copy];
-                [self getAuthCode:phone type:2 success:^{
-                    success();
-                } failure:^(NSString *message) {
-                    failure(message);
-                }];
-                [inputView setResult:kGDInputViewStatusTure];
-            }
-            else
-            {
-                [UIAlertView showAlertViewWithTitle:@"此号码已经被注册" tag:80000 cancelTitle:@"确定" ensureTitle:nil delegate:nil];
-                [inputView setResult:kGDInputViewStatusError];
-            }
+    [NetWorkManager networkCheckPhone:phone success:^(int status, NSObject *data, NSString *msg) {
+        if (status == 200) {
+            //保存手机号
+            self.phoneNum = [phone copy];
+            [self getAuthCode:phone type:2 success:^{
+                success();
+            } failure:^(NSString *message) {
+                failure(message);
+            }];
+            [inputView setResult:kGDInputViewStatusTure];
         }
         else
         {
-            [UIAlertView showAlertViewWithTitle:msg tag:80000 cancelTitle:@"确定" ensureTitle:nil delegate:nil];
-            failure(msg);
+            [SVProgressHUD showWithStatus:@"此号码已经被注册"];
+            [inputView setResult:kGDInputViewStatusError];
         }
+
     } failure:^(NSError *error) {
         failure([error localizedDescription]);
     }];
