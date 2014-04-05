@@ -128,25 +128,19 @@
         return;
     }
     if ([self validateNickName:inputView.textfield.text]) {
-        [NetWorkManager networkCheckUserName:inputView.textfield.text success:^(BOOL flag, BOOL userable, NSString *msg) {
-            if (flag) {
-                if (userable) {
+        [NetWorkManager networkCheckUserName:inputView.textfield.text success:^(int status, NSObject *data, NSString *msg) {
+            if (status == 200) {
                     [inputView setResult:kGDInputViewStatusTure];
                     
                     [self.delegate saveNickName:inputView.textfield.text];
                     
                     [self performSelector:@selector(backToMain) withObject:nil afterDelay:0.3];
-                }
-                else
-                {
-                    [UIAlertView showAlertViewWithTitle:@"失败" message:@"用户名已经被使用" cancelTitle:@"确定"];
-                    [inputView setResult:kGDInputViewStatusError];
-                    
-                }
             }
             else
             {
-                [UIAlertView showAlertViewWithTitle:@"失败" message:msg cancelTitle:@"确定"];
+                [SVProgressHUD showErrorWithStatus:msg];
+                [inputView setResult:kGDInputViewStatusError];
+                
             }
         } failure:^(NSError *error) {
             

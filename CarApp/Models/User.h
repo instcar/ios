@@ -25,7 +25,7 @@
 @property (nonatomic,assign)BOOL isSavePwd;
 
 
-@property (nonatomic,retain, getter = getCookies)NSMutableArray *cookies; //请求的cookias
+@property (nonatomic,retain, getter = getCookies)NSArray *cookies; //请求的cookias
 //设置属性
 @property (nonatomic, assign, getter = getSoundEnable) BOOL soundEnable;  //声音是否可用
 @property (nonatomic, assign, getter = getLocateEnable) BOOL LocateEnable; //定位是否可用

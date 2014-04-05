@@ -115,28 +115,22 @@
     GDInputView *inputView = (GDInputView *)[self.view viewWithTag:kGDInputViewTag];
     UITextField * nickTxf = inputView.textfield;
     if ([self validateNickName:nickTxf.text]) {
-        [NetWorkManager networkCheckUserName:nickTxf.text success:^(BOOL flag, BOOL userable, NSString *msg) {
-            if (flag) {
-                if (userable) {
-                    [inputView setResult:kGDInputViewStatusTure];
-                    DLog(@"下一步");
-                    [self.registerDic setObject:nickTxf.text forKey:@"name"];
-                    
+        [NetWorkManager networkCheckUserName:nickTxf.text success:^(int status, NSObject *data, NSString *msg) {
+            if (status == 200) {
+                [inputView setResult:kGDInputViewStatusTure];
+                DLog(@"下一步");
+                [self.registerDic setObject:nickTxf.text forKey:@"name"];
+                
 //                    SetAgeGenderViewController * ageGender = [[SetAgeGenderViewController alloc]init];
 //                    ageGender.registerDic = self.registerDic;
 //                    [self.navigationController pushViewController:ageGender animated:YES];
 //                    [ageGender release];
-                    [self regeditRequest];
-                }
-                else
-                {
-                    [inputView setResult:kGDInputViewStatusError];
-                    [UIAlertView showAlertViewWithTitle:@"失败" message:@"用户名已经被使用" cancelTitle:@"确定"];
-                }
+                [self regeditRequest];
             }
             else
             {
-                [UIAlertView showAlertViewWithTitle:@"失败" message:msg cancelTitle:@"确定"];
+                [inputView setResult:kGDInputViewStatusError];
+                [SVProgressHUD showErrorWithStatus:msg];
             }
         } failure:^(NSError *error) {
             

@@ -67,7 +67,7 @@ typedef enum
  *           @param useable：手机号是否可用，true可用 false不可用
  *  @failuse error  请求失败错误
  */
-+(void)networkCheckPhone:(NSString *)phoneNum success:(void (^)(int status,NSObject *data,NSString *msg))success failure:(void (^)(NSError * error))failure;
++(void)networkCheckPhone:(NSString *)phoneNum success:(void (^)(int status,NSString *data,NSString *msg))success failure:(void (^)(NSError * error))failure;
 
 /**
  *	请求取得验证码
@@ -76,7 +76,7 @@ typedef enum
  *  @success flag yes 为可用 no 为不可用  sequenceNo 验证码对应编号 authcode 验证码
  *  @failuse error 为错误信息
  */
-+(ASIFormDataRequest *)networkGetauthcodeWithPhone:(NSString *)phoneNum type:(int)type mode:(kNetworkrequestMode)mode success:(void (^)(BOOL flag, NSString * authcode,NSString * sequenceNo,NSString * msg))success failure:(void (^)(NSError * error))failure;
++(ASIFormDataRequest *)networkGetauthcodeWithPhone:(NSString *)phoneNum type:(int)type mode:(kNetworkrequestMode)mode success:(void (^)(BOOL flag,NSString *authcode,NSString *sequence,NSString * msg))success failure:(void (^)(NSError * error))failure;
 
 
 /**
@@ -88,7 +88,7 @@ typedef enum
  *           @param useable：手机号是否可用，true可用 false不可用
  *  @failuse error  请求失败错误
  */
-+(void)networkCheckUserName:(NSString *)username success:(void (^)(BOOL flag,BOOL userable,NSString *msg))success failure:(void (^)(NSError * error))failure;
++(void)networkCheckUserName:(NSString *)username success:(void (^)(int status,NSObject *data,NSString *msg))success failure:(void (^)(NSError * error))failure;
 
 /**
  *	注册用户

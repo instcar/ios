@@ -47,14 +47,14 @@
         [request setPostValue:[formdata valueForKey:key] forKey:key];
     }
     [request setUseCookiePersistence:YES];
-    NSMutableArray *cookies = [User shareInstance].cookies;
+    NSMutableArray *cookies = [NSMutableArray arrayWithArray:[User shareInstance].cookies];
     [request setRequestCookies:cookies];
     [request setRequestMethod:@"POST"];
     [request setCompletionBlock:^{
         NSString *responseString = [request responseString];
         NSDictionary *jsonDic = [responseString objectFromJSONString];
         //保存cookies
-        [[User shareInstance]setCookies:[NSMutableArray arrayWithArray:[request responseCookies]]];
+        [[User shareInstance]setCookies:[request responseCookies]];
         success(jsonDic);
     }];
     [request setFailedBlock:^{

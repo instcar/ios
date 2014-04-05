@@ -131,15 +131,47 @@ static User *user = nil;
     });
 }
 
-- (void)setCookies:(NSMutableArray *)cookies
+- (void)setCookies:(NSArray *)cookies
 {
-    [[NSUserDefaults standardUserDefaults] setObject:cookies forKey:@"Cookies"];
+    if (!cookies) {
+        return;
+    }
+    if ([cookies count] == 0) {
+        return;
+    }
+    //按键值更新
+    NSMutableArray *lcookies = nil;
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Cookies"]) {
+        NSData *data = [[NSUserDefaults standardUserDefaults] dataForKey:@"Cookies"];
+        lcookies = [NSMutableArray arrayWithArray:(NSArray *)[NSKeyedUnarchiver unarchiveObjectWithData:data]];
+    }
+    
+    for (int i = 0; i < [cookies count]; i++) {
+        NSHTTPCookie *httpCookie = [cookies objectAtIndex:i];
+        for (int i = 0; i < [lcookies count]; i++) {
+            NSHTTPCookie *lhttpCookie = [lcookies objectAtIndex:i];
+            if (httpCookie.name == lhttpCookie.name) {
+                [lcookies replaceObjectAtIndex:i withObject:httpCookie];
+                break;
+            }
+            else
+            {
+                if (i == [lcookies count]-1) {
+                    [lcookies addObject:httpCookie];
+                }
+            }
+        }
+    }
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:(NSArray *)cookies];
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"Cookies"];
 }
 
-- (NSMutableArray *)getCookies
+- (NSArray *)getCookies
 {
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"Cookies"]) {
-        return [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"Cookies"]];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"Cookies"]) {
+        NSData *data = [[NSUserDefaults standardUserDefaults] dataForKey:@"Cookies"];
+        NSArray *cookies = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        return cookies;
     }
     return nil;
 }

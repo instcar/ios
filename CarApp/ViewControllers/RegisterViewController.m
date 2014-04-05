@@ -240,7 +240,7 @@
             _leftSeconds = 60;
 
         } failure:^(NSString *message) {
-            [SVProgressHUD showWithStatus:message];
+            [SVProgressHUD showErrorWithStatus:message];
         }];
     }
     else{

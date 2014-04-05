@@ -114,8 +114,20 @@ static NetWorkManager *networkManager = nil;
     }];
 }
 
-+(ASIFormDataRequest *)networkGetauthcodeWithPhone:(NSString *)phoneNum type:(int)type mode:(kNetworkrequestMode)mode success:(void (^)(BOOL, NSString *, NSString *, NSString *))success failure:(void (^)(NSError *))failure
++(ASIFormDataRequest *)networkGetauthcodeWithPhone:(NSString *)phoneNum type:(int)type mode:(kNetworkrequestMode)mode success:(void (^)(BOOL , NSString *,NSString *, NSString *))success failure:(void (^)(NSError *))failure
 {
+    
+//    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:phoneNum,@"phone", nil];
+//    [NetTool httpPostRequest:API_POST_CheckUserPhone WithFormdata:formData WithSuccess:^(NSDictionary *resultDic) {
+//        int status = [[resultDic valueForKey:@"status"]intValue];
+//        NSObject *data = [resultDic objectForKey:@"data"];
+//        NSString *msg = [resultDic valueForKey:@"msg"];
+//        success(status,data,msg);
+//        
+//    } failure:^(NSError *error) {
+//        failure(error);
+//    }];
+    
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@yx/api/user/getauthcode", kServerHost]];
 
     NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&phone=%@&type=%d",APPKEY,phoneNum,type];
@@ -162,44 +174,19 @@ static NetWorkManager *networkManager = nil;
 
 }
 
-+(void)networkCheckUserName:(NSString *)username success:(void (^)(BOOL, BOOL, NSString *))success failure:(void (^)(NSError *))failure
++(void)networkCheckUserName:(NSString *)username success:(void (^)(int, NSObject *, NSString *))success failure:(void (^)(NSError *))failure
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@yx/api/user/checkusername", kServerHost]];
-    
-    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&username=%@",APPKEY,[NetWorkUtility StringEncodeTwo:username]];
-    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
-    
-    username = [NetWorkUtility StringEncode:username];//中文字符两次转码
-    __block ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    [request addPostValue:APPKEY forKey:@"appkey"];
-    [request addPostValue:username forKey:@"username"];
-    [request addPostValue:sign forKey:@"sign"];
-    
-    [request setRequestMethod:@"POST"];
-    
-    [request setCompletionBlock:^{
-        // Use when fetching text data
-        NSString *responseString = [request responseString];
-        NSDictionary * dic = [responseString objectFromJSONString];
-        BOOL flag = [[dic valueForKey:@"flag"]boolValue];
-        BOOL userable = NO;
-        NSString *msg = @"";
-        if (flag) {
-            userable = [[dic valueForKey:@"useable"]boolValue];
-        }
-        else
-        {
-            msg = [dic valueForKey:@"msg"];
-        }
-        success(flag,userable,msg);
-    }];
-    [request setFailedBlock:^{
-        NSError *error = [request error];
+    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:username,@"username", nil];
+    [NetTool httpPostRequest:API_POST_CheckUserName WithFormdata:formData WithSuccess:^(NSDictionary *resultDic) {
+        int status = [[resultDic valueForKey:@"status"]intValue];
+        NSObject *data = [resultDic objectForKey:@"data"];
+        NSString *msg = [resultDic valueForKey:@"msg"];
+        success(status,data,msg);
+        
+    } failure:^(NSError *error) {
         failure(error);
-        [self handleAsiHttpNetworkError:error];
-        [request clearDelegatesAndCancel];
     }];
-    [request startAsynchronous];
+    
 }
 
 +(void)networkUserRegistName:(NSString *)username password:(NSString *)password phone:(NSString *)phone sex:(NSString *)sex age:(int)age phonetype:(NSString *)phonetype phoneuuid:(NSString *)phoneuuid success:(void (^)(BOOL, NSDictionary *userDic, NSString *))success failure:(void (^)(NSError *))failure

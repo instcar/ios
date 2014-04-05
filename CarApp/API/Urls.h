@@ -10,7 +10,7 @@
 #define Temp_Pro_Urls_h
 
     #define HOST @"http://115.28.231.132:8080/"
-    #define PHPHOST @"http://qd00.shopbigbang.com:8086"
+    #define PHPHOST @"http://qd00.shopbigbang.com:8086/"
     /**
      *@brief api
      */
@@ -55,7 +55,7 @@
     #define API_POST_CheckUserPhone [NSString stringWithFormat:@"%@server/user/checkuserphone",PHPHOST]
 
     /**
-     检测手机号是否可用
+     检测用户名是否可用
      @pram   phone (NSString *)
      */
     #define API_POST_CheckUserName [NSString stringWithFormat:@"%@server/user/checkusername",PHPHOST]
