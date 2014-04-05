@@ -9,7 +9,10 @@
 #import "SettingViewController.h"
 #import "SettingTableCell.h"
 #import "Harpy.h"
+
 #import "ADWebViewController.h"
+#import "AgreementViewController.h"
+
 #import "SDImageCache.h"
 #import "NetWorkManager.h"
 
@@ -262,7 +265,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 4;
+    return 5;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -394,6 +397,16 @@
         return cell;
     }
     
+    if (indexPath.row == 4) {
+        [cell.titleLabel setText:@"易行用户协议及隐私保护"];
+        [cell.switchhh setHidden:YES];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        [cell.detailLable setHidden:YES];
+        
+        //        [cell.lineView setHidden:YES];
+        return cell;
+    }
+    
     return cell;
 }
 
@@ -420,6 +433,11 @@
     
     if (indexPath.row == 3) {
         [self goToAppStore];
+    }
+    
+    if (indexPath.row == 4) {
+        AgreementViewController *agreementVC = [[AgreementViewController alloc]init];
+        [self.navigationController pushViewController:agreementVC animated:YES] ;
     }
 }
 

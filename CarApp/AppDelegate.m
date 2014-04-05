@@ -70,6 +70,7 @@
     bool everEntered = [[NSUserDefaults standardUserDefaults]boolForKey:@"AlreadyEnterApp"];
     User *user = [User shareInstance];
 
+
     //密码是否保存了
     if (!everEntered) {
         [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"AlreadyEnterApp"];
@@ -116,6 +117,7 @@
 //    [navController setNavigationBarHidden:YES];
 //    self.window.rootViewController = navController;
 //    [navController release];
+
     
     [self.window makeKeyAndVisible];
     return YES;

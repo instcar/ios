@@ -66,6 +66,8 @@
 		08122B2E182427C300A85714 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 08122B2B182427C300A85714 /* SVProgressHUD.bundle */; };
 		08122B2F182427C300A85714 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 08122B2D182427C300A85714 /* SVProgressHUD.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		081236981887D3CC00062362 /* libbaidumapapi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 081236971887D3CC00062362 /* libbaidumapapi.a */; };
+		0819431418F0378E0041F05C /* AgreementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0819431318F0378E0041F05C /* AgreementViewController.m */; };
+		0819432218F045590041F05C /* agreement.htm in Resources */ = {isa = PBXBuildFile; fileRef = 0819432118F045590041F05C /* agreement.htm */; };
 		0820925418A8A7BF00A7EBFB /* MRZoomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0820925318A8A7BF00A7EBFB /* MRZoomScrollView.m */; };
 		0822950D18C196B600DADD7B /* add_line_no@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0822950B18C196B600DADD7B /* add_line_no@2x.png */; };
 		0822950E18C196B600DADD7B /* add_line_ok@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0822950C18C196B600DADD7B /* add_line_ok@2x.png */; };
@@ -1031,6 +1033,9 @@
 		08122C3818242C8B00A85714 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		08122C3918242C8B00A85714 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		081236971887D3CC00062362 /* libbaidumapapi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbaidumapapi.a; sourceTree = "<group>"; };
+		0819431218F0378E0041F05C /* AgreementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgreementViewController.h; sourceTree = "<group>"; };
+		0819431318F0378E0041F05C /* AgreementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgreementViewController.m; sourceTree = "<group>"; };
+		0819432118F045590041F05C /* agreement.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = agreement.htm; sourceTree = "<group>"; };
 		0820925218A8A7BF00A7EBFB /* MRZoomScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRZoomScrollView.h; sourceTree = "<group>"; };
 		0820925318A8A7BF00A7EBFB /* MRZoomScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRZoomScrollView.m; sourceTree = "<group>"; };
 		0822950B18C196B600DADD7B /* add_line_no@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_line_no@2x.png"; sourceTree = "<group>"; };
@@ -2202,6 +2207,7 @@
 		08122B3018242C7800A85714 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0819432118F045590041F05C /* agreement.htm */,
 				089C59CF18924275003CD4EB /* st */,
 				0871BA2D1844763F0044F631 /* Front */,
 				08122B7418242C7800A85714 /* Default */,
@@ -2576,6 +2582,8 @@
 				08E0DF4C18327B2200C632B5 /* ForgetPassWordViewController.m */,
 				08E0DF4E18327B2E00C632B5 /* RegisterViewController.h */,
 				08E0DF4F18327B2E00C632B5 /* RegisterViewController.m */,
+				0819431218F0378E0041F05C /* AgreementViewController.h */,
+				0819431318F0378E0041F05C /* AgreementViewController.m */,
 			);
 			name = "注册登录";
 			sourceTree = "<group>";
@@ -4103,6 +4111,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0819432218F045590041F05C /* agreement.htm in Resources */,
 				08E0DF61183289BF00C632B5 /* ipt_message@2x.png in Resources */,
 				083309F11851D46500C11BEF /* btn_green_normal.png in Resources */,
 				08E0DF60183289B300C632B5 /* FZY3JW.TTF in Resources */,
@@ -4593,6 +4602,7 @@
 				08CBB23F184824E3004AFE70 /* XMPPMessageArchiving_Contact_CoreDataObject.m in Sources */,
 				08CD717B18D95257008FA190 /* MJPhotoBrowser.m in Sources */,
 				088B273618852B8C00E11EBA /* UIButton+WebCache.m in Sources */,
+				0819431418F0378E0041F05C /* AgreementViewController.m in Sources */,
 				088B273918852B8C00E11EBA /* UIImage+WebP.m in Sources */,
 				08CBB1FD184824E3004AFE70 /* XMPPMUC.m in Sources */,
 				08CBB23D184824E3004AFE70 /* XMPPMessageArchiving.xcdatamodeld in Sources */,
