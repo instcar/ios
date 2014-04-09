@@ -17,6 +17,11 @@
 
 @implementation StartViewController
 
+-(void)dealloc
+{
+    [super dealloc];
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -47,39 +52,33 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if (kDeviceVersion >= 7.0) {
-        [self setAutomaticallyAdjustsScrollViewInsets:NO];
-    }
-    UIView * mainView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, SCREEN_HEIGHT)];
-    [mainView setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:mainView];
-    [mainView release];
     
-    UIScrollView * mainScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, SCREEN_HEIGHT - 48)];
-    [mainScrollView setTag:100001];
-    [mainScrollView setDelegate:self];
-    [mainScrollView setShowsHorizontalScrollIndicator:NO];
-    [mainScrollView setShowsVerticalScrollIndicator:NO];
-    [mainScrollView setBackgroundColor:[UIColor clearColor]];
-    [mainScrollView setPagingEnabled:YES];
-    [mainScrollView setBounces:NO];
-    [mainScrollView setContentSize:CGSizeMake(320 *4, SCREEN_HEIGHT - 48)];
-    [mainView addSubview:mainScrollView];
-    [mainScrollView release];
+    _mainScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, SCREEN_HEIGHT - 48)];
+    [_mainScrollView setDelegate:self];
+    [_mainScrollView setShowsHorizontalScrollIndicator:NO];
+    [_mainScrollView setShowsVerticalScrollIndicator:NO];
+    [_mainScrollView setBackgroundColor:[UIColor clearColor]];
+    [_mainScrollView setPagingEnabled:YES];
+    [_mainScrollView setBounces:NO];
+    [_mainScrollView setContentSize:CGSizeMake(320 *4, SCREEN_HEIGHT - 48)];
+    [self.view addSubview:_mainScrollView];
+    [_mainScrollView release];
     
     for (int i = 0 ; i < 4; i++) {
-
-        UIImageView * infoImgView = [[UIImageView alloc]initWithFrame:CGRectMake(320 *i, 0, 320, SCREEN_HEIGHT-48)];
-        [infoImgView setContentMode:UIViewContentModeCenter];
-        [infoImgView setClipsToBounds:YES];
-        [infoImgView setBackgroundColor:[UIColor clearColor]];
-        NSString * str = [NSString stringWithFormat:@"st%d.jpg",i+1];
-        if (IS_IPHONE_5) {
-            str = [NSString stringWithFormat:@"st%d-568.jpg",i+1];
+        for (int i = 0 ; i < 4; i++) {
+            
+            UIImageView * infoImgView = [[UIImageView alloc]initWithFrame:CGRectMake(320 *i, 0, 320, SCREEN_HEIGHT-48)];
+            [infoImgView setContentMode:UIViewContentModeCenter];
+            [infoImgView setClipsToBounds:YES];
+            [infoImgView setBackgroundColor:[UIColor clearColor]];
+            NSString * str = [NSString stringWithFormat:@"st%d.jpg",i+1];
+            if (IS_IPHONE_5) {
+                str = [NSString stringWithFormat:@"st%d-568.jpg",i+1];
+            }
+            [infoImgView setImage:[UIImage imageNamed:str]];
+            [_mainScrollView addSubview:infoImgView];
+            [infoImgView release];
         }
-        [infoImgView setImage:[UIImage imageNamed:str]];
-        [mainScrollView addSubview:infoImgView];
-        [infoImgView release];
     }
     
     UIButton * loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -88,31 +87,32 @@
     [loginBtn setBackgroundImage:nil forState:UIControlStateNormal];
     [loginBtn setBackgroundImage:nil forState:UIControlStateHighlighted];
     [loginBtn setShowsTouchWhenHighlighted:YES];
-    [loginBtn addTarget:self action:@selector(logInBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [mainScrollView addSubview:loginBtn];
+    [loginBtn addTarget:self action:@selector(loginBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [_mainScrollView addSubview:loginBtn];
     
-    UIImageView * bottomView = [[UIImageView alloc]initWithFrame:CGRectMake(0,SCREEN_HEIGHT - 48, 320, 48)];
-    [bottomView setImage:[UIImage imageNamed:@"tab_bar"]];
-    [bottomView setUserInteractionEnabled:YES];
-    [mainView addSubview:bottomView];
-    [bottomView release];
+    _bottomView = [[UIImageView alloc]initWithFrame:CGRectMake(0,SCREEN_HEIGHT - 48, 320, 48)];
+    [_bottomView setImage:[UIImage imageNamed:@"tab_bar"]];
+    [_bottomView setUserInteractionEnabled:YES];
+    [self.view addSubview:_bottomView];
+    [_bottomView release];
     
-    UIButton * registerBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [registerBtn setBackgroundColor:[UIColor clearColor]];
-    [registerBtn setFrame:CGRectMake(20, 9, 130, 32)];
-    [registerBtn setBackgroundImage:[UIImage imageNamed:@"btn_register_normal"] forState:UIControlStateNormal];
-    [registerBtn setBackgroundImage:[UIImage imageNamed:@"btn_register_pressed"] forState:UIControlStateHighlighted];
-    [registerBtn addTarget:self action:@selector(registerBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [bottomView addSubview:registerBtn];
+    _registerBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_registerBtn setBackgroundColor:[UIColor clearColor]];
+    [_registerBtn setFrame:CGRectMake(20, 9, 130, 32)];
+    [_registerBtn setBackgroundImage:[UIImage imageNamed:@"btn_blue_m"] forState:UIControlStateNormal];
+    [_registerBtn setImage:[UIImage imageNamed:@"ic_registration"] forState:UIControlStateNormal];
+    [_registerBtn setTitle:@"免费注册" forState:UIControlStateNormal];
+    [_registerBtn addTarget:self action:@selector(registerBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [_bottomView addSubview:_registerBtn];
 
-    UIButton * logInBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [logInBtn setTag:1002];
-    [logInBtn setBackgroundColor:[UIColor clearColor]];
-    [logInBtn setFrame:CGRectMake(170, 9, 130, 32)];
-    [logInBtn setBackgroundImage:[UIImage imageNamed:@"btn_login_normal@2x"] forState:UIControlStateNormal];
-    [logInBtn setBackgroundImage:[UIImage imageNamed:@"btn_login_pressed@2x"] forState:UIControlStateHighlighted];
-    [logInBtn addTarget:self action:@selector(logInBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [bottomView addSubview:logInBtn];
+    _loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_loginBtn setBackgroundColor:[UIColor clearColor]];
+    [_loginBtn setFrame:CGRectMake(170, 9, 130, 32)];
+    [_loginBtn setBackgroundImage:[UIImage imageNamed:@"btn_green"] forState:UIControlStateNormal];
+    [_loginBtn setImage:[UIImage imageNamed:@"ic_login"] forState:UIControlStateNormal];
+    [_loginBtn setTitle:@"登入" forState:UIControlStateNormal];
+    [_loginBtn addTarget:self action:@selector(loginBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [_bottomView addSubview:_loginBtn];
 }
 
 #pragma mark - btnAction
@@ -126,7 +126,7 @@
 }
 
 //登入
--(void)logInBtnClicked:(id)sender
+-(void)loginBtnClicked:(id)sender
 {
     DLog(@"登入");
     LogInViewController * logInVC = [[LogInViewController alloc]init];
@@ -152,24 +152,23 @@
 {
     float offSetX = scrollView.contentOffset.x;
     int page = offSetX/320;
-    UIButton * logInBtn = (UIButton *)[self.view viewWithTag:1002];
+    
+    //改变按钮
     if (page == 3) {
-        [logInBtn setBackgroundImage:[UIImage imageNamed:@"btn_forget_normal@2x"] forState:UIControlStateNormal];
-        [logInBtn setBackgroundImage:[UIImage imageNamed:@"btn_forget_pressed@2x"] forState:UIControlStateHighlighted];
-        [logInBtn removeTarget:self action:@selector(logInBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [logInBtn addTarget:self action:@selector(forgetPasswordBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        [_loginBtn setBackgroundImage:[UIImage imageNamed:@"btn_forget_normal@2x"] forState:UIControlStateNormal];
+        [_loginBtn setImage:nil forState:UIControlStateNormal];
+        [_loginBtn setTitle:@"忘记密码?" forState:UIControlStateNormal];
+        [_loginBtn removeTarget:self action:@selector(loginBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_loginBtn addTarget:self action:@selector(forgetPasswordBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     else{
-        [logInBtn setBackgroundImage:[UIImage imageNamed:@"btn_login_normal@2x"] forState:UIControlStateNormal];
-        [logInBtn setBackgroundImage:[UIImage imageNamed:@"btn_login_pressed@2x"] forState:UIControlStateHighlighted];
-        [logInBtn removeTarget:self action:@selector(forgetPasswordBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [logInBtn addTarget:self action:@selector(logInBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_loginBtn setBackgroundImage:[UIImage imageNamed:@"btn_green"] forState:UIControlStateNormal];
+        [_loginBtn setImage:[UIImage imageNamed:@"ic_login"] forState:UIControlStateNormal];
+        [_loginBtn setTitle:@"登入" forState:UIControlStateNormal];
+        [_loginBtn removeTarget:self action:@selector(forgetPasswordBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_loginBtn addTarget:self action:@selector(loginBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
-}
-
--(void)dealloc
-{
-    [super dealloc];
+    
 }
 
 - (void)didReceiveMemoryWarning

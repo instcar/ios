@@ -19,10 +19,11 @@ typedef enum
 }kGDInputViewStatus;
 
 @interface GDInputView : UIView<UITextFieldDelegate>
-
+{
+    UIImageView *_backGtextImgView;
+    UIImageView *_arrowImgView;
+}
 @property (retain, nonatomic)UITextField *textfield;
-@property (retain, nonatomic)UIImageView *backGtextImgView;
-@property (retain, nonatomic)UIImageView *arrowImgView;
 
 -(void)setResult:(kGDInputViewStatus)status;
 

@@ -100,19 +100,19 @@ static NetWorkManager *networkManager = nil;
     return [ASIHTTPRequest isNetworkInUse];
 }
 
-+(void)networkCheckPhone:(NSString *)phoneNum success:(void (^)(int,NSObject *,NSString *))success failure:(void (^)(NSError *))failure
-{
-    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:phoneNum,@"phone", nil];
-    [NetTool httpPostRequest:API_POST_CheckUserPhone WithFormdata:formData WithSuccess:^(NSDictionary *resultDic) {
-        int status = [[resultDic valueForKey:@"status"]intValue];
-        NSObject *data = [resultDic objectForKey:@"data"];
-        NSString *msg = [resultDic valueForKey:@"msg"];
-        success(status,data,msg);
-
-    } failure:^(NSError *error) {
-        failure(error);
-    }];
-}
+//+(void)networkCheckPhone:(NSString *)phoneNum success:(void (^)(int,NSObject *,NSString *))success failure:(void (^)(NSError *))failure
+//{
+//    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:phoneNum,@"phone", nil];
+//    [NetTool httpPostRequest:API_POST_CheckUserPhone WithFormdata:formData WithSuccess:^(NSDictionary *resultDic) {
+//        int status = [[resultDic valueForKey:@"status"]intValue];
+//        NSObject *data = [resultDic objectForKey:@"data"];
+//        NSString *msg = [resultDic valueForKey:@"msg"];
+//        success(status,data,msg);
+//
+//    } failure:^(NSError *error) {
+//        failure(error);
+//    }];
+//}
 
 +(ASIFormDataRequest *)networkGetauthcodeWithPhone:(NSString *)phoneNum type:(int)type mode:(kNetworkrequestMode)mode success:(void (^)(BOOL , NSString *,NSString *, NSString *))success failure:(void (^)(NSError *))failure
 {
@@ -174,20 +174,20 @@ static NetWorkManager *networkManager = nil;
 
 }
 
-+(void)networkCheckUserName:(NSString *)username success:(void (^)(int, NSObject *, NSString *))success failure:(void (^)(NSError *))failure
-{
-    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:username,@"username", nil];
-    [NetTool httpPostRequest:API_POST_CheckUserName WithFormdata:formData WithSuccess:^(NSDictionary *resultDic) {
-        int status = [[resultDic valueForKey:@"status"]intValue];
-        NSObject *data = [resultDic objectForKey:@"data"];
-        NSString *msg = [resultDic valueForKey:@"msg"];
-        success(status,data,msg);
-        
-    } failure:^(NSError *error) {
-        failure(error);
-    }];
-    
-}
+//+(void)networkCheckUserName:(NSString *)username success:(void (^)(int, NSObject *, NSString *))success failure:(void (^)(NSError *))failure
+//{
+//    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:username,@"username", nil];
+//    [NetTool httpPostRequest:API_POST_CheckUserName WithFormdata:formData WithSuccess:^(Respone *respone) {
+//        int status = [[re valueForKey:@"status"]intValue];
+//        NSObject *data = [resultDic objectForKey:@"data"];
+//        NSString *msg = [resultDic valueForKey:@"msg"];
+//        success(status,data,msg);
+//        
+//    } failure:^(NSError *error) {
+//        failure(error);
+//    }];
+//    
+//}
 
 +(void)networkUserRegistName:(NSString *)username password:(NSString *)password phone:(NSString *)phone sex:(NSString *)sex age:(int)age phonetype:(NSString *)phonetype phoneuuid:(NSString *)phoneuuid success:(void (^)(BOOL, NSDictionary *userDic, NSString *))success failure:(void (^)(NSError *))failure
 {
@@ -514,8 +514,8 @@ static NetWorkManager *networkManager = nil;
 
 +(void)networkGetUserAddressWithLongitude:(double)longitude latitude:(double)latitude success:(void (^)(BOOL, NSDictionary *))success failure:(void (^)(NSError *))failure
 {
-    double lat = [[User shareInstance] lat];
-    double lon = [[User shareInstance] lon];
+    double lat = [[User shareInstance] getLat];
+    double lon = [[User shareInstance] getLon];
     NSURL * requestUrl = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.map.baidu.com/geocoder?output=json&location=%lf,%lf&key=%@",lat,lon,kBaiDuWebAPIKey]];
     __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:requestUrl];
     
@@ -550,27 +550,27 @@ static NetWorkManager *networkManager = nil;
 }
 
 #pragma mark -- 用户详细信息
-+(void)networkGetUserInfoWithuid:(long)uid success:(void (^)(BOOL, NSDictionary *, NSString *))success failure:(void (^)(NSError *))failure
-{
-    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&uid=%ld",APPKEY,uid];
-    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
-    
-    [NetTool httpGetRequest:api_getUserInfo(uid,sign) WithSuccess:^(NSDictionary *resultDic) {
-        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
-        NSDictionary *userInfo = nil;
-        NSString *msg = @"";
-        if (flag) {
-            userInfo = [resultDic objectForKey:@"user"];
-        }
-        else
-        {
-            msg = [resultDic valueForKey:@"msg"];
-        }
-        success(flag,userInfo,msg);
-    } failure:^(NSError *error) {
-        [self handleAsiHttpNetworkError:error];
-    }];
-}
+//+(void)networkGetUserInfoWithuid:(long)uid success:(void (^)(BOOL, NSDictionary *, NSString *))success failure:(void (^)(NSError *))failure
+//{
+//    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&uid=%ld",APPKEY,uid];
+//    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
+//    
+//    [NetTool httpGetRequest:api_getUserInfo(uid,sign) WithSuccess:^(NSDictionary *resultDic) {
+//        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
+//        NSDictionary *userInfo = nil;
+//        NSString *msg = @"";
+//        if (flag) {
+//            userInfo = [resultDic objectForKey:@"user"];
+//        }
+//        else
+//        {
+//            msg = [resultDic valueForKey:@"msg"];
+//        }
+//        success(flag,userInfo,msg);
+//    } failure:^(NSError *error) {
+//        [self handleAsiHttpNetworkError:error];
+//    }];
+//}
 
 +(void)networkGetUserInfoWithuidArray:(NSArray *)uidArray success:(void (^)(BOOL, NSArray *, NSString *))success failure:(void (^)(NSError *))failure
 {
@@ -623,30 +623,30 @@ static NetWorkManager *networkManager = nil;
     [request startAsynchronous];
 }
 
-+(void)networkGetUserInfoCenterWithuid:(long)uid success:(void (^)(BOOL, NSDictionary *, NSString *))success failure:(void (^)(NSError *))failure
-{
-    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&uid=%ld",APPKEY,uid];
-    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
-    
-    [NetTool httpGetRequest:api_getUserCenterInfo(uid, sign) WithSuccess:^(NSDictionary *resultDic) {
-        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
-        NSDictionary *userInfo = nil;
-        NSString *msg = @"";
-        if (flag) {
-            userInfo = resultDic;
-            [SVProgressHUD dismiss];
-        }
-        else
-        {
-            msg = [resultDic valueForKey:@"msg"];
-            [SVProgressHUD showErrorWithStatus:msg];
-        }
-        success(flag,userInfo,msg);
-    } failure:^(NSError *error) {
-        [self handleAsiHttpNetworkError:error];
-    }];
-    
-}
+//+(void)networkGetUserInfoCenterWithuid:(long)uid success:(void (^)(BOOL, NSDictionary *, NSString *))success failure:(void (^)(NSError *))failure
+//{
+//    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&uid=%ld",APPKEY,uid];
+//    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
+//    
+//    [NetTool httpGetRequest:api_getUserCenterInfo(uid, sign) WithSuccess:^(NSDictionary *resultDic) {
+//        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
+//        NSDictionary *userInfo = nil;
+//        NSString *msg = @"";
+//        if (flag) {
+//            userInfo = resultDic;
+//            [SVProgressHUD dismiss];
+//        }
+//        else
+//        {
+//            msg = [resultDic valueForKey:@"msg"];
+//            [SVProgressHUD showErrorWithStatus:msg];
+//        }
+//        success(flag,userInfo,msg);
+//    } failure:^(NSError *error) {
+//        [self handleAsiHttpNetworkError:error];
+//    }];
+//    
+//}
 
 +(void)networkGetJokeListPage:(int)page rows:(int)rows success:(void (^)(BOOL, BOOL, NSArray *, NSString *))success failure:(void (^)(NSError *))failure
 {
@@ -1007,58 +1007,58 @@ static NetWorkManager *networkManager = nil;
     [request startAsynchronous];
 }
 
-+(void)networkGetJuDianListPage:(int)page rows:(int)rows lng:(double)lng lat:(double)lat success:(void (^)(BOOL, BOOL, NSArray *, NSString *))success failure:(void (^)(NSError *))failure
-{
-    
-    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&lat=%lf&lng=%lf&page=%d&rows=%d",APPKEY,lat,lng,page,rows];
-    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
-    
-    [NetTool httpGetRequest:api_getJudianListWithLocate(lat, lng, page, rows, sign) WithSuccess:^(NSDictionary *resultDic) {
-        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
-        
-        NSArray * judiansArray = nil;
-        NSString *msg = @"";
-        BOOL hasnexpage = NO;
-        if (flag) {
-            hasnexpage = [[resultDic valueForKey:@"hasnextpage"]boolValue];
-            judiansArray = [Judian arrayWithArrayDic:[resultDic valueForKey:@"judians"]];
-        }
-        else
-        {
-            msg = [resultDic valueForKey:@"msg"];
-        }
-        success(flag, hasnexpage, judiansArray,msg);
-    } failure:^(NSError *error) {
-         [self handleAsiHttpNetworkError:error];
-    }];
-}
+//+(void)networkGetJuDianListPage:(int)page rows:(int)rows lng:(double)lng lat:(double)lat success:(void (^)(BOOL, BOOL, NSArray *, NSString *))success failure:(void (^)(NSError *))failure
+//{
+//    
+//    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&lat=%lf&lng=%lf&page=%d&rows=%d",APPKEY,lat,lng,page,rows];
+//    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
+//    
+//    [NetTool httpGetRequest:api_getJudianListWithLocate(lat, lng, page, rows, sign) WithSuccess:^(NSDictionary *resultDic) {
+//        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
+//        
+//        NSArray * judiansArray = nil;
+//        NSString *msg = @"";
+//        BOOL hasnexpage = NO;
+//        if (flag) {
+//            hasnexpage = [[resultDic valueForKey:@"hasnextpage"]boolValue];
+//            judiansArray = [Judian arrayWithArrayDic:[resultDic valueForKey:@"judians"]];
+//        }
+//        else
+//        {
+//            msg = [resultDic valueForKey:@"msg"];
+//        }
+//        success(flag, hasnexpage, judiansArray,msg);
+//    } failure:^(NSError *error) {
+//         [self handleAsiHttpNetworkError:error];
+//    }];
+//}
 
-+(void)networkGetLineListByJudianId:(long)judianID page:(int)page rows:(int)rows success:(void (^)(BOOL, BOOL, NSArray *, NSString *))success failure:(void (^)(NSError *))failure
-{
-    
-    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&judianid=%ld&page=%d&rows=%d",APPKEY,judianID,page,rows];
-    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
-    
-    [NetTool httpGetRequest:api_getLineListbyjudianid(judianID, page, rows, sign) WithSuccess:^(NSDictionary *resultDic) {
-        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
-        
-        NSArray *linearray = nil;
-        NSString *msg = @"";
-        BOOL hasnexpage = NO;
-        if (flag) {
-            hasnexpage = [[resultDic valueForKey:@"hasnextpage"]boolValue];
-            linearray = [Line arrayWithArrayDic:[resultDic valueForKey:@"lines"]];
-        }
-        else
-        {
-            msg = [resultDic valueForKey:@"msg"];
-        }
-        success(flag, hasnexpage, linearray,msg);
-    } failure:^(NSError *error) {
-        [self handleAsiHttpNetworkError:error];
-    }];
-    
-}
+//+(void)networkGetLineListByJudianId:(long)judianID page:(int)page rows:(int)rows success:(void (^)(BOOL, BOOL, NSArray *, NSString *))success failure:(void (^)(NSError *))failure
+//{
+//    
+//    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&judianid=%ld&page=%d&rows=%d",APPKEY,judianID,page,rows];
+//    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
+//    
+//    [NetTool httpGetRequest:api_getLineListbyjudianid(judianID, page, rows, sign) WithSuccess:^(NSDictionary *resultDic) {
+//        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
+//        
+//        NSArray *linearray = nil;
+//        NSString *msg = @"";
+//        BOOL hasnexpage = NO;
+//        if (flag) {
+//            hasnexpage = [[resultDic valueForKey:@"hasnextpage"]boolValue];
+//            linearray = [Line arrayWithArrayDic:[resultDic valueForKey:@"lines"]];
+//        }
+//        else
+//        {
+//            msg = [resultDic valueForKey:@"msg"];
+//        }
+//        success(flag, hasnexpage, linearray,msg);
+//    } failure:^(NSError *error) {
+//        [self handleAsiHttpNetworkError:error];
+//    }];
+//    
+//}
 
 //获取线路的分页数据
 +(void)networkGetLineListPage:(int)page rows:(int)rows success:(void (^)(BOOL flag, BOOL hasnextpage, NSArray *lineArray,NSString * msg))success failure:(void (^)(NSError * error))failure
@@ -1106,34 +1106,34 @@ static NetWorkManager *networkManager = nil;
 }
 
 //根据关键字获取线路的分页数据
-+(void)networkGetLineListByTag:(NSString *)tag page:(int)page rows:(int)rows success:(void (^)(BOOL flag, BOOL hasnextpage, NSArray *lineArray,NSString * msg))success failure:(void (^)(NSError * error))failure
-{
-    
-    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&page=%d&rows=%d&tag=%@",APPKEY,page,rows,[NetWorkUtility StringEncodeTwo:tag]];
-    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
-    NSString *tagx = [NetWorkUtility StringEncodeTwo:tag];//中文字符两次转码
-    [NetTool httpGetRequest:api_getLineListbyTag(page, rows, tagx, sign) WithSuccess:^(NSDictionary *resultDic) {
-
-        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
-        
-        NSArray *linearray = nil;
-        NSString *msg = @"";
-        BOOL hasnexpage = NO;
-        if (flag) {
-            hasnexpage = [[resultDic valueForKey:@"hasnextpage"]boolValue];
-            linearray = [Line arrayWithArrayDic:[resultDic valueForKey:@"lines"]];
-            
-        }
-        else
-        {
-            msg = [resultDic valueForKey:@"msg"];
-        }
-        success(flag, hasnexpage, linearray,msg);
-    } failure:^(NSError *error) {
-        [self handleAsiHttpNetworkError:error];
-    }];
-    
-}
+//+(void)networkGetLineListByTag:(NSString *)tag page:(int)page rows:(int)rows success:(void (^)(BOOL flag, BOOL hasnextpage, NSArray *lineArray,NSString * msg))success failure:(void (^)(NSError * error))failure
+//{
+//    
+//    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&page=%d&rows=%d&tag=%@",APPKEY,page,rows,[NetWorkUtility StringEncodeTwo:tag]];
+//    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
+//    NSString *tagx = [NetWorkUtility StringEncodeTwo:tag];//中文字符两次转码
+//    [NetTool httpGetRequest:api_getLineListbyTag(page, rows, tagx, sign) WithSuccess:^(NSDictionary *resultDic) {
+//
+//        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
+//        
+//        NSArray *linearray = nil;
+//        NSString *msg = @"";
+//        BOOL hasnexpage = NO;
+//        if (flag) {
+//            hasnexpage = [[resultDic valueForKey:@"hasnextpage"]boolValue];
+//            linearray = [Line arrayWithArrayDic:[resultDic valueForKey:@"lines"]];
+//            
+//        }
+//        else
+//        {
+//            msg = [resultDic valueForKey:@"msg"];
+//        }
+//        success(flag, hasnexpage, linearray,msg);
+//    } failure:^(NSError *error) {
+//        [self handleAsiHttpNetworkError:error];
+//    }];
+//    
+//}
 
 //*****增加房间****//
 +(void)networkCreateRoomWithID:(long)ID lineID:(long)lineID startingTime:(NSString *)startingTime seatnum:(int)seatnum description:(NSString *)description addtofav:(BOOL)addtofav success:(void (^)(BOOL flag,long roomID, NSString * msg))success failure:(void (^)(NSError * error))failure
@@ -1343,32 +1343,32 @@ static NetWorkManager *networkManager = nil;
 }
 
 //根据用户获取房间数据
-+(void)networkGetRoomsWithID:(long)ID page:(int)page rows:(int)rows success:(void (^)(BOOL flag, BOOL hasnextpage, NSArray *roomArray,NSString * msg))success failure:(void (^)(NSError * error))failure
-{
-    
-    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&page=%d&rows=%d&uid=%ld",APPKEY,page,rows,ID];
-    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
-    
-    [NetTool httpGetRequest:api_getRoomsWithuid(page, rows, ID, sign) WithSuccess:^(NSDictionary *resultDic) {
-        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
-        NSArray *rooms = nil;
-        NSString *msg = @"";
-        BOOL hasnexpage = NO;
-        if (flag) {
-            hasnexpage = [[resultDic valueForKey:@"hasnextpage"]boolValue];
-            rooms = (NSArray *)[Room arrayWithArrayDic:[resultDic valueForKey:@"rooms"]];
-        }
-        else
-        {
-            msg = [resultDic valueForKey:@"msg"];
-        }
-        success(flag,hasnexpage,rooms,msg);
-    } failure:^(NSError *error) {
-         [self handleAsiHttpNetworkError:error];
-    }];
-    
-}
-                                                                                                                    
+//+(void)networkGetRoomsWithID:(long)ID page:(int)page rows:(int)rows success:(void (^)(BOOL flag, BOOL hasnextpage, NSArray *roomArray,NSString * msg))success failure:(void (^)(NSError * error))failure
+//{
+//    
+//    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&page=%d&rows=%d&uid=%ld",APPKEY,page,rows,ID];
+//    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
+//    
+//    [NetTool httpGetRequest:api_getRoomsWithuid(page, rows, ID, sign) WithSuccess:^(NSDictionary *resultDic) {
+//        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
+//        NSArray *rooms = nil;
+//        NSString *msg = @"";
+//        BOOL hasnexpage = NO;
+//        if (flag) {
+//            hasnexpage = [[resultDic valueForKey:@"hasnextpage"]boolValue];
+//            rooms = (NSArray *)[Room arrayWithArrayDic:[resultDic valueForKey:@"rooms"]];
+//        }
+//        else
+//        {
+//            msg = [resultDic valueForKey:@"msg"];
+//        }
+//        success(flag,hasnexpage,rooms,msg);
+//    } failure:^(NSError *error) {
+//         [self handleAsiHttpNetworkError:error];
+//    }];
+//    
+//}
+
 //根据线路获取房间数据
 +(void)networkGetRoomsWithuid:(long)uid lineID:(long)lineID page:(int)page rows:(int)rows success:(void (^)(BOOL flag, BOOL hasnextpage, NSArray *roomArray,NSString * msg))success failure:(void (^)(NSError * error))failure
 {
@@ -1793,53 +1793,53 @@ static NetWorkManager *networkManager = nil;
 }
 
 #pragma mark - 取广告信息
-+(void)networkGetADListWithPage:(int)page rows:(int)rows success:(void (^)(BOOL flag, NSArray *adArray, NSString *msg))success failure:(void (^)(NSError * error))failure
-{
-    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&page=%d&rows=%d",APPKEY,page,rows];
-    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
-    
-    [NetTool httpGetRequest:api_Setting_Ad(page, rows, sign) WithSuccess:^(NSDictionary *resultDic) {
-        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
-        NSArray *adsArray = nil;
-        NSString *msg = @"";
-        if (flag) {
-            adsArray = (NSArray *)[resultDic objectForKey:@"ads"];
-        }
-        else
-        {
-            msg = [resultDic valueForKey:@"msg"];
-        }
-        success(flag,adsArray,msg);
-    } failure:^(NSError *error) {
-        [self handleAsiHttpNetworkError:error];
-    }];
-}
+//+(void)networkGetADListWithPage:(int)page rows:(int)rows success:(void (^)(BOOL flag, NSArray *adArray, NSString *msg))success failure:(void (^)(NSError * error))failure
+//{
+//    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&page=%d&rows=%d",APPKEY,page,rows];
+//    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
+//    
+//    [NetTool httpGetRequest:api_Setting_Ad(page, rows, sign) WithSuccess:^(NSDictionary *resultDic) {
+//        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
+//        NSArray *adsArray = nil;
+//        NSString *msg = @"";
+//        if (flag) {
+//            adsArray = (NSArray *)[resultDic objectForKey:@"ads"];
+//        }
+//        else
+//        {
+//            msg = [resultDic valueForKey:@"msg"];
+//        }
+//        success(flag,adsArray,msg);
+//    } failure:^(NSError *error) {
+//        [self handleAsiHttpNetworkError:error];
+//    }];
+//}
 
 #pragma mark - 获取常用路线
-+(void)networkGetUserfavlineListWithUid:(long)uid page:(int)page rows:(int)rows success:(void (^)(BOOL, BOOL , NSArray *, NSString *))success failure:(void (^)(NSError *))failure
-{
-    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&page=%d&rows=%d&uid=%ld",APPKEY,page,rows,uid];
-    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
-    
-    [NetTool httpGetRequest:api_getUserfavlineList(page, rows, uid, sign) WithSuccess:^(NSDictionary *resultDic) {
-        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
-        NSArray *adsArray = nil;
-        NSString *msg = @"";
-        BOOL hasnexpage = NO;
-        if (flag) {
-            hasnexpage = [[resultDic valueForKey:@"hasnextpage"]boolValue];
-            adsArray = (NSArray *)[resultDic objectForKey:@"userfavlines"];
-        }
-        else
-        {
-            msg = [resultDic valueForKey:@"msg"];
-        }
-        success(flag,hasnexpage,adsArray,msg);
-
-    } failure:^(NSError *error) {
-        [self handleAsiHttpNetworkError:error];
-    }];
-}
+//+(void)networkGetUserfavlineListWithUid:(long)uid page:(int)page rows:(int)rows success:(void (^)(BOOL, BOOL , NSArray *, NSString *))success failure:(void (^)(NSError *))failure
+//{
+//    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&page=%d&rows=%d&uid=%ld",APPKEY,page,rows,uid];
+//    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
+//    
+//    [NetTool httpGetRequest:api_getUserfavlineList(page, rows, uid, sign) WithSuccess:^(NSDictionary *resultDic) {
+//        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
+//        NSArray *adsArray = nil;
+//        NSString *msg = @"";
+//        BOOL hasnexpage = NO;
+//        if (flag) {
+//            hasnexpage = [[resultDic valueForKey:@"hasnextpage"]boolValue];
+//            adsArray = (NSArray *)[resultDic objectForKey:@"userfavlines"];
+//        }
+//        else
+//        {
+//            msg = [resultDic valueForKey:@"msg"];
+//        }
+//        success(flag,hasnexpage,adsArray,msg);
+//
+//    } failure:^(NSError *error) {
+//        [self handleAsiHttpNetworkError:error];
+//    }];
+//}
 
 +(void)networkAddUserfavlineWithUid:(long)uid lineID:(int)lineid success:(void (^)(BOOL, NSString *))success failure:(void (^)(NSError *))failure
 {

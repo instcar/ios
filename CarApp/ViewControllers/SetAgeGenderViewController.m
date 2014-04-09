@@ -281,7 +281,6 @@
                 user.userName  = [userDic valueForKey:@"username"];
                 user.userPwd = password;
                 user.phoneNum = [userDic valueForKey:@"phone"];
-                [user save];
                 
                 [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"AlreadyEnterApp"];
                 

@@ -9,126 +9,125 @@
 
 #import "User.h"
 #import "AppUtility.h"
-
 static User *user = nil;
 
 @implementation User
 
 + (User *)shareInstance
 {
-	@synchronized(self) {
-		if (user == nil) {
+    @synchronized(self){
+        if (user == nil) {
 			user = [[User alloc]init];
 		}
-	}
-	return user;
-}
-
-//检查各种配置文件是否存在，不存在则拷贝到document下：1.用户配置
-+(void)userDataInit{
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentPath = [paths objectAtIndex:0];
-    NSString *filePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist",KPlistUser]];
-    
-    if ([fm fileExistsAtPath:filePath]==NO) {
-        //初始化主配置列表并且复制过去
-            User *user = [[User alloc] init];
-            user.isFirstUse = YES;
-            [user save];
     }
-    //填装数据
-    [[User shareInstance]userWithPlist];
-}
-
-//装填
--(void)userWithPlist{
-    NSMutableDictionary *dict = [self getPlistContent:KPlistUser];
-    user.userId = [[dict objectForKey:@"userId"]longValue];
-    user.userName = [dict objectForKey:@"userName"];
-    user.userPwd = [dict objectForKey:@"userPwd"];
-    user.userData = [dict objectForKey:@"userData"];
-    user.session = [dict objectForKey:@"session"];
-    user.phoneNum = [dict objectForKey:@"userPhone"];
-    user.address = [dict objectForKey:@"address"];
-    user.lon = [[dict objectForKey:@"lon"]doubleValue];
-    user.lat = [[dict objectForKey:@"lat"]doubleValue];
-    
-    NSString *isFirstUse = [dict objectForKey:@"isFirstUse"];
-    user.isFirstUse =  isFirstUse.boolValue;
-    NSString *isSavePwd = [dict objectForKey:@"isSavePwd"];
-    user.isSavePwd = isSavePwd.boolValue;
-}
-
-//获取plist里的内容
--(NSMutableDictionary *)getPlistContent:(NSString *)plistName{
-    
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithContentsOfFile:[self getPlistPath:plistName]];
-    return dict;
-}
-
-//获取plist地址
-+(NSString *)getPlistPath:(NSString *)plistName{
-    NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentPath = [paths objectAtIndex:0];
-    NSString *filePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist",plistName]];
-    return filePath;
-}
-
-//获取plist地址
--(NSString *)getPlistPath:(NSString *)plistName{
-    NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentPath = [paths objectAtIndex:0];
-    NSString *filePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist",plistName]];
-    return filePath;
-}
-
-//保存到plist里
--(void)save{
-    
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    [dict setObject:[NSNumber numberWithLong:self.userId] forKey:@"userId"];
-    [dict setObject:[AppUtility getStrByNil:self.userName] forKey:@"userName"];
-    [dict setObject:[AppUtility getStrByNil:self.userPwd] forKey:@"userPwd"];
-    [dict setObject:[AppUtility getStrByNil:self.session] forKey:@"session"];
-    [dict setObject:[AppUtility getStrByNil:self.phoneNum] forKey:@"userPhone"];
-    [dict setValue:[AppUtility getStrByNil:self.address] forKey:@"address"];
-    [dict setObject:[NSString stringWithFormat:@"%lf",self.lon] forKey:@"lon"];
-    [dict setObject:[NSString stringWithFormat:@"%lf",self.lat] forKey:@"lat"];
-    
-    if (self.userData!=nil) {
-        [dict setObject:self.userData forKey:@"userData"];
-    }else{
-        [dict setObject:[[NSDictionary alloc] init] forKey:@"userData"];
-    }
-
-    if (self.address!=nil) {
-        [dict setObject:self.address forKey:@"address"];
-    }else{
-        [dict removeObjectForKey:@"address"];
-    }
-    
-    [dict setObject:[NSNumber numberWithBool:self.isFirstUse] forKey:@"isFirstUse"];
-    [dict setObject:[NSNumber numberWithBool:self.isSavePwd] forKey:@"isSavePwd"];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [dict writeToFile:[self getPlistPath:KPlistUser] atomically:YES];
-        dispatch_async(dispatch_get_main_queue(), ^{
-
-        });
-    });
+    return user;
 }
 
 -(void)clear
 {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    [dict setObject:[NSNumber numberWithBool:NO] forKey:@"isFirstUse"];
-    [dict setObject:[NSNumber numberWithBool:NO] forKey:@"isSavePwd"];
-    self.userPwd = @"";
-    [self setIsSavePwd:NO];
-    [self setIsFirstUse:NO];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [dict writeToFile:[self getPlistPath:KPlistUser] atomically:YES];
-    });
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ISSAVEPWD"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"USERPASSWORD"];
+}
+
+- (void)setUserId:(long)userId
+{
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLong:userId] forKey:@"USERID"];
+}
+
+- (long)getUserId
+{
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"USERID"] longValue];
+}
+
+- (void)setUserName:(NSString *)userName
+{
+    [[NSUserDefaults standardUserDefaults] setValue:userName forKey:@"USERNAME"];
+}
+
+- (NSString *)getUserName
+{
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"USERNAME"];
+}
+
+- (void)setUserPwd:(NSString *)userPwd
+{
+    [[NSUserDefaults standardUserDefaults] setValue:userPwd forKey:@"USERPASSWORD"];
+}
+
+- (NSString *)getUserPwd
+{
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"USERPASSWORD"];
+}
+
+
+- (void)setPhoneNum:(NSString *)phoneNum
+{
+    [[NSUserDefaults standardUserDefaults] setValue:phoneNum forKey:@"PHONENUM"];
+}
+
+- (NSString *)getPhoneNum
+{
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"PHONENUM"];
+}
+
+- (void)setIsFirstUse:(BOOL)isFirstUse
+{
+    [[NSUserDefaults standardUserDefaults] setBool:isFirstUse forKey:@"ISFIRSTUSE"];
+}
+
+- (BOOL)getIsFirstUse
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"ISFIRSTUSE"];
+}
+
+- (void)setIsSavePwd:(BOOL)isSavePwd
+{
+    [[NSUserDefaults standardUserDefaults] setBool:isSavePwd forKey:@"ISSAVEPWD"];
+}
+
+- (BOOL)getIsSavePwd
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"ISSAVEPWD"];
+}
+
+- (void)setLat:(double)lat
+{
+     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithDouble:lat] forKey:@"LAT"];
+}
+
+- (double)getLat
+{
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"LAT"] doubleValue];
+}
+
+- (void)setLon:(double)lon
+{
+     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithDouble:lon] forKey:@"LON"];
+}
+
+- (double)getLon
+{
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"LON"] doubleValue];
+}
+
+- (void)setAddress:(NSString *)address
+{
+    [[NSUserDefaults standardUserDefaults] setValue:address forKey:@"ADDRESS"];
+}
+
+- (NSString *)getAddress
+{
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"ADDRESS"];
+}
+
+- (void)setUserData:(NSMutableDictionary *)userData
+{
+    [[NSUserDefaults standardUserDefaults] setObject:userData forKey:@"USERDATA"];
+}
+
+- (NSMutableDictionary *)getUserData
+{
+    return [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"USERDATA"]];
 }
 
 - (void)setCookies:(NSArray *)cookies
@@ -150,7 +149,7 @@ static User *user = nil;
         NSHTTPCookie *httpCookie = [cookies objectAtIndex:i];
         for (int i = 0; i < [lcookies count]; i++) {
             NSHTTPCookie *lhttpCookie = [lcookies objectAtIndex:i];
-            if (httpCookie.name == lhttpCookie.name) {
+            if ([httpCookie.name isEqualToString:lhttpCookie.name]) {
                 [lcookies replaceObjectAtIndex:i withObject:httpCookie];
                 break;
             }
@@ -158,6 +157,7 @@ static User *user = nil;
             {
                 if (i == [lcookies count]-1) {
                     [lcookies addObject:httpCookie];
+                    break;
                 }
             }
         }

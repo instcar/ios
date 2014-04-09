@@ -22,6 +22,7 @@
     #import "InstantCarRelease.h"
 
     #import "AppUtility.h"
+    #import "APIClient.h"
     #import "NetWorkManager.h"
     #import "LocationServer.h"
     #import "SVProgressHUD.h"

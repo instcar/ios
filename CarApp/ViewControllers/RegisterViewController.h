@@ -7,16 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseViewController.h"
+#import "GDInputView.h"
 
-@interface RegisterViewController : UIViewController<UITextFieldDelegate>
+@interface RegisterViewController : BaseViewController<UITextFieldDelegate>
 {
-    bool _inputCode;
+    NSString *_smsid;                               //smsid码
     NSString *_phoneNum;                            //电话号码
-    NSString *_authCode;                            //获取的验证码
-    NSString *_sequenceNo;                          //验证码对应的序列号
     
     NSTimer * _countTimer;
     int _leftSeconds;
+    
+    GDInputView *_inputView;                        //手机号输入框
+    UIButton *_authBtn;                             //获取验证码
+    GDInputView *_authInputView;                    //输入验证码
+    GDInputView *_passInputView;                    //输入密码
+    UIButton *_confirmBtn;                          //提交按钮
 }
 
 @property (retain, nonatomic) NSMutableDictionary *registerDic;//保存流程传递的数据

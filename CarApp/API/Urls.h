@@ -50,26 +50,60 @@
 //PHPServer RequestUrl
     /**
      检测手机号是否可用
-     @pram   phone (NSString *)
+     @pram   phone (NSString *) 手机号
      */
     #define API_POST_CheckUserPhone [NSString stringWithFormat:@"%@server/user/checkuserphone",PHPHOST]
 
     /**
      检测用户名是否可用
-     @pram   phone (NSString *)
+     @pram   name (NSString *) 用户名
      */
     #define API_POST_CheckUserName [NSString stringWithFormat:@"%@server/user/checkusername",PHPHOST]
 
     /**
      获取验证码
-     @pram phone (NSString *)
+     @pram phone (NSString *) 手机号
      */
     #define API_POST_GetAuthCode [NSString stringWithFormat:@"%@server/user/getauthcode",PHPHOST]
 
     /**
+     注册
+     @pram phone (NSString) 手机号
+     @pram password (NSString) 密码
+     @pram authcode (NSString) 验证码
+     @pram smsid ()
+     */
+    #define API_POST_Register [NSString stringWithFormat:@"%@server/user/register",PHPHOST]
+
+    /**
+     登入
+     @pram phone (NSString) 电话号码
+     @pram password (NSString) 手机号
+     */
+    #define API_POST_Login [NSString stringWithFormat:@"%@server/user/login",PHPHOST]
+
+    /**
      获取用户信息
-     @pram uid (lond)
+     @pram uid (lond) 用户ID
      */
     #define API_POST_GetUserDetail [NSString stringWithFormat:@"%@server/user/detail",PHPHOST]
+
+    /**
+     根据ID获取路线列表
+     @pram pointid (long) 聚点ID
+     @pram page (int) 获取的页码
+     @pram rows (int) 每页条数
+     @pram all (int) 是否回去全部据点信息
+     */
+    #define API_POST_GetListLienByJudianID [NSString stringWithFormat:@"%@server/line/listlinebypointid",PHPHOST]
+
+    /**
+     根据关键词获取路线列表
+     @pram wd (long) 关键字
+     @pram page (int) 获取的页码
+     @pram rows (int) 每页条数
+     @pram all (int) 是否回去全部据点信息
+     */
+    #define API_POST_GetListLienByTag [NSString stringWithFormat:@"%@server/line/listlinebypointid",PHPHOST]
 
 #endif

@@ -50,10 +50,8 @@ static LocationServer *locationServer = nil;
         
         //数据存储
         User *user = [User shareInstance];
-        [user userWithPlist];
         user.lon = self.locate.longitude;
         user.lat = self.locate.latitude;
-        [user save];
 }
 
 /**IOS 6.0 **/
@@ -65,10 +63,8 @@ static LocationServer *locationServer = nil;
         
         //数据存储
         User *user = [User shareInstance];
-        [user userWithPlist];
         user.lon = self.locate.longitude;
         user.lat = self.locate.latitude;
-        [user save];
         
         //进行网页位置解析
         [self requestWebAnalyze];
@@ -190,11 +186,9 @@ static LocationServer *locationServer = nil;
                    
                    //数据存储
                    User *user = [User shareInstance];
-                   [user userWithPlist];
                    user.lon = self.locate.longitude;
                    user.lat = self.locate.latitude;
                    user.address = addressStr;
-                   [user save];
                    
                    [NetWorkManager networkUserLocateAddWithuid:[User shareInstance].userId address:addressStr longitude:lng latitude:lat success:^(BOOL flag, NSDictionary *userDic, NSString *msg) {
                        if (flag) {

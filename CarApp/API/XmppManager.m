@@ -80,7 +80,7 @@ static XmppManager *sharedXmppManagerInstance = nil;
     [APService setTags:nil alias:[NSString  stringWithFormat:@"instcar%ld",[User shareInstance].userId] callbackSelector:@selector(tagsAliasCallback:tags:alias:) target:[AppDelegate shareDelegate]];
     
 //    jid 格式为[NSString stringWithFormat:@"%@@%@/XMPPIOS",用户名,主机名]
-    if ([_xmppStream isConnected] || ![[User shareInstance] isSavePwd]) {
+    if ([_xmppStream isConnected] || ![User shareInstance].isSavePwd) {
         return YES;
     }
     

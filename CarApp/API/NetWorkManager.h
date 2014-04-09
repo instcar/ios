@@ -58,6 +58,7 @@ typedef enum
 
 
 + (void)networkQueueWork:(NSArray *)requestArray withDelegate:(id)delegate asiHttpSuccess:(SEL)asiSuccess asiHttpFailure:(SEL)asiFailure queueSuccess:(SEL)queueSuccess;
+
 /**
  *	请求验证手机号是否被注册
  *
@@ -67,7 +68,7 @@ typedef enum
  *           @param useable：手机号是否可用，true可用 false不可用
  *  @failuse error  请求失败错误
  */
-+(void)networkCheckPhone:(NSString *)phoneNum success:(void (^)(int status,NSString *data,NSString *msg))success failure:(void (^)(NSError * error))failure;
++(void)networkCheckPhone:(NSString *)phoneNum success:(void (^)(int status,NSObject *data,NSString *msg))success failure:(void (^)(NSError * error))failure;
 
 /**
  *	请求取得验证码

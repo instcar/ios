@@ -7,10 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface StartViewController : UIViewController<UITextFieldDelegate,UIScrollViewDelegate>
+@interface StartViewController :BaseViewController <UITextFieldDelegate,UIScrollViewDelegate>
 {
-
+    UIButton *_loginBtn;            //登入按钮
+    UIButton *_registerBtn;         //注册按钮
+    UIImageView *_bottomView;       //底部注册\登入bar
+    UIScrollView *_mainScrollView;  //滑动视图
 }
+
 
 @end

@@ -199,7 +199,6 @@
             [User shareInstance].userData = [NSMutableDictionary dictionaryWithDictionary:userInfo];//保存网络请求下来的数据
             [User shareInstance].phoneNum = people.phone;
             [User shareInstance].userId = people.ID;
-            [[User shareInstance] save];
             
             [PeopleManager insertPeopleShortInfo:people];
             

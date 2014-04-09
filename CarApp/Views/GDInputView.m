@@ -12,9 +12,6 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_backGtextImgView];
-    [SafetyRelease release:_arrowImgView];
-    [SafetyRelease release:_textfield];
     [super dealloc];
 }
 
@@ -23,20 +20,22 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        UIImage * txfBackImg = [UIImage imageNamed:@"input_white_normal"];
+        UIImage * txfBackImg = [UIImage imageNamed:@"input_normal"];
         txfBackImg = [txfBackImg stretchableImageWithLeftCapWidth:5 topCapHeight:5];
         
-        UIImage * txfBackSelectedImg = [UIImage imageNamed:@"input_white_pressed"];
+        UIImage * txfBackSelectedImg = [UIImage imageNamed:@"input_pressed"];
         txfBackSelectedImg = [txfBackSelectedImg stretchableImageWithLeftCapWidth:5 topCapHeight:5];
         
-        self.backGtextImgView = [[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)]autorelease];
-        [self.backGtextImgView  setImage:txfBackImg];
-        [self addSubview:self.backGtextImgView];
+        _backGtextImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
+        [_backGtextImgView  setImage:txfBackImg];
+        [self addSubview:_backGtextImgView];
+        [_backGtextImgView release];
         
-        self.arrowImgView = [[[UIImageView alloc]initWithFrame:CGRectMake(self.bounds.size.width - 22, self.bounds.size.height/2.0-6, 12, 12)]autorelease];
-        [self.arrowImgView setImage:[UIImage imageNamed:@"ic_start_empty"]];
-        [self.arrowImgView setHidden:NO];
-        [self addSubview:self.arrowImgView];
+        _arrowImgView = [[UIImageView alloc]initWithFrame:CGRectMake(self.bounds.size.width - 24, self.bounds.size.height/2.0-8, 16, 16)];
+        [_arrowImgView setImage:[UIImage imageNamed:@"ic_agree_no"]];
+        [_arrowImgView setHidden:NO];
+        [self addSubview:_arrowImgView];
+        [_arrowImgView release];
         
         UIView *toolBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 39)];
         [toolBar setBackgroundColor:[UIColor clearColor]];
@@ -46,26 +45,26 @@
         [confirmKeyBtn setFrame:CGRectMake(320-63, 0, 63, 39)];
         [confirmKeyBtn setBackgroundColor:[UIColor clearColor]];
         [confirmKeyBtn setBackgroundImage:[UIImage imageNamed:@"btn_key_down@2x"] forState:UIControlStateNormal];
-//        [confirmKeyBtn setTitle:@"确定" forState:UIControlStateNormal];
         [confirmKeyBtn addTarget:self action:@selector(hideKeyBorad:) forControlEvents:UIControlEventTouchUpInside];
         [toolBar addSubview:confirmKeyBtn];
         
-        self.textfield = [[[UITextField alloc]initWithFrame:CGRectMake(10, 0, self.bounds.size.width-30, self.bounds.size.height)]autorelease];
-        [self.textfield setFont:[UIFont fontWithName:kFangZhengFont size:16]];
-        [self.textfield setTextColor:UIColorFromRGB(0x2D2D2D)];
-        [self.textfield setTextAlignment:0];
-        [self.textfield setTag:30001];
-        [self.textfield setDelegate:self];
-        [self.textfield setBackgroundColor:[UIColor clearColor]];
-        [self.textfield setBorderStyle:UITextBorderStyleNone];
-        [self.textfield setPlaceholder:@""];
-         self.textfield.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-        [self.textfield setInputAccessoryView:toolBar];
+        _textfield = [[UITextField alloc]initWithFrame:CGRectMake(10, 0, self.bounds.size.width-30, self.bounds.size.height)];
+        [_textfield setFont:[UIFont fontWithName:kFangZhengFont size:16]];
+        [_textfield setTextColor:UIColorFromRGB(0x2D2D2D)];
+        [_textfield setTextAlignment:0];
+        [_textfield setTag:30001];
+        [_textfield setClearsOnBeginEditing:YES];
+        [_textfield setDelegate:self];
+        [_textfield setClearButtonMode:UITextFieldViewModeWhileEditing];
+        [_textfield setBackgroundColor:[UIColor clearColor]];
+        [_textfield setBorderStyle:UITextBorderStyleNone];
+        [_textfield setPlaceholder:@""];
+         _textfield.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        [_textfield setInputAccessoryView:toolBar];
         [toolBar release];
         
-        [self.textfield setClearButtonMode:UITextFieldViewModeUnlessEditing];
-        
-        [self addSubview:self.textfield];
+        [self addSubview:_textfield];
+        [_textfield release];
 
     }
     return self;
@@ -73,45 +72,44 @@
 
 -(void)setResult:(kGDInputViewStatus)status
 {
-    UIImage * txfBackImg = [UIImage imageNamed:@"input_white_normal"];
+    UIImage * txfBackImg = [UIImage imageNamed:@"input_normal"];
     txfBackImg = [txfBackImg stretchableImageWithLeftCapWidth:5 topCapHeight:5];
     
-    UIImage * txfBackSelectedImg = [UIImage imageNamed:@"input_white_pressed"];
+    UIImage * txfBackSelectedImg = [UIImage imageNamed:@"input_selected"];
     txfBackSelectedImg = [txfBackSelectedImg stretchableImageWithLeftCapWidth:5 topCapHeight:5];
     
     UIImage * txfBackErrImg = [UIImage imageNamed:@"input_error"];
     txfBackErrImg = [txfBackErrImg stretchableImageWithLeftCapWidth:5 topCapHeight:5];
 
-    
     switch (status) {
         case kGDInputViewStatusDisable:
         {
-            [self.backGtextImgView setImage:txfBackImg];
-            [self.arrowImgView setImage:[UIImage imageNamed:@"ic_start_empty"]];
+            [_backGtextImgView setImage:txfBackImg];
+            [_arrowImgView setImage:[UIImage imageNamed:@"ic_agree_no"]];
         }
             break;
         case kGDInputViewStatusNomal:
         {
-            [self.backGtextImgView setImage:txfBackSelectedImg];
-            [self.arrowImgView setImage:[UIImage imageNamed:@"ic_start_empty"]];
+            [_backGtextImgView setImage:txfBackSelectedImg];
+            [_arrowImgView setImage:[UIImage imageNamed:@"ic_agree_no"]];
         }
             break;
         case kGDInputViewStatusTure:
         {
-            [self.backGtextImgView setImage:txfBackSelectedImg];
-            [self.arrowImgView setImage:[UIImage imageNamed:@"ic_start_ture"]];
+            [_backGtextImgView setImage:txfBackSelectedImg];
+            [_arrowImgView setImage:[UIImage imageNamed:@"ic_agree_ok"]];
         }
             break;
         case kGDInputViewStatusError:
         {
-            [self.backGtextImgView setImage:txfBackErrImg];
-            [self.arrowImgView setImage:[UIImage imageNamed:@"ic_start_false@2x"]];
+            [_backGtextImgView setImage:txfBackErrImg];
+            [_arrowImgView setImage:[UIImage imageNamed:@"ic_error"]];
         }
             break;
         case kGDInputViewStatusNull:
         {
-            [self.backGtextImgView setImage:txfBackImg];
-            [self.arrowImgView setImage:[UIImage imageNamed:@"ic_start_empty@2x"]];
+            [_backGtextImgView setImage:txfBackImg];
+            [_arrowImgView setImage:[UIImage imageNamed:@"ic_agree_no"]];
         }
             break;
 
@@ -131,13 +129,52 @@
     [self.textfield resignFirstResponder];
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+- (BOOL)textFieldShouldClear:(UITextField *)textField
 {
-    // Drawing code
+    return YES;
 }
-*/
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    UIImage * txfBackImg = [UIImage imageNamed:@"input_normal"];
+    txfBackImg = [txfBackImg stretchableImageWithLeftCapWidth:5 topCapHeight:5];
+    
+    [_backGtextImgView setImage:txfBackImg];
+    
+    if ([textField.text length] > 0) {
+        [self setResult:kGDInputViewStatusTure];
+    }
+    else
+    {
+        [self setResult:kGDInputViewStatusNomal];
+    }
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    
+    UIImage * txfBackSelectedImg = [UIImage imageNamed:@"input_selected"];
+    txfBackSelectedImg = [txfBackSelectedImg stretchableImageWithLeftCapWidth:5 topCapHeight:5];
+    
+    [_backGtextImgView setImage:txfBackSelectedImg];
+    [_arrowImgView setImage:[UIImage imageNamed:@"ic_agree_no"]];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
+{
+    //    if (textField.tag == kCodeTextFieldTag) {
+    //        [_codeInputView setResult:kGDInputViewStatusNomal];
+    //    }
+    //    if (textField.tag == kUseTextFieldTag) {
+    //        [_userInputView setResult:kGDInputViewStatusNomal];
+    //    }
+    
+    if ([string isEqualToString:@"\n"])
+    {
+        return YES;
+    }
+    
+    return YES;
+}
 
 @end

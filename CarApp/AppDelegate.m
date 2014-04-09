@@ -28,6 +28,8 @@
 #import "UmengUtil.h"
 #import "Utility_DeviceIdentification.h"
 
+#import "PhpTestTableViewController.h"
+
 @implementation AppDelegate
 
 @synthesize mainVC = _mainVC;
@@ -50,16 +52,12 @@
     self.mainVC = [[MainViewController alloc] init];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     [[NSUserDefaults standardUserDefaults]setValue:@"Leno" forKey:@"InstCarUserName"];
-    
-    
-    //初始化用户数据
-    [User userDataInit];
-    
+
     //驱动xmpp
     [[XmppManager sharedInstance] setupStream];
     
     //初始化网络状态监控
-    [NetWorkManager checkNetworkChange];
+    [NetTool checkNetworkChange];
     
     [self setupKindOfThirdKey];
     
@@ -70,8 +68,10 @@
     bool everEntered = [[NSUserDefaults standardUserDefaults]boolForKey:@"AlreadyEnterApp"];
     User *user = [User shareInstance];
 
+//    PhpTestTableViewController *phpTestTableVC = [[PhpTestTableViewController alloc]init];
+//    self.window.rootViewController = phpTestTableVC;
     //密码是否保存了
-    if (!everEntered) {
+//    if (!everEntered) {
         [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"AlreadyEnterApp"];
         StartViewController * startVC = [[StartViewController alloc] init];
         UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:startVC];
@@ -79,43 +79,29 @@
         self.window.rootViewController = navi;
         [startVC release];
         [navi release];
-    }
-    else
-        if (user.isSavePwd != YES) {
-            LogInViewController * logInVC = [[LogInViewController alloc]init];
-            UINavigationController*nav = [[UINavigationController alloc]initWithRootViewController:logInVC];
-            [nav setNavigationBarHidden:YES animated:NO];
-            [nav setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-//            [self presentViewController:nav animated:YES completion:nil];
-            [[AppDelegate shareDelegate].window setRootViewController:nav];
-            [logInVC release];
-            [nav release];
-        }
-        else{
-
-            [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-            UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:self.mainVC];
-            self.mainVC.firstEnter = NO;
-            [self.mainVC enterView];
-            [navi setNavigationBarHidden:YES];
-            self.window.rootViewController = navi;
-            [self.mainVC release];
-            [navi release];
-        }
-
-//    EditRouteViewController *groupVC = [[EditRouteViewController alloc] init];
-//    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:groupVC];
-//    [navController setNavigationBarHidden:YES];
-//    self.window.rootViewController = navController;
-//    [navController release];
+//    }
+//    else
+//        if (user.isSavePwd != YES) {
+//            LogInViewController * logInVC = [[LogInViewController alloc]init];
+//            UINavigationController*nav = [[UINavigationController alloc]initWithRootViewController:logInVC];
+//            [nav setNavigationBarHidden:YES animated:NO];
+//            [nav setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+////            [self presentViewController:nav animated:YES completion:nil];
+//            [[AppDelegate shareDelegate].window setRootViewController:nav];
+//            [logInVC release];
+//            [nav release];
+//        }
+//        else{
 //
-    
-    
-//    MapViewController *mapVC = [[MapViewController alloc]init];
-//    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:mapVC];
-//    [navController setNavigationBarHidden:YES];
-//    self.window.rootViewController = navController;
-//    [navController release];
+//            [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//            UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:self.mainVC];
+//            self.mainVC.firstEnter = NO;
+//            [self.mainVC enterView];
+//            [navi setNavigationBarHidden:YES];
+//            self.window.rootViewController = navi;
+//            [self.mainVC release];
+//            [navi release];
+//        }
     
     [self.window makeKeyAndVisible];
     return YES;
@@ -128,9 +114,6 @@
 
 -(void)setupKindOfThirdKey
 {
-    /**
-     *	百度地图
-     */
     // 要使用百度地图，请先启动BaiduMapManager
     _mapManager = [[BMKMapManager alloc]init];
     // 如果要关注网络及授权验证事件，请设定     generalDelegate参数
@@ -244,7 +227,6 @@
     DLog(@"applicationDidEnterBackground");
     //清除应用推送数字
     [application setApplicationIconBadgeNumber:0];
-    [[User shareInstance] save];
     [[XmppManager sharedInstance]disconnect];
 }
 
@@ -254,7 +236,7 @@
     DLog(@"applicationWillEnterForeground");
     //清除应用推送数字
     [application setApplicationIconBadgeNumber:0];
-    if ([[User shareInstance]isSavePwd]) {
+    if ([User shareInstance].isSavePwd) {
         [[LocationServer shareInstance] startLocation];
         [[XmppManager sharedInstance] connect];
     }
@@ -274,7 +256,6 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     DLog(@"applicationWillTerminate");
-    [[User shareInstance] save];
 }
 
 @end

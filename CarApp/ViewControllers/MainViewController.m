@@ -105,7 +105,7 @@
         [alert release];
     }
     
-    if ([[User shareInstance]isSavePwd]) {
+    if ([User shareInstance].isSavePwd) {
         //定位
         [[LocationServer shareInstance] startLocation];
     }

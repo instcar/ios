@@ -469,8 +469,6 @@
         User * user = [User shareInstance];
         user.userPwd = @"";
         user.isSavePwd = NO;
-        [user save];
-        [user clear];
         
         [[XmppManager sharedInstance] disconnect];
         
