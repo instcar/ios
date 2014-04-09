@@ -155,7 +155,7 @@
     
     //改变按钮
     if (page == 3) {
-//        [_loginBtn setBackgroundImage:[UIImage imageNamed:@"btn_forget_normal@2x"] forState:UIControlStateNormal];
+        [_loginBtn setBackgroundImage:[UIImage imageNamed:@"btn_empty_m"] forState:UIControlStateNormal];
         [_loginBtn setImage:nil forState:UIControlStateNormal];
         [_loginBtn setTitle:@"忘记密码?" forState:UIControlStateNormal];
         [_loginBtn removeTarget:self action:@selector(loginBtnClicked:) forControlEvents:UIControlEventTouchUpInside];

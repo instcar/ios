@@ -550,27 +550,45 @@ static NetWorkManager *networkManager = nil;
 }
 
 #pragma mark -- 用户详细信息
-//+(void)networkGetUserInfoWithuid:(long)uid success:(void (^)(BOOL, NSDictionary *, NSString *))success failure:(void (^)(NSError *))failure
-//{
-//    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&uid=%ld",APPKEY,uid];
-//    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
-//    
-//    [NetTool httpGetRequest:api_getUserInfo(uid,sign) WithSuccess:^(NSDictionary *resultDic) {
-//        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
-//        NSDictionary *userInfo = nil;
-//        NSString *msg = @"";
-//        if (flag) {
-//            userInfo = [resultDic objectForKey:@"user"];
-//        }
-//        else
-//        {
-//            msg = [resultDic valueForKey:@"msg"];
-//        }
-//        success(flag,userInfo,msg);
-//    } failure:^(NSError *error) {
-//        [self handleAsiHttpNetworkError:error];
-//    }];
-//}
++(void)networkGetUserInfoWithuid:(long)uid success:(void (^)(BOOL, NSDictionary *, NSString *))success failure:(void (^)(NSError *))failure
+{
+    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&uid=%ld",APPKEY,uid];
+    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
+    
+    NSURL *rurl = [NSURL URLWithString:api_getUserInfo(uid,sign)];
+    __unsafe_unretained __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:rurl];
+    [request setCachePolicy:ASIAskServerIfModifiedCachePolicy|ASIFallbackToCacheIfLoadFailsCachePolicy];
+    [request setCacheStoragePolicy:ASICachePermanentlyCacheStoragePolicy];
+    [request setDownloadCache:[ASIDownloadCache sharedCache]];
+    [request setRequestMethod:@"GET"];
+    [request setCompletionBlock:^{
+        NSString *responseString = [request responseString];
+        //保存cookies
+        [[User shareInstance]setCookies:[request responseCookies]];
+        NSDictionary * resultDic= [responseString objectFromJSONString];
+        
+        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
+        NSDictionary *userInfo = nil;
+        NSString *msg = @"";
+        if (flag) {
+            userInfo = [resultDic objectForKey:@"user"];
+        }
+        else
+        {
+            msg = [resultDic valueForKey:@"msg"];
+        }
+        success(flag,userInfo,msg);
+        
+    }];
+    
+    [request setFailedBlock:^{
+        NSError *error = [request error];
+        failure(error);
+        [NetTool handleAsiHttpNetworkError:error];
+        [request clearDelegatesAndCancel];
+    }];
+    [request startAsynchronous];
+}
 
 +(void)networkGetUserInfoWithuidArray:(NSArray *)uidArray success:(void (^)(BOOL, NSArray *, NSString *))success failure:(void (^)(NSError *))failure
 {
@@ -623,30 +641,46 @@ static NetWorkManager *networkManager = nil;
     [request startAsynchronous];
 }
 
-//+(void)networkGetUserInfoCenterWithuid:(long)uid success:(void (^)(BOOL, NSDictionary *, NSString *))success failure:(void (^)(NSError *))failure
-//{
-//    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&uid=%ld",APPKEY,uid];
-//    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
-//    
-//    [NetTool httpGetRequest:api_getUserCenterInfo(uid, sign) WithSuccess:^(NSDictionary *resultDic) {
-//        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
-//        NSDictionary *userInfo = nil;
-//        NSString *msg = @"";
-//        if (flag) {
-//            userInfo = resultDic;
-//            [SVProgressHUD dismiss];
-//        }
-//        else
-//        {
-//            msg = [resultDic valueForKey:@"msg"];
-//            [SVProgressHUD showErrorWithStatus:msg];
-//        }
-//        success(flag,userInfo,msg);
-//    } failure:^(NSError *error) {
-//        [self handleAsiHttpNetworkError:error];
-//    }];
-//    
-//}
++(void)networkGetUserInfoCenterWithuid:(long)uid success:(void (^)(BOOL, NSDictionary *, NSString *))success failure:(void (^)(NSError *))failure
+{
+    NSString  *keyValueString = [NSString stringWithFormat:@"appkey=%@&uid=%ld",APPKEY,uid];
+    NSString  *sign = [NSString stringWithFormat:@"%@",[NetWorkUtility generateSign:keyValueString]];
+    
+    NSURL *rurl = [NSURL URLWithString:api_getUserCenterInfo(uid, sign)];
+    __unsafe_unretained __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:rurl];
+    [request setCachePolicy:ASIAskServerIfModifiedCachePolicy|ASIFallbackToCacheIfLoadFailsCachePolicy];
+    [request setCacheStoragePolicy:ASICachePermanentlyCacheStoragePolicy];
+    [request setDownloadCache:[ASIDownloadCache sharedCache]];
+    [request setRequestMethod:@"GET"];
+    [request setCompletionBlock:^{
+        NSString *responseString = [request responseString];
+        //保存cookies
+        [[User shareInstance]setCookies:[request responseCookies]];
+        NSDictionary * resultDic= [responseString objectFromJSONString];
+        
+        BOOL flag = [[resultDic valueForKey:@"flag"]boolValue];
+        NSDictionary *userInfo = nil;
+        NSString *msg = @"";
+        if (flag) {
+            userInfo = resultDic;
+        }
+        else
+        {
+            msg = [resultDic valueForKey:@"msg"];
+        }
+        success(flag,userInfo,msg);
+        
+    }];
+    
+    [request setFailedBlock:^{
+        NSError *error = [request error];
+        failure(error);
+        [NetTool handleAsiHttpNetworkError:error];
+        [request clearDelegatesAndCancel];
+    }];
+    [request startAsynchronous];
+    
+}
 
 +(void)networkGetJokeListPage:(int)page rows:(int)rows success:(void (^)(BOOL, BOOL, NSArray *, NSString *))success failure:(void (^)(NSError *))failure
 {

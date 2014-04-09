@@ -137,7 +137,7 @@
     [_forgetBtn setTag:1002];
     [_forgetBtn setBackgroundColor:[UIColor clearColor]];
     [_forgetBtn setFrame:CGRectMake(170, 9, 130, 32)];
-    [_forgetBtn setBackgroundImage:[UIImage imageNamed:@"btn_green_m"] forState:UIControlStateNormal];
+    [_forgetBtn setBackgroundImage:[UIImage imageNamed:@"btn_empty_m"] forState:UIControlStateNormal];
     [_forgetBtn setTitle:@"忘记密码了?" forState:UIControlStateNormal];
     [_forgetBtn addTarget:self action:@selector(forgetBtnClikcked:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_forgetBtn];

@@ -18,6 +18,8 @@
 #import "CarImageViewController.h"
 #import "CommonRoutesViewController.h"
 
+#import "CarInfoTableViewCell.h"
+
 @interface ProfileViewController ()
 
 @property (retain, nonatomic) People *userInfo;
@@ -185,6 +187,12 @@
     
 }
 
+- (void)addCarIdentify:(UIButton *)btn
+{
+    DLog(@"增加车辆验证信息");
+    
+}
+
 -(void)exitLoginState:(UIButton *)btn
 {
     UIActionSheet * actionSheet = [[UIActionSheet alloc]initWithTitle:@"" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"退出当前账号" otherButtonTitles:nil];
@@ -218,9 +226,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 1) {
-        return 4;
+    if (section == 0) {
+        return 2;
     }
+    
+    if (section == 1) {
+        return 5;
+    }
+
     return 1;
 }
 
@@ -231,7 +244,30 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    if (section == 0) {
+        return 60.0;
+    }
     return 0;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (section == 0) {
+
+        UIView * cell = [[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)]autorelease];
+        [cell setBackgroundColor:[UIColor whiteColor]];
+        
+        UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(7.5, 8, 305, 44)];
+        [btn setTitle:@"增加验证车辆信息" forState:UIControlStateNormal];
+        [btn setBackgroundImage:[[UIImage imageNamed:@"btn_green"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
+//        [btn setBackgroundImage:[[UIImage imageNamed:@"btn_green"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateHighlighted];
+        [btn addTarget:self action:@selector(addCarIdentify:) forControlEvents:UIControlEventTouchUpInside];
+        [btn setCenter:cell.center];
+        [cell addSubview:btn];
+        [btn release];
+        return cell;
+    }
+    return nil;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -244,7 +280,13 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return 115;
+        if (indexPath.row == 0) {
+            return 115;
+        }
+        else
+        {
+            return 80.0;
+        }
     }
     if (indexPath.section == 1) {
         return 44;
@@ -259,40 +301,56 @@
 {
     if (indexPath.section == 0) {
         
-        static NSString *CellIdentifier = @"ProfilePhotoFirst";
-        ProfilePhotoFirstCustomCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[[ProfilePhotoFirstCustomCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        }
-        [cell.photoImgView setImageWithURL: [NSURL URLWithString:self.userInfo.headpic] placeholderImage:[UIImage imageNamed:@"delt_user_b"]];
-        cell.backgroundColor = [UIColor clearColor];
-        cell.backgroundView = nil;
-
-        float score = 0.0;
-        float goodPoint = 0.0;
-        float minPoint = 0.0;
-        float badPoint = 0.0;
-    
-        if (self.userInfo) {
-            score = self.userInfo.goodcount+self.userInfo.midcount+self.userInfo.badcount;
-            if (score > 0) {
-                goodPoint = (float)self.userInfo.goodcount/score;
-                minPoint = (float)self.userInfo.midcount/score;
-                badPoint = (float)self.userInfo.badcount/score ;
+        if (indexPath.row == 0) {
+            static NSString *CellIdentifier = @"ProfilePhotoFirst";
+            ProfilePhotoFirstCustomCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            if (cell == nil) {
+                cell = [[[ProfilePhotoFirstCustomCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             }
+            [cell.photoImgView setImageWithURL: [NSURL URLWithString:self.userInfo.headpic] placeholderImage:[UIImage imageNamed:@"delt_user_b"]];
+            cell.backgroundColor = [UIColor clearColor];
+            cell.backgroundView = nil;
+            
+            float score = 0.0;
+            float goodPoint = 0.0;
+            float minPoint = 0.0;
+            float badPoint = 0.0;
+            
+            if (self.userInfo) {
+                score = self.userInfo.goodcount+self.userInfo.midcount+self.userInfo.badcount;
+                if (score > 0) {
+                    goodPoint = (float)self.userInfo.goodcount/score;
+                    minPoint = (float)self.userInfo.midcount/score;
+                    badPoint = (float)self.userInfo.badcount/score ;
+                }
+            }
+            
+            [cell.scoreLabel setText:[NSString stringWithFormat:@"%.1f%%",goodPoint*100.0]];
+            [cell.goodLabel setText:[NSString stringWithFormat:@"好评 (%.1f%%) ",goodPoint*100.0]];
+            [cell.mediumLabel setText:[NSString stringWithFormat:@"中评 (%.1f%%) ",minPoint*100.0]];
+            [cell.poorLable setText:[NSString stringWithFormat:@"差评 (%.1f%%) ",badPoint*100.0]];
+            
+            [cell.goodProgressView setProgress:goodPoint animated:YES];
+            [cell.mediumProgressView setProgress:minPoint animated:YES];
+            [cell.poorProgressView setProgress:badPoint animated:YES];
+            
+            return cell;
+
         }
-    
-        [cell.scoreLabel setText:[NSString stringWithFormat:@"%.1f%%",goodPoint*100.0]];
-        [cell.goodLabel setText:[NSString stringWithFormat:@"好评 (%.1f%%) ",goodPoint*100.0]];
-        [cell.mediumLabel setText:[NSString stringWithFormat:@"中评 (%.1f%%) ",minPoint*100.0]];
-        [cell.poorLable setText:[NSString stringWithFormat:@"差评 (%.1f%%) ",badPoint*100.0]];
+        else
+        {
+            static NSString *carInfoCellIdentifier = @"carInfoTableCell";
+            CarInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:carInfoCellIdentifier];
+            if (cell == nil) {
+                cell = [[[CarInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:carInfoCellIdentifier] autorelease];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
+            
+            cell.data = [NSDictionary dictionaryWithObjectsAndKeys:@"ok",@"ok", nil];
+            return cell;
+        }
         
-        [cell.goodProgressView setProgress:goodPoint animated:YES];
-        [cell.mediumProgressView setProgress:minPoint animated:YES];
-        [cell.poorProgressView setProgress:badPoint animated:YES];
-        
-        return cell;
     }
     
     if (indexPath.section == 1) {
@@ -324,16 +382,16 @@
 //                [cell.infoLabel setText:@"大众高尔夫6"];
 //                break;
 //            }
-//            case 2:
-//            {
-//                [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-//                [cell.checkLable setHidden:NO];
-//                [cell.checkLable setCheckState:YES];
-//                [cell.titleLabel setText:@"实名认证:"];
-//                [cell.infoLabel setText:@"完成"];
-//                break;
-//            }
             case 1:
+            {
+                [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+                [cell.checkLable setHidden:NO];
+                [cell.checkLable setCheckState:YES];
+                [cell.titleLabel setText:@"实名认证:"];
+                [cell.infoLabel setText:@"完成"];
+                break;
+            }
+            case 2:
             {
                 [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
                 [cell.checkLable setHidden:YES];
@@ -342,7 +400,7 @@
                 [cell.infoLabel setText:[NSString stringWithFormat:@"%d条",self.userInfo.favlinenum]];
                 break;
             }
-            case 2:
+            case 3:
             {
                 [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
                 [cell.checkLable setHidden:YES];
@@ -351,7 +409,7 @@
                 [cell.infoLabel setText:(self.uid == [User shareInstance].userId?([self.userInfo.companyaddress isEqualToString:@""]?@"无":self.userInfo.companyaddress):@"保密")];
                 break;
             }
-            case 3:
+            case 4:
             {
                 [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
                 [cell.checkLable setHidden:YES];
@@ -432,14 +490,14 @@
             }
         }
         
-//        //评论
-//        if(indexPath.row == 1)
-//        {
-//            DLog(@"评论列表");
-//        }
+        //实名认证
+        if(indexPath.row == 1)
+        {
+            DLog(@"实名认证");
+        }
         
         //路线
-        if(indexPath.row == 1)
+        if(indexPath.row == 2)
         {
             DLog(@"常用路线列表");
             CommonRoutesViewController *commonRoutesVC = [[CommonRoutesViewController alloc]init];

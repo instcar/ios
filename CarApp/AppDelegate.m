@@ -29,6 +29,7 @@
 #import "Utility_DeviceIdentification.h"
 
 #import "PhpTestTableViewController.h"
+#import "ProfileViewController.h"
 
 @implementation AppDelegate
 
@@ -68,17 +69,25 @@
     bool everEntered = [[NSUserDefaults standardUserDefaults]boolForKey:@"AlreadyEnterApp"];
     User *user = [User shareInstance];
 
+    ProfileViewController * profileVC = [[ProfileViewController alloc]init];
+    profileVC.uid = [User shareInstance].userId;
+    profileVC.state = 2;
+    UINavigationController *profileNav = [[UINavigationController alloc]initWithRootViewController:profileVC];
+    [profileVC release];
+    [profileNav setNavigationBarHidden:YES];
+    self.window.rootViewController = profileNav;
+    
 //    PhpTestTableViewController *phpTestTableVC = [[PhpTestTableViewController alloc]init];
 //    self.window.rootViewController = phpTestTableVC;
     //密码是否保存了
 //    if (!everEntered) {
-        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"AlreadyEnterApp"];
-        StartViewController * startVC = [[StartViewController alloc] init];
-        UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:startVC];
-        [navi setNavigationBarHidden:YES];
-        self.window.rootViewController = navi;
-        [startVC release];
-        [navi release];
+//        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"AlreadyEnterApp"];
+//        StartViewController * startVC = [[StartViewController alloc] init];
+//        UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:startVC];
+//        [navi setNavigationBarHidden:YES];
+//        self.window.rootViewController = navi;
+//        [startVC release];
+//        [navi release];
 //    }
 //    else
 //        if (user.isSavePwd != YES) {
