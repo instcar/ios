@@ -51,6 +51,14 @@
     //1838865	  易行	  So1a2FIzKWDiGGRIGZEZ12Kl 百度地图
     #define kUmengAppKey @"52ada35f56240b08aa172477"
 
+    #define DEVICE_NAME [[UIDevice currentDevice] name] //设备名字
+    #define APPLICATION_VERSION  [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"                               //应用版本
+    #define SYSTEM_VERSION [[UIDevice currentDevice].systemVersion floatValue]                                                   //IOS版本
+    #define SYSTEM_VERSION_MORE_THAN(x) ([[UIDevice currentDevice].systemVersion floatValue] >= x) //IOS版本适配
+    #define SYSTEM_VERSION_LESS_THAN(x) ([[UIDevice currentDevice].systemVersion floatValue] < x) //IOS版本适配
+    #define SYSTEM_NAME  [NSString stringWithFormat:@"%@ %@ %@",[[UIDevice currentDevice] model],[[UIDevice currentDevice] systemName],[[UIDevice currentDevice] systemVersion]]             //系统名字  手机型号+系统+系统版本
+
+
     #define kServerHost			@"http://115.28.231.132:8080/"
     #define KPlistUser          @"UserData"
     #define kAppVersion			[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]	// 应用版本
@@ -60,6 +68,12 @@
     #define kHarpyAppID         @"743564913" //@"691955620" 测试
     #define kFangZhengFont      @"FZY3JW--GB1-0"
     #define kDefaultHoldPlaceImage @""
+
+    #define AppFont(x) [UIFont fontWithName:kFangZhengFont size:x] //正常字体 +size
+    //        #define AppBoldFont  @"Helvetica-Bold" //加粗字体
+    #define AppBoldFont(x) [UIFont systemFontOfSize:x] //加粗字体 +size
+    #define KpriceFont @"Hoefler Text Black-Bold"       //价格字体
+    #define EleFont @"DBLCDTempBlack"
 
 #endif	/* ifdef __OBJC__ */
 

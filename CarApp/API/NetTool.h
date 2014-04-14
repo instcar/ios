@@ -50,13 +50,13 @@
 
 /**
  上传文件接口:以Data格式上传
- @param {"data":[data1,data2],"formate":"png","key":"photo","name":"photo.png"}
+ @param {"data":[data1,data2],"formate":"png","key":"photo","name":"photo"}
  */
-+ (void)httpPostFileDataRequest:(NSString *)url WithFileFormdata:(NSMutableDictionary *)data withFormdaya:(NSMutableDictionary *)formData WithSuccess:(int (^)(Respone *respone))success failure:(void (^)(NSError *error))failure;
++ (void)httpPostFileDataRequest:(NSString *)url WithFileFormdata:(NSMutableDictionary *)data withFormdaya:(NSMutableDictionary *)formData WithSuccess:(void (^)(Respone *respone))success failure:(void (^)(NSError *error))failure;
 
 /**
  上传文件接口:以文件名的形式
- @param {"data":[nameaddr1,nameaddr2],"formate":"png","key":"photo","name":"photo.png"}
+ @param {"data":[nameaddr1,nameaddr2],"formate":"png","key":"photo","name":"photo"}
  */
-+ (void)httpPostFileAddrRequest:(NSString *)url WithFileFormdata:(NSMutableDictionary *)data withFormdaya:(NSMutableDictionary *)formData WithSuccess:(int (^)(Respone *respone))success failure:(void (^)(NSError *error))failure;
++ (void)httpPostFileAddrRequest:(NSString *)url WithFileFormdata:(NSMutableDictionary *)data withFormdaya:(NSMutableDictionary *)formData WithSuccess:(void (^)(Respone *respone))success failure:(void (^)(NSError *error))failure;
 @end

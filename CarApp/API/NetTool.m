@@ -141,7 +141,7 @@
     [request startAsynchronous];
 }
 
-+ (void)httpPostFileDataRequest:(NSString *)url WithFileFormdata:(NSMutableDictionary *)data withFormdaya:(NSMutableDictionary *)formData WithSuccess:(int (^)(Respone *))success failure:(void (^)(NSError *))failure
++ (void)httpPostFileDataRequest:(NSString *)url WithFileFormdata:(NSMutableDictionary *)data withFormdaya:(NSMutableDictionary *)formData WithSuccess:(void (^)(Respone *))success failure:(void (^)(NSError *))failure
 {
     NSURL *rurl = [NSURL URLWithString:url];
     
@@ -188,7 +188,7 @@
 
 }
 
-+ (void)httpPostFileAddrRequest:(NSString *)url WithFileFormdata:(NSMutableDictionary *)data withFormdaya:(NSMutableDictionary *)formData WithSuccess:(int (^)(Respone *))success failure:(void (^)(NSError *))failure
++ (void)httpPostFileAddrRequest:(NSString *)url WithFileFormdata:(NSMutableDictionary *)data withFormdaya:(NSMutableDictionary *)formData WithSuccess:(void (^)(Respone *))success failure:(void (^)(NSError *))failure
 {
     NSURL *rurl = [NSURL URLWithString:url];
     
@@ -204,7 +204,7 @@
     
     for (int i = 0 ; i < [fileData count]; i++) {
         NSString *pdata = (NSString *)[fileData objectAtIndex:i];
-        [request addFile:pdata withFileName:name andContentType:type forKey:key];
+        [request addFile:pdata withFileName:[NSString stringWithFormat:@"%@%d.%@",name,i,type] andContentType:type forKey:[NSString stringWithFormat:@"%@%d",key,i]];
     }
     
     for (NSString *key in [formData allKeys])

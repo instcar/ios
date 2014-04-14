@@ -106,4 +106,17 @@
      */
     #define API_POST_GetListLienByTag [NSString stringWithFormat:@"%@server/line/listlinebypointid",PHPHOST]
 
+    /**
+     上传图片
+     参数
+     type	int	1  => 车相关
+                2 => 用户相关
+     user_id	bigint
+     file_1	FILE		文件1
+     file_2	FILE		文件2
+     file_3	FILE		文件3
+     file_*	FILE		文件*
+     */
+    #define API_POST_UpLoadImageFile [NSString stringWithFormat:@"%@server/image/upload",PHPHOST]
+
 #endif

@@ -6,8 +6,14 @@
 //  Copyright (c) 2014年 Leno. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CommonViewController.h"
 
-@interface IdentityAuthViewController : UIViewController
-
+@interface IdentityAuthViewController : CommonViewController<UIAlertViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+{
+    UIScrollView *_scrollView;
+    UIImageView *_peopleSampleBookImageView;
+    UIView *_peopleBookbg;
+    UIImageView *_peopleBookImageView;
+    UIButton *_confirmBtn;
+}
 @end

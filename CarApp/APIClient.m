@@ -91,4 +91,16 @@
     }];
 }
 
++ (void)networkUpLoadImageFileByType:(int)type user_id:(long)user_id dataFile :(NSArray *)fileArray success:(void (^)(Respone *))success failure:(void (^)(NSError *))failure
+{
+//    {"data":[nameaddr1,nameaddr2],"formate":"png","key":"photo","name":"photo"}
+    NSMutableDictionary *fileDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:fileArray,@"data",@"png",@"formate",@"file_",@"key",@"file_",@"name", nil];
+    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithLong:user_id],@"user_id",[NSNumber numberWithInt:type],@"type",nil];
+    [NetTool httpPostFileAddrRequest:API_POST_UpLoadImageFile WithFileFormdata:fileDic withFormdaya:formData WithSuccess:^void(Respone *respone) {
+        success(respone);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
 @end

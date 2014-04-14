@@ -134,7 +134,32 @@
 		0833EC2618C0C7C20027D67B /* 4number3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833EC1718C0C7C20027D67B /* 4number3@2x.png */; };
 		0833EC2718C0C7C20027D67B /* 4number4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833EC1818C0C7C20027D67B /* 4number4@2x.png */; };
 		0833EC2818C0C7C20027D67B /* bg_number@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0833EC1918C0C7C20027D67B /* bg_number@2x.png */; };
+		0835183918FC3072002DA20C /* car2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0835183718FC3072002DA20C /* car2@2x.png */; };
+		0835183A18FC3072002DA20C /* car1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0835183818FC3072002DA20C /* car1@2x.png */; };
+		0835183D18FC3A89002DA20C /* EditSignatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0835183C18FC3A89002DA20C /* EditSignatureViewController.m */; };
+		0835184018FC3E82002DA20C /* EditCompanyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0835183F18FC3E82002DA20C /* EditCompanyViewController.m */; };
+		0835184318FC4A6B002DA20C /* EditfavLineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0835184218FC4A6B002DA20C /* EditfavLineViewController.m */; };
 		083B7CD1185EDF6400624CA5 /* Harpy.m in Sources */ = {isa = PBXBuildFile; fileRef = 083B7CCF185EDF6400624CA5 /* Harpy.m */; };
+		0840284518FA747F00E4C684 /* SelectCarTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0840284418FA747F00E4C684 /* SelectCarTypeViewController.m */; };
+		0840284718FA794700E4C684 /* citydict.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0840284618FA794700E4C684 /* citydict.plist */; };
+		0840284A18FA825800E4C684 /* EditCarInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0840284918FA825800E4C684 /* EditCarInfoViewController.m */; };
+		0840284C18FA863600E4C684 /* ic_add_car@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840284B18FA863600E4C684 /* ic_add_car@2x.png */; };
+		0840284F18FA864000E4C684 /* btn_add_car_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840284D18FA864000E4C684 /* btn_add_car_normal@2x.png */; };
+		0840285018FA864000E4C684 /* btn_add_car_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840284E18FA864000E4C684 /* btn_add_car_pressed@2x.png */; };
+		0840285218FA869500E4C684 /* ic_examining@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840285118FA869500E4C684 /* ic_examining@2x.png */; };
+		0840285418FA869900E4C684 /* ic_paperwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840285318FA869900E4C684 /* ic_paperwork@2x.png */; };
+		0840285918FA8BA500E4C684 /* btn_car_positive_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840285518FA8BA500E4C684 /* btn_car_positive_normal@2x.png */; };
+		0840285A18FA8BA500E4C684 /* btn_car_positive_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840285618FA8BA500E4C684 /* btn_car_positive_pressed@2x.png */; };
+		0840285B18FA8BA500E4C684 /* btn_car_side_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840285718FA8BA500E4C684 /* btn_car_side_normal@2x.png */; };
+		0840285C18FA8BA500E4C684 /* btn_car_side_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840285818FA8BA500E4C684 /* btn_car_side_pressed@2x.png */; };
+		0840285E18FA8D3F00E4C684 /* btn_submit_empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840285D18FA8D3F00E4C684 /* btn_submit_empty@2x.png */; };
+		0840286118FA936400E4C684 /* btn_paperwork_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840285F18FA936400E4C684 /* btn_paperwork_normal@2x.png */; };
+		0840286218FA936400E4C684 /* btn_paperwork_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840286018FA936400E4C684 /* btn_paperwork_pressed@2x.png */; };
+		0840286A18FABC7900E4C684 /* CarImageSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0840286918FABC7900E4C684 /* CarImageSampleViewController.m */; };
+		0840286F18FAC95800E4C684 /* btn_cancel_car_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840286B18FAC95700E4C684 /* btn_cancel_car_normal@2x.png */; };
+		0840287018FAC95800E4C684 /* btn_cancel_car_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840286C18FAC95800E4C684 /* btn_cancel_car_pressed@2x.png */; };
+		0840287118FAC95800E4C684 /* btn_resubmit_car_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840286D18FAC95800E4C684 /* btn_resubmit_car_normal@2x.png */; };
+		0840287218FAC95800E4C684 /* btn_resubmit_car_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0840286E18FAC95800E4C684 /* btn_resubmit_car_pressed@2x.png */; };
 		084097A1187AFF3F009A6846 /* ADWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 084097A0187AFF3F009A6846 /* ADWebViewController.m */; };
 		084097AE187B1DED009A6846 /* tb_icon_toolbar_back_56.png in Resources */ = {isa = PBXBuildFile; fileRef = 084097A2187B1DED009A6846 /* tb_icon_toolbar_back_56.png */; };
 		084097AF187B1DED009A6846 /* tb_icon_toolbar_back_56@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 084097A3187B1DED009A6846 /* tb_icon_toolbar_back_56@2x.png */; };
@@ -336,6 +361,7 @@
 		08B3A1DC18A5C0230010BD0D /* UIFont+AppFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B3A1DB18A5C0230010BD0D /* UIFont+AppFont.m */; };
 		08B3A1DF18A5C4EE0010BD0D /* bg_map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B3A1DD18A5C4EE0010BD0D /* bg_map@2x.png */; };
 		08B3A1E018A5C4EE0010BD0D /* tag_map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B3A1DE18A5C4EE0010BD0D /* tag_map@2x.png */; };
+		08BC23EB18F6F99900BB8490 /* SelectCarBrandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BC23EA18F6F99900BB8490 /* SelectCarBrandViewController.m */; };
 		08BD3AA418D2A32D005A32D3 /* CustomSearchBarControl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 08BD3AA318D2A32D005A32D3 /* CustomSearchBarControl.mm */; };
 		08C6354C18DD53A7005490CB /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C6354B18DD53A7005490CB /* SSKeychain.m */; };
 		08C6354F18DD561D005490CB /* Utility_DeviceIdentification.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C6354E18DD561D005490CB /* Utility_DeviceIdentification.m */; };
@@ -1187,9 +1213,40 @@
 		0833EC1718C0C7C20027D67B /* 4number3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "4number3@2x.png"; sourceTree = "<group>"; };
 		0833EC1818C0C7C20027D67B /* 4number4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "4number4@2x.png"; sourceTree = "<group>"; };
 		0833EC1918C0C7C20027D67B /* bg_number@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_number@2x.png"; sourceTree = "<group>"; };
+		0835183718FC3072002DA20C /* car2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "car2@2x.png"; sourceTree = "<group>"; };
+		0835183818FC3072002DA20C /* car1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "car1@2x.png"; sourceTree = "<group>"; };
+		0835183B18FC3A89002DA20C /* EditSignatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditSignatureViewController.h; sourceTree = "<group>"; };
+		0835183C18FC3A89002DA20C /* EditSignatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSignatureViewController.m; sourceTree = "<group>"; };
+		0835183E18FC3E82002DA20C /* EditCompanyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCompanyViewController.h; sourceTree = "<group>"; };
+		0835183F18FC3E82002DA20C /* EditCompanyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCompanyViewController.m; sourceTree = "<group>"; };
+		0835184118FC4A6B002DA20C /* EditfavLineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditfavLineViewController.h; sourceTree = "<group>"; };
+		0835184218FC4A6B002DA20C /* EditfavLineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditfavLineViewController.m; sourceTree = "<group>"; };
 		083B7CCE185EDF6400624CA5 /* Harpy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Harpy.h; sourceTree = "<group>"; };
 		083B7CCF185EDF6400624CA5 /* Harpy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Harpy.m; sourceTree = "<group>"; };
 		083B7CD0185EDF6400624CA5 /* HarpyConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HarpyConstants.h; sourceTree = "<group>"; };
+		0840284318FA747F00E4C684 /* SelectCarTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectCarTypeViewController.h; sourceTree = "<group>"; };
+		0840284418FA747F00E4C684 /* SelectCarTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectCarTypeViewController.m; sourceTree = "<group>"; };
+		0840284618FA794700E4C684 /* citydict.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = citydict.plist; sourceTree = "<group>"; };
+		0840284818FA825800E4C684 /* EditCarInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCarInfoViewController.h; sourceTree = "<group>"; };
+		0840284918FA825800E4C684 /* EditCarInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCarInfoViewController.m; sourceTree = "<group>"; };
+		0840284B18FA863600E4C684 /* ic_add_car@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_add_car@2x.png"; sourceTree = "<group>"; };
+		0840284D18FA864000E4C684 /* btn_add_car_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_add_car_normal@2x.png"; sourceTree = "<group>"; };
+		0840284E18FA864000E4C684 /* btn_add_car_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_add_car_pressed@2x.png"; sourceTree = "<group>"; };
+		0840285118FA869500E4C684 /* ic_examining@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_examining@2x.png"; sourceTree = "<group>"; };
+		0840285318FA869900E4C684 /* ic_paperwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_paperwork@2x.png"; sourceTree = "<group>"; };
+		0840285518FA8BA500E4C684 /* btn_car_positive_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_car_positive_normal@2x.png"; sourceTree = "<group>"; };
+		0840285618FA8BA500E4C684 /* btn_car_positive_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_car_positive_pressed@2x.png"; sourceTree = "<group>"; };
+		0840285718FA8BA500E4C684 /* btn_car_side_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_car_side_normal@2x.png"; sourceTree = "<group>"; };
+		0840285818FA8BA500E4C684 /* btn_car_side_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_car_side_pressed@2x.png"; sourceTree = "<group>"; };
+		0840285D18FA8D3F00E4C684 /* btn_submit_empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_submit_empty@2x.png"; sourceTree = "<group>"; };
+		0840285F18FA936400E4C684 /* btn_paperwork_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_paperwork_normal@2x.png"; sourceTree = "<group>"; };
+		0840286018FA936400E4C684 /* btn_paperwork_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_paperwork_pressed@2x.png"; sourceTree = "<group>"; };
+		0840286818FABC7900E4C684 /* CarImageSampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarImageSampleViewController.h; sourceTree = "<group>"; };
+		0840286918FABC7900E4C684 /* CarImageSampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarImageSampleViewController.m; sourceTree = "<group>"; };
+		0840286B18FAC95700E4C684 /* btn_cancel_car_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_cancel_car_normal@2x.png"; sourceTree = "<group>"; };
+		0840286C18FAC95800E4C684 /* btn_cancel_car_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_cancel_car_pressed@2x.png"; sourceTree = "<group>"; };
+		0840286D18FAC95800E4C684 /* btn_resubmit_car_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_resubmit_car_normal@2x.png"; sourceTree = "<group>"; };
+		0840286E18FAC95800E4C684 /* btn_resubmit_car_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_resubmit_car_pressed@2x.png"; sourceTree = "<group>"; };
 		0840979F187AFF3F009A6846 /* ADWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADWebViewController.h; sourceTree = "<group>"; };
 		084097A0187AFF3F009A6846 /* ADWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADWebViewController.m; sourceTree = "<group>"; };
 		084097A2187B1DED009A6846 /* tb_icon_toolbar_back_56.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tb_icon_toolbar_back_56.png; sourceTree = "<group>"; };
@@ -1457,6 +1514,8 @@
 		08B3A1DB18A5C0230010BD0D /* UIFont+AppFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+AppFont.m"; sourceTree = "<group>"; };
 		08B3A1DD18A5C4EE0010BD0D /* bg_map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_map@2x.png"; sourceTree = "<group>"; };
 		08B3A1DE18A5C4EE0010BD0D /* tag_map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tag_map@2x.png"; sourceTree = "<group>"; };
+		08BC23E918F6F99900BB8490 /* SelectCarBrandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectCarBrandViewController.h; sourceTree = "<group>"; };
+		08BC23EA18F6F99900BB8490 /* SelectCarBrandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectCarBrandViewController.m; sourceTree = "<group>"; };
 		08BD3AA218D2A32D005A32D3 /* CustomSearchBarControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSearchBarControl.h; sourceTree = "<group>"; };
 		08BD3AA318D2A32D005A32D3 /* CustomSearchBarControl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomSearchBarControl.mm; sourceTree = "<group>"; };
 		08C6354A18DD53A7005490CB /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychain.h; sourceTree = "<group>"; };
@@ -2261,6 +2320,7 @@
 		08122B3018242C7800A85714 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0840284618FA794700E4C684 /* citydict.plist */,
 				0845CD9B18F14FA200FD2A11 /* v2.0New */,
 				089C59CF18924275003CD4EB /* st */,
 				0871BA2D1844763F0044F631 /* Front */,
@@ -2469,6 +2529,24 @@
 		0845CD9B18F14FA200FD2A11 /* v2.0New */ = {
 			isa = PBXGroup;
 			children = (
+				0835183718FC3072002DA20C /* car2@2x.png */,
+				0835183818FC3072002DA20C /* car1@2x.png */,
+				0840286B18FAC95700E4C684 /* btn_cancel_car_normal@2x.png */,
+				0840286C18FAC95800E4C684 /* btn_cancel_car_pressed@2x.png */,
+				0840286D18FAC95800E4C684 /* btn_resubmit_car_normal@2x.png */,
+				0840286E18FAC95800E4C684 /* btn_resubmit_car_pressed@2x.png */,
+				0840285F18FA936400E4C684 /* btn_paperwork_normal@2x.png */,
+				0840286018FA936400E4C684 /* btn_paperwork_pressed@2x.png */,
+				0840285D18FA8D3F00E4C684 /* btn_submit_empty@2x.png */,
+				0840285518FA8BA500E4C684 /* btn_car_positive_normal@2x.png */,
+				0840285618FA8BA500E4C684 /* btn_car_positive_pressed@2x.png */,
+				0840285718FA8BA500E4C684 /* btn_car_side_normal@2x.png */,
+				0840285818FA8BA500E4C684 /* btn_car_side_pressed@2x.png */,
+				0840285318FA869900E4C684 /* ic_paperwork@2x.png */,
+				0840285118FA869500E4C684 /* ic_examining@2x.png */,
+				0840284D18FA864000E4C684 /* btn_add_car_normal@2x.png */,
+				0840284E18FA864000E4C684 /* btn_add_car_pressed@2x.png */,
+				0840284B18FA863600E4C684 /* ic_add_car@2x.png */,
 				08A5A85918F5A35D002086CF /* btn_empty_m@2x.png */,
 				08A5A84718F593A6002086CF /* input_error@2x.png */,
 				08A5A84518F592F8002086CF /* ic_error@2x.png */,
@@ -2629,10 +2707,24 @@
 				085F61A01850A24F00127B86 /* ChangerPhoneViewController.m */,
 				080973DE1816325D0099354E /* ProfileViewController.h */,
 				080973DF1816325D0099354E /* ProfileViewController.m */,
+				08BC23E918F6F99900BB8490 /* SelectCarBrandViewController.h */,
+				08BC23EA18F6F99900BB8490 /* SelectCarBrandViewController.m */,
+				0840284318FA747F00E4C684 /* SelectCarTypeViewController.h */,
+				0840284418FA747F00E4C684 /* SelectCarTypeViewController.m */,
+				0840284818FA825800E4C684 /* EditCarInfoViewController.h */,
+				0840284918FA825800E4C684 /* EditCarInfoViewController.m */,
+				0840286818FABC7900E4C684 /* CarImageSampleViewController.h */,
+				0840286918FABC7900E4C684 /* CarImageSampleViewController.m */,
 				08C7090F18C82B7100D245BE /* CarImageViewController.h */,
 				08C7091018C82B7100D245BE /* CarImageViewController.m */,
 				08C7091818C8671600D245BE /* IdentityAuthViewController.h */,
 				08C7091918C8671600D245BE /* IdentityAuthViewController.m */,
+				0835183B18FC3A89002DA20C /* EditSignatureViewController.h */,
+				0835183C18FC3A89002DA20C /* EditSignatureViewController.m */,
+				0835183E18FC3E82002DA20C /* EditCompanyViewController.h */,
+				0835183F18FC3E82002DA20C /* EditCompanyViewController.m */,
+				0835184118FC4A6B002DA20C /* EditfavLineViewController.h */,
+				0835184218FC4A6B002DA20C /* EditfavLineViewController.m */,
 				08C7091B18C86C6000D245BE /* CommonRoutesViewController.h */,
 				08C7091C18C86C6000D245BE /* CommonRoutesViewController.m */,
 				35EEB017183E69A800ECC60E /* WeiBoAccessViewController.h */,
@@ -4221,6 +4313,7 @@
 				08E0DF581832898100C632B5 /* btn_voice_normal@2x.png in Resources */,
 				0845CDBA18F1515A00FD2A11 /* line2@2x.png in Resources */,
 				08E0DF591832898100C632B5 /* btn_voice_pressed@2x.png in Resources */,
+				0835183918FC3072002DA20C /* car2@2x.png in Resources */,
 				08E0DF5A1832898100C632B5 /* ic_arrow@2x.png in Resources */,
 				0833EC2618C0C7C20027D67B /* 4number3@2x.png in Resources */,
 				086A1A83188527310046C1AC /* Action_FavFriend@2x.png in Resources */,
@@ -4251,6 +4344,7 @@
 				35F9C995182FC4DE008BADCF /* btn_add_b_pressed@2x.png in Resources */,
 				35F9C9C9182FC4DE008BADCF /* btn_orange_pressed@2x.png in Resources */,
 				082D369618C32AFB00DB5106 /* refresh_arrow_up.png in Resources */,
+				0840284F18FA864000E4C684 /* btn_add_car_normal@2x.png in Resources */,
 				0871BA36184479560044F631 /* bg_im_input_normal@2x.png in Resources */,
 				088179CF18556AE700FC025B /* btn_shareWeibo_normal@2x.png in Resources */,
 				0833EC2818C0C7C20027D67B /* bg_number@2x.png in Resources */,
@@ -4267,9 +4361,13 @@
 				083309E51851D40000C11BEF /* input_white_pressed.png in Resources */,
 				08A5A85A18F5A35D002086CF /* btn_empty_m@2x.png in Resources */,
 				35F9C9E7182FC4DE008BADCF /* btn_setting_pressed@2x.png in Resources */,
+				0840285218FA869500E4C684 /* ic_examining@2x.png in Resources */,
 				0871BA38184479560044F631 /* ic_other_normal@2x.png in Resources */,
 				35F9CA0F182FC4DE008BADCF /* input_white_normal@2x.png in Resources */,
 				35F9C9A7182FC4DE008BADCF /* btn_edit_normal@2x.png in Resources */,
+				0840285A18FA8BA500E4C684 /* btn_car_positive_pressed@2x.png in Resources */,
+				0840285418FA869900E4C684 /* ic_paperwork@2x.png in Resources */,
+				0840285E18FA8D3F00E4C684 /* btn_submit_empty@2x.png in Resources */,
 				35F9C9AD182FC4DE008BADCF /* btn_forget_normal@2x.png in Resources */,
 				082D36A318C38F0800DB5106 /* add_line@2x.png in Resources */,
 				088179C918556AB500FC025B /* btn_fillet_blue_normal@2x.png in Resources */,
@@ -4281,6 +4379,7 @@
 				086A1A89188527310046C1AC /* MJPhotoBrowser.bundle in Resources */,
 				0806C19F18576144007D6CFB /* btn_fillet_blue_normal.png in Resources */,
 				35D6A029183BBB9800CC12B7 /* btn_female_normal.png in Resources */,
+				0840286218FA936400E4C684 /* btn_paperwork_pressed@2x.png in Resources */,
 				0806C1C41857A761007D6CFB /* btn_mid_pressed@2x.png in Resources */,
 				0833EC2018C0C7C20027D67B /* 3number1@2x.png in Resources */,
 				35F9C9DB182FC4DE008BADCF /* btn_register_pressed@2x.png in Resources */,
@@ -4291,6 +4390,7 @@
 				084097B0187B1DED009A6846 /* tb_icon_toolbar_backward_disable_56.png in Resources */,
 				088B273E18853E2E00E11EBA /* BDVoiceRecognitionClientResources in Resources */,
 				08A5A85518F5A351002086CF /* st3-568@2x.jpg in Resources */,
+				0840286F18FAC95800E4C684 /* btn_cancel_car_normal@2x.png in Resources */,
 				0822950E18C196B600DADD7B /* add_line_ok@2x.png in Resources */,
 				08A5A84418F58FA9002086CF /* icon_40@2x.png in Resources */,
 				35F9C9D7182FC4DE008BADCF /* btn_reduce_pressed@2x.png in Resources */,
@@ -4300,6 +4400,7 @@
 				35F9C9B1182FC4DE008BADCF /* btn_gray_normal@2x.png in Resources */,
 				35F9C9CF182FC4DE008BADCF /* btn_pool_pressed@2x.png in Resources */,
 				35F9C9F3182FC4DE008BADCF /* btn_user_pressed@2x.png in Resources */,
+				0840284718FA794700E4C684 /* citydict.plist in Resources */,
 				35D6A021183BAEE200CC12B7 /* whitePoint.png in Resources */,
 				088179B3185568C400FC025B /* Default.png in Resources */,
 				0828F50E185F616200F6ADE5 /* readme.txt in Resources */,
@@ -4339,6 +4440,7 @@
 				082D369518C32AFB00DB5106 /* refresh_arrow_down@2x.png in Resources */,
 				088179BC185568F800FC025B /* ic_line_gray@2x.png in Resources */,
 				35F9CA17182FC4DE008BADCF /* logo_start@2x.png in Resources */,
+				0840285B18FA8BA500E4C684 /* btn_car_side_normal@2x.png in Resources */,
 				08A176BD188262C40090F469 /* btn_have_pressed@2x.png in Resources */,
 				0845CDB618F1515A00FD2A11 /* ic_registration@2x.png in Resources */,
 				083309EF1851D46500C11BEF /* btn_blue_pressed.png in Resources */,
@@ -4348,6 +4450,7 @@
 				35F9C99B182FC4DE008BADCF /* btn_back_normal@2x.png in Resources */,
 				35F9C9C7182FC4DE008BADCF /* btn_orange_normal@2x.png in Resources */,
 				35F9C987182FC4DE008BADCF /* bg_search_pressed@2x.png in Resources */,
+				0840285C18FA8BA500E4C684 /* btn_car_side_pressed@2x.png in Resources */,
 				082D666E184C766A00996336 /* delt_camera.png in Resources */,
 				08CBB03C184824D8004AFE70 /* faceDelete.png in Resources */,
 				0806C1A018576144007D6CFB /* btn_fillet_blue_pressed.png in Resources */,
@@ -4359,6 +4462,7 @@
 				35F9C9BB182FC4DE008BADCF /* btn_location_normal@2x.png in Resources */,
 				0833EC2718C0C7C20027D67B /* 4number4@2x.png in Resources */,
 				08A17693187EF28C0090F469 /* btn_complete_normal@2x.png in Resources */,
+				0840287218FAC95800E4C684 /* btn_resubmit_car_pressed@2x.png in Resources */,
 				08CBB1A9184824E3004AFE70 /* copying.txt in Resources */,
 				08A5A84318F58FA9002086CF /* icon_29@2x.png in Resources */,
 				35F9C97B182FC4DE008BADCF /* bg_info@2x.png in Resources */,
@@ -4373,9 +4477,13 @@
 				0806C1A81857651A007D6CFB /* ic_info@2x.png in Resources */,
 				35D6A01D183BAC5400CC12B7 /* bg_rss_normal@2x.png in Resources */,
 				0871BA39184479560044F631 /* ic_emoji_hold@2x.png in Resources */,
+				0835183A18FC3072002DA20C /* car1@2x.png in Resources */,
 				35F9CA23182FC4DE008BADCF /* tag_mail@2x.png in Resources */,
+				0840286118FA936400E4C684 /* btn_paperwork_normal@2x.png in Resources */,
 				35F9C989182FC4DE008BADCF /* bg_send@2x.png in Resources */,
+				0840287118FAC95800E4C684 /* btn_resubmit_car_normal@2x.png in Resources */,
 				35F9CA19182FC4DE008BADCF /* nav_hint@2x.png in Resources */,
+				0840287018FAC95800E4C684 /* btn_cancel_car_pressed@2x.png in Resources */,
 				35F9C979182FC4DE008BADCF /* bg_function_pressed@2x.png in Resources */,
 				35D6A023183BAEE200CC12B7 /* GrayPoint.png in Resources */,
 				35F9CA0D182FC4DE008BADCF /* ic_start_ture@2x.png in Resources */,
@@ -4411,6 +4519,7 @@
 				08A176BC188262C40090F469 /* btn_have_normal@2x.png in Resources */,
 				35F9C999182FC4DE008BADCF /* btn_add_pressed@2x.png in Resources */,
 				08C7091718C8555400D245BE /* icon_120@2x.png in Resources */,
+				0840285918FA8BA500E4C684 /* btn_car_positive_normal@2x.png in Resources */,
 				08727C2F184B64C200869908 /* navgationbar_64.png in Resources */,
 				0833EC2518C0C7C20027D67B /* 4number2@2x.png in Resources */,
 				0845CDAC18F1515A00FD2A11 /* btn_blue_m@2x.png in Resources */,
@@ -4435,6 +4544,7 @@
 				35F9CA1F182FC4DE008BADCF /* tag_baoxian@2x.png in Resources */,
 				35F9C9D5182FC4DE008BADCF /* btn_reduce_normal@2x.png in Resources */,
 				08CBB2CF184830A3004AFE70 /* bg_im_input_normal.png in Resources */,
+				0840285018FA864000E4C684 /* btn_add_car_pressed@2x.png in Resources */,
 				083309F01851D46500C11BEF /* btn_gray_normal.png in Resources */,
 				08CBB042184824D8004AFE70 /* facesBack@2x.png in Resources */,
 				35F9C9AF182FC4DE008BADCF /* btn_forget_pressed@2x.png in Resources */,
@@ -4482,6 +4592,7 @@
 				35F9C9ED182FC4DE008BADCF /* btn_shrink_normal@2x.png in Resources */,
 				08A5A85618F5A351002086CF /* st3@2x.jpg in Resources */,
 				08A5A84618F592F8002086CF /* ic_error@2x.png in Resources */,
+				0840284C18FA863600E4C684 /* ic_add_car@2x.png in Resources */,
 				08A176B1188195500090F469 /* btn_unready_normal@2x.png in Resources */,
 				088179C41855690B00FC025B /* btn_voice_blue_pressed@2x.png in Resources */,
 			);
@@ -4717,6 +4828,7 @@
 				0809740D1816325D0099354E /* EditRouteViewController.m in Sources */,
 				0819432818F04D1F0041F05C /* ResponeViewController.m in Sources */,
 				08CBB287184824E4004AFE70 /* DDXMLDocument.m in Sources */,
+				0840286A18FABC7900E4C684 /* CarImageSampleViewController.m in Sources */,
 				0871BA43184497280044F631 /* DateSelectControl.m in Sources */,
 				08CBB22F184824E3004AFE70 /* XMPPTransports.m in Sources */,
 				08CBB245184824E3004AFE70 /* XMPPMessageArchiving.m in Sources */,
@@ -4743,6 +4855,7 @@
 				08C6354C18DD53A7005490CB /* SSKeychain.m in Sources */,
 				083309DB1851B82700C11BEF /* SetProfileHeadTableCell.m in Sources */,
 				08CBB20F184824E3004AFE70 /* XMPPvCardTempAdrTypes.m in Sources */,
+				0835183D18FC3A89002DA20C /* EditSignatureViewController.m in Sources */,
 				08CBB259184824E3004AFE70 /* NSXMLElement+XEP_0203.m in Sources */,
 				08A17685187EDF090090F469 /* BDVRCustomRecognitonViewController.mm in Sources */,
 				0802DA9C1894B0BD00523350 /* JDStatusBarNotification.m in Sources */,
@@ -4752,6 +4865,7 @@
 				0845CD9718F12F7B00FD2A11 /* Respone.m in Sources */,
 				08CBB1EF184824E3004AFE70 /* XMPPRoomHybridStorage.m in Sources */,
 				08E0DF4D18327B2200C632B5 /* ForgetPassWordViewController.m in Sources */,
+				0835184018FC3E82002DA20C /* EditCompanyViewController.m in Sources */,
 				08CBB29F18482553004AFE70 /* UIBubbleHeaderTableViewCell.m in Sources */,
 				080973F21816325D0099354E /* ASIAuthenticationDialog.m in Sources */,
 				080974101816325D0099354E /* LogInViewController.m in Sources */,
@@ -4831,6 +4945,7 @@
 				0828F511185F692000F6ADE5 /* MapViewController.mm in Sources */,
 				088B273818852B8C00E11EBA /* UIImage+MultiFormat.m in Sources */,
 				08CBB267184824E3004AFE70 /* DDList.m in Sources */,
+				0840284A18FA825800E4C684 /* EditCarInfoViewController.m in Sources */,
 				35EA69BB183A7CBB00425BAE /* SetAgeGenderViewController.m in Sources */,
 				082D6677184C7D3800996336 /* SystemTextMessage.m in Sources */,
 				08CBB21F184824E3004AFE70 /* XMPPIQ+XEP_0060.m in Sources */,
@@ -4839,6 +4954,7 @@
 				358F2ABB183D14190044AC5D /* ProfileCompanyAddressViewController.m in Sources */,
 				0871BA5318458DC90044F631 /* AutoLoadingRecogsizeCell.m in Sources */,
 				080973F51816325D0099354E /* ASIDownloadCache.m in Sources */,
+				0840284518FA747F00E4C684 /* SelectCarTypeViewController.m in Sources */,
 				08CBB213184824E3004AFE70 /* XMPPvCardTempEmail.m in Sources */,
 				08C7091118C82B7100D245BE /* CarImageViewController.m in Sources */,
 				08CBB1A1184824E3004AFE70 /* XMPPXFacebookPlatformAuthentication.m in Sources */,
@@ -4884,6 +5000,7 @@
 				08CBB269184824E3004AFE70 /* GCDMulticastDelegate.m in Sources */,
 				08CBAFDB184713DC004AFE70 /* LocationServer.m in Sources */,
 				083B7CD1185EDF6400624CA5 /* Harpy.m in Sources */,
+				08BC23EB18F6F99900BB8490 /* SelectCarBrandViewController.m in Sources */,
 				0871BA40184496F00044F631 /* PassengerControl.m in Sources */,
 				08CBAFF5184824D2004AFE70 /* NSString+Base64.m in Sources */,
 				08CBB26B184824E3004AFE70 /* RFImageToDataTransformer.m in Sources */,
@@ -4908,6 +5025,7 @@
 				08CBB31D184A3D37004AFE70 /* MessageManager.m in Sources */,
 				08CBAFE618482493004AFE70 /* GroupChatViewController.m in Sources */,
 				35D6A013183B9BEE00CC12B7 /* SetProfileViewController.m in Sources */,
+				0835184318FC4A6B002DA20C /* EditfavLineViewController.m in Sources */,
 				08CBB1EB184824E3004AFE70 /* XMPPRoomOccupantCoreDataStorageObject.m in Sources */,
 				08E0DF5318327B4400C632B5 /* changePassWordViewController.m in Sources */,
 				08CBB1BB184824E3004AFE70 /* XMPPBandwidthMonitor.m in Sources */,

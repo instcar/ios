@@ -6,12 +6,22 @@
 //  Copyright (c) 2014年 Leno. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface CommonViewController : UIViewController
+#define KOFFSETY ((kDeviceVersion >= 7.0?64:44)+45.0)
 
-@property (retain, nonatomic) UINavigationBar *customNavBar;
-@property (retain, nonatomic) UIView *mainView;
+@interface CommonViewController :BaseViewController
+{
+    UINavigationBar *_navBar;
+    UIImageView *_messageBgView;
+    UILabel *_titleLabel;
+    UILabel *_desLable;
+}
+
+@property (copy, nonatomic) NSString *ctitle;
+@property (copy, nonatomic) NSString *desText;
+@property (retain, nonatomic) UIButton *leftBtn;
+@property (retain, nonatomic) UIButton *rightBtn;
 @property (retain, nonatomic) UIView *messageView;
 
 @end

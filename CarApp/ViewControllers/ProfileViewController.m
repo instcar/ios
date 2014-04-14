@@ -19,6 +19,8 @@
 #import "CommonRoutesViewController.h"
 
 #import "CarInfoTableViewCell.h"
+#import "SelectCarBrandViewController.h"
+#import "IdentityAuthViewController.h"
 
 @interface ProfileViewController ()
 
@@ -190,7 +192,9 @@
 - (void)addCarIdentify:(UIButton *)btn
 {
     DLog(@"增加车辆验证信息");
-    
+    SelectCarBrandViewController *selectCarBrandVC = [[SelectCarBrandViewController alloc]init];
+    [self.navigationController pushViewController:selectCarBrandVC animated:YES];
+    [selectCarBrandVC release];
 }
 
 -(void)exitLoginState:(UIButton *)btn
@@ -259,8 +263,10 @@
         
         UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(7.5, 8, 305, 44)];
         [btn setTitle:@"增加验证车辆信息" forState:UIControlStateNormal];
-        [btn setBackgroundImage:[[UIImage imageNamed:@"btn_green"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
-//        [btn setBackgroundImage:[[UIImage imageNamed:@"btn_green"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateHighlighted];
+        [btn.titleLabel setFont:AppFont(14)];
+        [btn setBackgroundImage:[[UIImage imageNamed:@"btn_add_car_normal"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
+        [btn setBackgroundImage:[[UIImage imageNamed:@"btn_add_car_press"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateHighlighted];
+        [btn setImage:[UIImage imageNamed:@"ic_add_car"] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(addCarIdentify:) forControlEvents:UIControlEventTouchUpInside];
         [btn setCenter:cell.center];
         [cell addSubview:btn];
@@ -494,6 +500,9 @@
         if(indexPath.row == 1)
         {
             DLog(@"实名认证");
+            IdentityAuthViewController *identityAuthVC = [[IdentityAuthViewController alloc]init];
+            [self.navigationController pushViewController:identityAuthVC animated:YES];
+            [identityAuthVC release];
         }
         
         //路线

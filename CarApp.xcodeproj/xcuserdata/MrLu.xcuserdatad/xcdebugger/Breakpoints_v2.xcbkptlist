@@ -371,22 +371,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CarApp/Models/User.m"
-            timestampString = "418551035.137532"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
-            landmarkName = "-setCookies:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "CarApp/APIClient.m"
             timestampString = "418464739.13657"
             startingColumnNumber = "9223372036854775807"
@@ -403,7 +387,7 @@
                   symbolName = "+[APIClient networkCheckPhone:success:failure:]"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/APIClient.m"
-                  timestampString = "418577382.516846"
+                  timestampString = "419182001.507226"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "16"
@@ -417,7 +401,7 @@
                   symbolName = "__47+[APIClient networkCheckPhone:success:failure:]_block_invoke"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/APIClient.m"
-                  timestampString = "418577382.517038"
+                  timestampString = "419182001.507424"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "16"
@@ -449,7 +433,7 @@
                   symbolName = "+[APIClient networkCheckUserName:success:failure:]"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/APIClient.m"
-                  timestampString = "418577382.517805"
+                  timestampString = "419182001.508178"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "26"
@@ -463,7 +447,7 @@
                   symbolName = "__50+[APIClient networkCheckUserName:success:failure:]_block_invoke"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/APIClient.m"
-                  timestampString = "418577382.517995"
+                  timestampString = "419182001.508371"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "26"
@@ -495,7 +479,7 @@
                   symbolName = "+[APIClient networkGetauthcodeWithPhone:success:failure:]"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/APIClient.m"
-                  timestampString = "418577382.518871"
+                  timestampString = "419182001.5092"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "36"
@@ -509,7 +493,7 @@
                   symbolName = "__57+[APIClient networkGetauthcodeWithPhone:success:failure:]_block_invoke"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/APIClient.m"
-                  timestampString = "418577382.519085"
+                  timestampString = "419182001.509412"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "36"
@@ -541,7 +525,7 @@
                   symbolName = "+[APIClient networkUserRegistWithPhone:password:authcode:smsid:success:failure:]"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/APIClient.m"
-                  timestampString = "418577382.519949"
+                  timestampString = "419182001.510266"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "46"
@@ -555,7 +539,7 @@
                   symbolName = "__80+[APIClient networkUserRegistWithPhone:password:authcode:smsid:success:failure:]_block_invoke"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/APIClient.m"
-                  timestampString = "418577382.52025"
+                  timestampString = "419182001.51048"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "46"
@@ -603,7 +587,7 @@
                   symbolName = "+[APIClient networkGetUserInfoWithuid:success:failure:]"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/APIClient.m"
-                  timestampString = "418577382.521795"
+                  timestampString = "419182001.511897"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "67"
@@ -617,7 +601,7 @@
                   symbolName = "__55+[APIClient networkGetUserInfoWithuid:success:failure:]_block_invoke"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/APIClient.m"
-                  timestampString = "418577382.522015"
+                  timestampString = "419182001.5121"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "67"
@@ -634,11 +618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CarApp/Models/User.m"
-            timestampString = "418551035.137532"
+            timestampString = "419068561.701986"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
+            startingLineNumber = "164"
+            endingLineNumber = "164"
             landmarkName = "-setCookies:"
             landmarkType = "5">
          </BreakpointContent>
@@ -704,6 +688,38 @@
             startingLineNumber = "222"
             endingLineNumber = "222"
             landmarkName = "-checkPhone:success:failure:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CarApp/ViewControllers/EditCarInfoViewController.m"
+            timestampString = "419181898.820603"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "286"
+            endingLineNumber = "286"
+            landmarkName = "-saveImage:WithName:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CarApp/ViewControllers/EditCarInfoViewController.m"
+            timestampString = "419181898.820603"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
+            landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

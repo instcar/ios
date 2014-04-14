@@ -7,6 +7,7 @@
 //
 
 #import "IdentityAuthViewController.h"
+#import "PhotoSelectManager.h"
 
 @interface IdentityAuthViewController ()
 
@@ -32,79 +33,191 @@
 {
     [super viewDidLoad];
     
-	UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
-    [mainView setBackgroundColor:[UIColor appBackgroundColor]];
-    [mainView setTag:10000];
-    [self.view addSubview:mainView];
-    [mainView release];
+	[self setCtitle:@"实名认证"];
+    [self setDesText:@"请按照以下样例拍摄或上传本人手持身份证的清晰照片"];
     
-    UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
-    naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
+    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, KOFFSETY, SCREEN_WIDTH, SCREEN_HEIGHT - KOFFSETY)];
+    [_scrollView setBackgroundColor:[UIColor clearColor]];
+    [_scrollView setScrollEnabled:YES];
+    [_scrollView setAlwaysBounceVertical:YES];
+    [self.view addSubview:_scrollView];
+    [_scrollView release];
     
-    UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
-    [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
-    [mainView addSubview:navBar];
-    [navBar release];
+    CGRect bound = _scrollView.bounds;
+
+    _peopleSampleBookImageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 10, bound.size.width-40, 180)];
+    [_peopleSampleBookImageView.layer setCornerRadius:2.0];
+    [_peopleSampleBookImageView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    [_peopleSampleBookImageView.layer setBorderWidth:0.5];
+    [_peopleSampleBookImageView.layer setMasksToBounds:YES];
+    [_peopleSampleBookImageView setContentMode:UIViewContentModeScaleAspectFill];
+    [_scrollView addSubview:_peopleSampleBookImageView];
+    [_peopleSampleBookImageView release];
     
-    if (kDeviceVersion < 7.0) {
-        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
-        [lineView setBackgroundColor:[UIColor lightGrayColor]];
-        [navBar addSubview:lineView];
-        [lineView release];
+    _peopleBookbg = [[UIView alloc]initWithFrame:CGRectMake(20, 200, bound.size.width-40, 180)];
+    [_peopleBookbg.layer setCornerRadius:2.0];
+    [_peopleBookbg.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    [_peopleBookbg.layer setBorderWidth:0.5];
+    [_scrollView addSubview:_peopleBookbg];
+    [_peopleBookbg release];
+    
+    _peopleBookImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 85, bound.size.width-20, 200)];
+    [_peopleBookImageView.layer setCornerRadius:2.0];
+    [_peopleBookImageView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    [_peopleBookImageView.layer setBorderWidth:0.5];
+    [_peopleBookImageView.layer setMasksToBounds:YES];
+    [_peopleBookImageView setContentMode:UIViewContentModeScaleAspectFill];
+    [_scrollView addSubview:_peopleBookImageView];
+    [_peopleBookImageView setHidden:YES];
+    [_peopleBookImageView release];
+    
+    UIImageView *carbookImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 213.0/2.0, 134.0/2.0)];
+    [carbookImage setCenter:CGPointMake(_peopleBookbg.bounds.size.width/2, _peopleBookbg.bounds.size.height/2 - 25)];
+    [carbookImage setImage:[UIImage imageNamed:@"ic_paperwork"]];
+    [_peopleBookbg addSubview:carbookImage];
+    [carbookImage release];
+    
+    UIButton *addcarbookBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addcarbookBtn setFrame:CGRectMake(0, 0, 220, 40)];
+    [addcarbookBtn setCenter:CGPointMake(_peopleBookbg.bounds.size.width/2, _peopleBookbg.bounds.size.height/2 + 50)];
+    [addcarbookBtn setBackgroundImage:[UIImage imageNamed:@"btn_paperwork_normal"] forState:UIControlStateNormal];
+    [addcarbookBtn setBackgroundImage:[UIImage imageNamed:@"btn_paperwork_pressed"] forState:UIControlStateHighlighted];
+    [addcarbookBtn setTitle:@"拍摄或上传身份证清晰照片" forState:UIControlStateNormal];
+    [addcarbookBtn.titleLabel setFont:AppFont(14)];
+    [addcarbookBtn addTarget:self action:@selector(addpeoplebookBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [_peopleBookbg addSubview:addcarbookBtn];
+    
+    _confirmBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_confirmBtn setFrame:CGRectMake(10, 400, 300, 44)];
+    [_confirmBtn.titleLabel setFont:AppFont(12)];
+    [_confirmBtn setTitle:@"提交" forState:UIControlStateNormal];
+    [_confirmBtn setBackgroundImage:[UIImage imageNamed:@"btn_submit_empty"] forState:UIControlStateDisabled];
+    [_confirmBtn setBackgroundImage:[UIImage imageNamed:@"btn_add_car_normal"] forState:UIControlStateNormal];
+    [_confirmBtn setBackgroundImage:[UIImage imageNamed:@"btn_add_car_pressed"] forState:UIControlStateSelected];
+    [_confirmBtn addTarget:self action:@selector(confirmBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+    [_confirmBtn setEnabled:NO];
+    [_scrollView addSubview:_confirmBtn];
+    
+    [_scrollView setContentSize:CGSizeMake(bound.size.width, 454)];
+}
+
+- (void)confirmBtnAction:(UIButton *)sender
+{
+    DLog(@"提交");
+}
+
+- (void)addpeoplebookBtn:(UIButton *)sender
+{
+    DLog(@"上传");
+
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"拍摄照片",@"从相册中选择照片", nil];
+    [alertView setTag:110];
+    [alertView show];
+    [alertView release];
+
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 1:
+        {
+            [self showImagePickerWithStyle:0];
+        }
+            break;
+        case 2:
+        {
+            [self showImagePickerWithStyle:1];
+        }
+            break;
+        default:
+            break;
     }
-    else
-    {
-        self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
+}
+
+//  style = 0 拍照 ; style = 1 相册 ;
+-(void)showImagePickerWithStyle:(int)style
+{
+    //选择拍照
+    if (style == 0) {
+        [PhotoSelectManager selectPhotoFromCamreWithDelegate:self withVC:self withEdit:YES];
     }
     
-    UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    [backButton setFrame:CGRectMake(0, 20, 70, 44)];
-    [backButton setBackgroundColor:[UIColor clearColor]];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_normal@2x"] forState:UIControlStateNormal];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_pressed@2x"] forState:UIControlStateHighlighted];
-    [backButton addTarget:self action:@selector(backToMain) forControlEvents:UIControlEventTouchUpInside];
-    [navBar addSubview:backButton];
+    //选择相册
+    if (style == 1) {
+        [PhotoSelectManager selectPhotoFromPhotoWithDelegate:self withVC:self withEdit:YES];
+    }
+}
+
+#pragma mark - imagePickerDelegate
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
-    UIImage * welcomeImage = [UIImage imageNamed:@"nav_hint@2x"];
-    //    welcomeImage = [welcomeImage stretchableImageWithLeftCapWidth:8 topCapHeight:10];
-    //导航栏下方的欢迎条
-    UIImageView * welcomeImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, 49)];
-    [welcomeImgView setImage:welcomeImage];
-    [mainView addSubview:welcomeImgView];
-    [welcomeImgView release];
-    
-    UILabel * welcomeLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 310, 44)];
-    [welcomeLabel setBackgroundColor:[UIColor clearColor]];
-    [welcomeLabel setText:@"实名认证状态:"];
-    [welcomeLabel setTextAlignment:NSTextAlignmentCenter];
-    [welcomeLabel setTextColor:[UIColor whiteColor]];
-    [welcomeLabel setFont:[UIFont appGreenWarnFont]];
-    [welcomeImgView addSubview:welcomeLabel];
-    [welcomeLabel release];
-    
-    UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 66 + 44 +10, mainView.frame.size.width, SCREEN_HEIGHT - 66 - 44 -10)];
-    [mainView insertSubview:scrollView belowSubview:welcomeImgView];
-    [scrollView release];
-    
-    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 355)];
-    [imageView setBackgroundColor:[UIColor whiteColor]];
-    [imageView setUserInteractionEnabled:YES];
-    [scrollView addSubview:imageView];
-    [scrollView setContentSize:CGSizeMake(imageView.frame.size.width, imageView.frame.size.height)];
-    [scrollView setAlwaysBounceHorizontal:YES];
-    [imageView release];
-    
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btn addTarget:self action:@selector(goAuthAction:) forControlEvents:UIControlEventTouchUpInside];
-    [btn setFrame:CGRectMake(0, 355 - 40 - 44, 220, 44)];
-    [imageView addSubview:btn];
-    
+    [picker dismissViewControllerAnimated:YES completion:^{
+        [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    }];
+    UIImage *image = [[info objectForKey:UIImagePickerControllerEditedImage] retain];
+    [self performSelector:@selector(saveImage:)
+               withObject:image
+               afterDelay:0.5];
+}
+
+
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:^{
+        [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    }];
+}
+
+- (void)saveImage:(UIImage *)tempImage WithName:(NSString *)imageName
+{
+    NSData* imageData = UIImagePNGRepresentation(tempImage);
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* documentsDirectory = [paths objectAtIndex:0];
+    // Now we get the full path to the file
+    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+    // and then we write it out
+    [imageData writeToFile:fullPathToFile atomically:NO];
     
 }
 
--(void)goAuthAction:(UIButton *)sender
+-(void)saveImage:(UIImage *)image
 {
-    DLog(@"进行实名认证");
+    DLog(@"已选择头像");
+    
+    NSData* imageData = UIImagePNGRepresentation(image);
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* documentsDirectory = [paths objectAtIndex:0];
+    // Now we get the full path to the file
+    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:@"img00.png"];
+    // and then we write it out
+    [imageData writeToFile:fullPathToFile atomically:NO];
+    [[User shareInstance]setUserId:1];
+    
+    [APIClient networkUpLoadImageFileByType:1 user_id:[User shareInstance].userId dataFile:[NSArray arrayWithObject:fullPathToFile] success:^(Respone *respone) {
+        DLog(@"%@",[respone description]);
+    } failure:^(NSError *error) {
+        
+    }];
+    //
+    //
+    //    SetProfileTableCell * cell = (SetProfileTableCell *)[self.view viewWithTag:77007];
+    //    [cell.photoImgView setImage:image];
+    //    self.headImage  = image;
+    //    User * user = [User shareInstance];
+    //    //保存请求
+    //    ASIFormDataRequest * editPhotoRequest =  [NetWorkManager networkEditHeadpic:image uid:user.userId mode:kNetworkrequestModeQueue success:^(BOOL flag, NSString *newHeadPicUrl, NSString *msg) {
+    //        //        if (flag) {
+    //        //            [cell.photoImgView setImage:image];
+    //        //        }
+    //        //        else
+    //        //        {
+    //        //            [UIAlertView showAlertViewWithTitle:@"失败" message:msg cancelTitle:@"确定"];
+    //        //        }
+    //    } failure:^(NSError *error) {}];
+    //    [self.networkRequestArray addObject:editPhotoRequest];
+    //    //    [editPhotoRequest release];
+    //    [_setProfileTable reloadData];
+    
 }
 
 - (void)didReceiveMemoryWarning

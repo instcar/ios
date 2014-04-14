@@ -30,4 +30,6 @@
 
 //根据关键字获取线路的分页数据
 +(void)networkGetLineListByTag:(NSString *)tag page:(int)page rows:(int)rows all:(int)all success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
+
++(void)networkUpLoadImageFileByType:(int)type user_id:(long)user_id dataFile:(NSArray *)fileArray success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
 @end

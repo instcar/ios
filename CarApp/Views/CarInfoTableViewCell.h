@@ -14,8 +14,11 @@
     UIImageView *_carLogoImageView; //车辆标志
     UILabel *_carName; //车辆名字
     UILabel *_carModel; //车辆型号
-    UIImageView *_carImageView1; //车辆照片1
-    UIImageView *_carImageView2; //车辆照片2
+    UIButton *_carImageView1; //车辆照片1
+    UIButton *_carImageView2; //车辆照片2
+    UIImageView *_checkState; //检测状态标识
+    UILabel *_checkLable; //检测状态
+    UIView *_modifyView; //修改视图
 }
 
 @property (retain, nonatomic) NSDictionary *data;
