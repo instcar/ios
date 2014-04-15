@@ -11,6 +11,8 @@
 #import "LogInViewController.h"
 #import "ProfilePhotoFirstCustomCell.h"
 #import "ProfileCell.h"
+#import "ProFileEditTableViewCell.h"
+
 #import "PeopleManager.h"
 #import "XmppManager.h"
 #import "SetProfileViewController.h"
@@ -21,6 +23,10 @@
 #import "CarInfoTableViewCell.h"
 #import "SelectCarBrandViewController.h"
 #import "IdentityAuthViewController.h"
+
+#import "EditCompanyViewController.h"
+#import "EditfavLineViewController.h"
+#import "EditSignatureViewController.h"
 
 @interface ProfileViewController ()
 
@@ -52,6 +58,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _isEditing = NO;
     
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor appBackgroundColor]];
@@ -105,7 +113,8 @@
         [editButton setBackgroundColor:[UIColor clearColor]];
         [editButton setBackgroundImage:[UIImage imageNamed:@"btn_info_normal@2x"] forState:UIControlStateNormal];
         [editButton setBackgroundImage:[UIImage imageNamed:@"btn_info_pressed@2x"] forState:UIControlStateHighlighted];
-        [editButton addTarget:self action:@selector(editProfile) forControlEvents:UIControlEventTouchUpInside];
+        [editButton setBackgroundImage:[UIImage imageNamed:@"btn_save_normal@2x"] forState:UIControlStateSelected];
+        [editButton addTarget:self action:@selector(editProfile:) forControlEvents:UIControlEventTouchUpInside];
         [navBar addSubview:editButton];
     }
     
@@ -180,12 +189,17 @@
     }];
 }
 
--(void)editProfile
+-(void)editProfile:(UIButton *)sender
 {
     //编辑个人
-    SetProfileViewController *setProfileVC = [[SetProfileViewController alloc]init];
-    [self.navigationController pushViewController:setProfileVC animated:YES];
-    [setProfileVC release];
+    sender.selected = !sender.selected;
+    _isEditing = sender.selected;
+    if (!sender.selected) {
+        DLog(@"保存");
+        //保存
+        [UIAlertView showAlertViewWithTitle:@"信息有改动，是否保存？" tag:113 cancelTitle:@"不保存" ensureTitle:@"保存" delegate:self];
+    }
+    [self.profileTable reloadData];
     
 }
 
@@ -360,75 +374,116 @@
     }
     
     if (indexPath.section == 1) {
-        static NSString *CellIdentifier = @"ProfileOne";
-        ProfileCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[[ProfileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-        }
+        
+        if (!_isEditing) {
+            
+            ProfileCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileOne"];
+            if (cell == nil) {
+                cell = [[[ProfileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ProfileOne"] autorelease];
+            }
 
-//        [cell setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 10)];
-        [cell.checkLable setHidden:YES];
-        switch (indexPath.row) {
-            case 0:
-            {
-                [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-                [cell.checkLable setHidden:NO];
-                [cell.checkLable setCheckState:YES];
-                [cell.titleLabel setText:@"手机号码:"];
-                [cell.infoLabel setText:self.userInfo.phone];
-                
-                break;
+            [cell.checkLable setHidden:YES];
+            switch (indexPath.row) {
+                case 0:
+                {
+                    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+                    [cell.checkLable setHidden:NO];
+                    [cell.checkLable setCheckState:YES];
+                    [cell.titleLabel setText:@"手机号码:"];
+                    [cell.infoLabel setText:self.userInfo.phone];
+                    
+                    break;
+                }
+                case 1:
+                {
+                    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+                    [cell.checkLable setHidden:NO];
+                    [cell.checkLable setCheckState:YES];
+                    [cell.titleLabel setText:@"实名认证:"];
+                    [cell.infoLabel setText:@"完成"];
+                    break;
+                }
+                case 2:
+                {
+                    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+                    [cell.checkLable setHidden:YES];
+                    [cell.checkLable setCheckState:YES];
+                    [cell.titleLabel setText:@"常用路线:"];
+                    [cell.infoLabel setText:[NSString stringWithFormat:@"%d条",self.userInfo.favlinenum]];
+                    break;
+                }
+                case 3:
+                {
+                    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                    [cell.checkLable setHidden:YES];
+                    [cell.checkLable setCheckState:YES];
+                    [cell.titleLabel setText:@"公司地址:"];
+                    [cell.infoLabel setText:(self.uid == [User shareInstance].userId?([self.userInfo.companyaddress isEqualToString:@""]?@"无":self.userInfo.companyaddress):@"保密")];
+                    break;
+                }
+                case 4:
+                {
+                    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                    [cell.checkLable setHidden:YES];
+                    [cell.checkLable setCheckState:YES];
+                    [cell.titleLabel setText:@"家庭地址:"];
+                    [cell.infoLabel setText:(self.uid == [User shareInstance].userId?([self.userInfo.homeaddress isEqualToString:@""]?@"无":self.userInfo.homeaddress):@"保密")];
+                    break;
+                }
+                default:
+                    break;
             }
-//            case 1:
-//            {
-//                [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-//                [cell.checkLable setHidden:NO];
-//                [cell.checkLable setCheckState:YES];
-//                [cell.titleLabel setText:@"车辆信息:"];
-//                [cell.infoLabel setText:@"大众高尔夫6"];
-//                break;
-//            }
-            case 1:
-            {
-                [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-                [cell.checkLable setHidden:NO];
-                [cell.checkLable setCheckState:YES];
-                [cell.titleLabel setText:@"实名认证:"];
-                [cell.infoLabel setText:@"完成"];
-                break;
+            return cell;
+        }
+        else
+        {
+            //编辑状态
+            ProFileEditTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileEditOne"];
+            if (cell == nil) {
+                cell = [[[ProFileEditTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ProfileEditOne"] autorelease];
+                 [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
             }
-            case 2:
-            {
-                [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-                [cell.checkLable setHidden:YES];
-                [cell.checkLable setCheckState:YES];
-                [cell.titleLabel setText:@"常用路线:"];
-                [cell.infoLabel setText:[NSString stringWithFormat:@"%d条",self.userInfo.favlinenum]];
-                break;
+            
+            switch (indexPath.row) {
+                case 0:
+                {
+                    [cell setTitleStr:@"编辑签名备注信息:"];
+                    [cell setInfoStr:@""];
+                    
+                    break;
+                }
+                case 1:
+                {
+                    [cell setTitleStr:@"编辑公司地址:"];
+                    [cell setInfoStr:@""];
+                    break;
+                }
+                case 2:
+                {
+                    [cell setTitleStr:@"编辑家庭地址:"];
+                    [cell setInfoStr:@""];
+                    break;
+                }
+                case 3:
+                {
+                    [cell setTitleStr:@"更换手机号码:"];
+                    [cell setInfoStr:@""];
+                    break;
+                }
+                case 4:
+                {
+                    [cell setTitleStr:@"编辑常用线路:"];
+                    [cell setInfoStr:@""];
+                    break;
+                }
+                default:
+                    break;
             }
-            case 3:
-            {
-                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-                [cell.checkLable setHidden:YES];
-                [cell.checkLable setCheckState:YES];
-                [cell.titleLabel setText:@"公司地址:"];
-                [cell.infoLabel setText:(self.uid == [User shareInstance].userId?([self.userInfo.companyaddress isEqualToString:@""]?@"无":self.userInfo.companyaddress):@"保密")];
-                break;
-            }
-            case 4:
-            {
-                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-                [cell.checkLable setHidden:YES];
-                [cell.checkLable setCheckState:YES];
-                [cell.titleLabel setText:@"家庭地址:"];
-                [cell.infoLabel setText:(self.uid == [User shareInstance].userId?([self.userInfo.homeaddress isEqualToString:@""]?@"无":self.userInfo.homeaddress):@"保密")];
-                break;
-            }
-            default:
-                break;
+            return cell;
+
         }
         
-        return cell;
+        
     }
     
     
@@ -483,44 +538,87 @@
 //        return;
 //    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     if (indexPath.section == 1) {
-        //电话
-        if (indexPath.row == 0) {
-            DLog(@"打电话");
-            if (self.userInfo.ID == [User shareInstance].userId) {
-                [UIAlertView showAlertViewWithTitle:@"你确定要联系自己么?" tag:111 cancelTitle:@"忽略" ensureTitle:nil delegate:self];
+        
+        if (!_isEditing) {
+
+            //电话
+            if (indexPath.row == 0) {
+                DLog(@"打电话");
+                if (self.userInfo.ID == [User shareInstance].userId) {
+                    [UIAlertView showAlertViewWithTitle:@"你确定要联系自己么?" tag:111 cancelTitle:@"忽略" ensureTitle:nil delegate:self];
+                }
+                else
+                {
+                    [UIAlertView showAlertViewWithTitle:[NSString stringWithFormat:@"你确定要联系%@么?\n拨通电话tel:%@",self.userInfo.userName,self.userInfo.phone] tag:112 cancelTitle:@"取消" ensureTitle:@"确定" delegate:self];
+                }
             }
-            else
+            
+            //实名认证
+            if(indexPath.row == 1)
             {
-                [UIAlertView showAlertViewWithTitle:[NSString stringWithFormat:@"你确定要联系%@么?\n拨通电话tel:%@",self.userInfo.userName,self.userInfo.phone] tag:112 cancelTitle:@"取消" ensureTitle:@"确定" delegate:self];
+                DLog(@"实名认证");
+                IdentityAuthViewController *identityAuthVC = [[IdentityAuthViewController alloc]init];
+                [self.navigationController pushViewController:identityAuthVC animated:YES];
+                [identityAuthVC release];
+            }
+            
+            //路线
+            if(indexPath.row == 2)
+            {
+                DLog(@"常用路线列表");
+                CommonRoutesViewController *commonRoutesVC = [[CommonRoutesViewController alloc]init];
+                commonRoutesVC.myInfo = self.userInfo;
+                [self.navigationController pushViewController:commonRoutesVC animated:YES];
+                [commonRoutesVC release];
+            }
+            //车辆
+            //        if(indexPath.row == 3)
+            //        {
+            //            DLog(@"车辆信息");
+            //            
+            //        }
+        }
+        else
+        {
+            //编辑签名
+            if (indexPath.row == 0) {
+                DLog(@"编辑签名");
+                EditSignatureViewController *editSignatureVC = [[EditSignatureViewController alloc]init];
+                [self.navigationController pushViewController:editSignatureVC animated:YES];
+                [editSignatureVC release];
+            }
+            
+            //编辑公司地址
+            if(indexPath.row == 1)
+            {
+                DLog(@"编辑公司地址");
+                EditCompanyViewController *editCompanyVC = [[EditCompanyViewController alloc]init];
+                [self.navigationController pushViewController:editCompanyVC animated:YES];
+                [editCompanyVC release];
+            }
+            
+            //编辑家庭地址
+            if(indexPath.row == 2)
+            {
+                DLog(@"编辑家庭地址");
+                
+            }
+            //更换手机号码
+            if(indexPath.row == 3)
+            {
+                DLog(@"更换手机号码");
+
+            }
+            //编辑常用路线
+            if (indexPath.row == 4) {
+                DLog(@"编辑常用路线");
+                EditfavLineViewController *editFavlineVC = [[EditfavLineViewController alloc]init];
+                [self.navigationController pushViewController:editFavlineVC animated:YES];
+                [editFavlineVC release];
             }
         }
-        
-        //实名认证
-        if(indexPath.row == 1)
-        {
-            DLog(@"实名认证");
-            IdentityAuthViewController *identityAuthVC = [[IdentityAuthViewController alloc]init];
-            [self.navigationController pushViewController:identityAuthVC animated:YES];
-            [identityAuthVC release];
-        }
-        
-        //路线
-        if(indexPath.row == 2)
-        {
-            DLog(@"常用路线列表");
-            CommonRoutesViewController *commonRoutesVC = [[CommonRoutesViewController alloc]init];
-            commonRoutesVC.myInfo = self.userInfo;
-            [self.navigationController pushViewController:commonRoutesVC animated:YES];
-            [commonRoutesVC release];
-        }
-        
-        //车辆
-//        if(indexPath.row == 3)
-//        {
-//            DLog(@"车辆信息");
-//            
-//        }
     }
     
 }
@@ -561,6 +659,15 @@
     if (alertView.tag == 112) {
         if (buttonIndex == 1) {
             [[UIApplication sharedApplication]openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",self.userInfo.phone]]];
+        }
+    }
+    if (alertView.tag == 113) {
+        if (buttonIndex == 1) {
+            //保存
+        }
+        else
+        {
+            [self.navigationController popViewControllerAnimated:YES];
         }
     }
 }

@@ -733,6 +733,9 @@
 		08E0DF5F183289A500C632B5 /* btn_input_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 35F9C936182FC4DE008BADCF /* btn_input_pressed@2x.png */; };
 		08E0DF60183289B300C632B5 /* FZY3JW.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 35F9C902182FB121008BADCF /* FZY3JW.TTF */; };
 		08E0DF61183289BF00C632B5 /* ipt_message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 35F9C964182FC4DE008BADCF /* ipt_message@2x.png */; };
+		08F03C8E18FD8AA300688433 /* ProFileEditTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F03C8D18FD8AA300688433 /* ProFileEditTableViewCell.m */; };
+		08F03C9418FD8E0600688433 /* UILabel+utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F03C9118FD8E0600688433 /* UILabel+utils.m */; };
+		08F03C9518FD8E0600688433 /* UITextView+utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F03C9318FD8E0600688433 /* UITextView+utils.m */; };
 		08F5842E18D7D888003269EA /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08F5842D18D7D888003269EA /* XCTest.framework */; };
 		08F5843018D7D9F2003269EA /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 08F5842F18D7D9F2003269EA /* libxml2.dylib */; };
 		08F715EA18D695B500E0074A /* CommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F715E918D695B500E0074A /* CommonViewController.m */; };
@@ -1896,6 +1899,12 @@
 		08E0DF4F18327B2E00C632B5 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		08E0DF5118327B4400C632B5 /* changePassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = changePassWordViewController.h; sourceTree = "<group>"; };
 		08E0DF5218327B4400C632B5 /* changePassWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = changePassWordViewController.m; sourceTree = "<group>"; };
+		08F03C8C18FD8AA300688433 /* ProFileEditTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProFileEditTableViewCell.h; sourceTree = "<group>"; };
+		08F03C8D18FD8AA300688433 /* ProFileEditTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProFileEditTableViewCell.m; sourceTree = "<group>"; };
+		08F03C9018FD8E0600688433 /* UILabel+utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+utils.h"; sourceTree = "<group>"; };
+		08F03C9118FD8E0600688433 /* UILabel+utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+utils.m"; sourceTree = "<group>"; };
+		08F03C9218FD8E0600688433 /* UITextView+utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+utils.h"; sourceTree = "<group>"; };
+		08F03C9318FD8E0600688433 /* UITextView+utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+utils.m"; sourceTree = "<group>"; };
 		08F5842D18D7D888003269EA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		08F5842F18D7D9F2003269EA /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		08F715E818D695B500E0074A /* CommonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonViewController.h; sourceTree = "<group>"; };
@@ -2136,6 +2145,10 @@
 		0809737D1816325D0099354E /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				08F03C9018FD8E0600688433 /* UILabel+utils.h */,
+				08F03C9118FD8E0600688433 /* UILabel+utils.m */,
+				08F03C9218FD8E0600688433 /* UITextView+utils.h */,
+				08F03C9318FD8E0600688433 /* UITextView+utils.m */,
 				08C6355018DD5624005490CB /* UmengUtil.h */,
 				08C6355118DD5624005490CB /* UmengUtil.m */,
 				08C6354D18DD561D005490CB /* Utility_DeviceIdentification.h */,
@@ -4080,6 +4093,8 @@
 				080973EC1816325D0099354E /* ProfileSecondCustomCell.m */,
 				08455E1418C60F990097B3EE /* ProfileCell.h */,
 				08455E1518C60F990097B3EE /* ProfileCell.m */,
+				08F03C8C18FD8AA300688433 /* ProFileEditTableViewCell.h */,
+				08F03C8D18FD8AA300688433 /* ProFileEditTableViewCell.m */,
 				35D6A015183B9C4100CC12B7 /* SetProfileTableCell.h */,
 				35D6A016183B9C4100CC12B7 /* SetProfileTableCell.m */,
 				083309D91851B82700C11BEF /* SetProfileHeadTableCell.h */,
@@ -4844,6 +4859,7 @@
 				08CBB028184824D8004AFE70 /* EmojiTransport.m in Sources */,
 				08CBB020184824D8004AFE70 /* Emoji.m in Sources */,
 				08CBB257184824E3004AFE70 /* XMPPTime.m in Sources */,
+				08F03C8E18FD8AA300688433 /* ProFileEditTableViewCell.m in Sources */,
 				08CBB223184824E3004AFE70 /* TURNSocket.m in Sources */,
 				08CBB2E018486D69004AFE70 /* NSDictionary+Utility.m in Sources */,
 				0871BA4D18450B5C0044F631 /* Judian.m in Sources */,
@@ -4925,6 +4941,7 @@
 				08CBB313184A3365004AFE70 /* Base64Helper.m in Sources */,
 				080974121816325D0099354E /* MainThirdView.m in Sources */,
 				082D369318C32AFB00DB5106 /* MessageInterceptor.m in Sources */,
+				08F03C9518FD8E0600688433 /* UITextView+utils.m in Sources */,
 				08C6355218DD5624005490CB /* UmengUtil.m in Sources */,
 				08CBB215184824E3004AFE70 /* XMPPvCardTempLabel.m in Sources */,
 				08CBB277184824E3004AFE70 /* DDASLLogger.m in Sources */,
@@ -4990,6 +5007,7 @@
 				08270F8F1827DD8000A3D23C /* JastorRuntimeHelper.m in Sources */,
 				08CBB1F1184824E3004AFE70 /* XMPPRoomMessageHybridCoreDataStorageObject.m in Sources */,
 				0870B6F518C722F600A395E5 /* ScrollerMessageControl.m in Sources */,
+				08F03C9418FD8E0600688433 /* UILabel+utils.m in Sources */,
 				0806C19A18575442007D6CFB /* WarnView.m in Sources */,
 				08CBB2F01849E2D1004AFE70 /* ImageMessage.m in Sources */,
 				08B3A1DC18A5C0230010BD0D /* UIFont+AppFont.m in Sources */,
