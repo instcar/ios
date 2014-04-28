@@ -19,11 +19,15 @@
 
 @implementation LogInViewController
 
+-(void)dealloc
+{
+    [super dealloc];
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
         
     }
     return self;
@@ -89,17 +93,24 @@
     //账号
     _userInputView = [[GDInputView alloc]initWithFrame:CGRectMake(5, 40, 230, 36)];
     [_userInputView setAlpha:1.0];
-    [_userInputView.textfield setPlaceholder:@"账号/手机号/邮箱"];
+    [_userInputView.textfield setTag:110];
+    [_userInputView setGdInputDelegate:self];
+//    [_userInputView.textfield setPlaceholder:@"账号/手机号/邮箱"];
+    [_userInputView.textfield setPlaceholder:@"手机号"];
     [_userInputView.textfield setText:[User shareInstance].phoneNum];
+    [_userInputView setResult:([User shareInstance].phoneNum && ![[User shareInstance].phoneNum isEqualToString:@""])?kGDInputViewStatusTure:kGDInputViewStatusNomal];
     [_inputView addSubview:_userInputView];
     [_userInputView release];
     
     //密码
     _codeInputView = [[GDInputView alloc]initWithFrame:CGRectMake(5, 90, 230, 36)];
     [_codeInputView setAlpha:1.0];
+    [_codeInputView.textfield setTag:111];
+    [_codeInputView setGdInputDelegate:self];
     [_codeInputView.textfield setPlaceholder:@"密码"];
     [_codeInputView.textfield setSecureTextEntry:YES];
     [_codeInputView.textfield setText:[User shareInstance].userPwd];
+    [_codeInputView setResult:([User shareInstance].userPwd && ![[User shareInstance].userPwd isEqualToString:@""])?kGDInputViewStatusTure:kGDInputViewStatusNomal];
     [_inputView addSubview:_codeInputView];
     [_codeInputView release];
     
@@ -129,6 +140,7 @@
     [_registerBtn setFrame:CGRectMake(20, 9, 130, 32)];
     [_registerBtn setBackgroundImage:[UIImage imageNamed:@"btn_green_m"] forState:UIControlStateNormal];
     [_registerBtn setImage:[UIImage imageNamed:@"ic_registration"] forState:UIControlStateNormal];
+    [_registerBtn.titleLabel setFont:AppFont(14)];
     [_registerBtn addTarget:self action:@selector(registerBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [_registerBtn setTitle:@"免费注册" forState:UIControlStateNormal];
     [_bottomView addSubview:_registerBtn];
@@ -138,6 +150,7 @@
     [_forgetBtn setBackgroundColor:[UIColor clearColor]];
     [_forgetBtn setFrame:CGRectMake(170, 9, 130, 32)];
     [_forgetBtn setBackgroundImage:[UIImage imageNamed:@"btn_empty_m"] forState:UIControlStateNormal];
+    [_forgetBtn.titleLabel setFont:AppFont(14)];
     [_forgetBtn setTitle:@"忘记密码了?" forState:UIControlStateNormal];
     [_forgetBtn addTarget:self action:@selector(forgetBtnClikcked:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_forgetBtn];
@@ -180,20 +193,17 @@
     
 }
 
--(void)becomeActived
-{
-    [_userInputView.textfield becomeFirstResponder];
-}
-
 -(void)hideKeyBoard
 {
     [_userInputView.textfield resignFirstResponder];
     [_codeInputView.textfield resignFirstResponder];
 }
 
+#pragma mark - 按钮事件
 //注册
 -(void)registerBtnClicked:(id)sender
 {
+    DLog(@"注册");
     RegisterViewController * registerVC = [[RegisterViewController alloc]init];
     [self.navigationController pushViewController:registerVC animated:YES];
     [registerVC release];
@@ -243,25 +253,29 @@
             
             //保存信息
             User * user = [User shareInstance];
-            user.userId = [[respone.data valueForKey:@"uid"]longValue];
+            if ([respone.data valueForKey:@"id"]) {
+                user.userId = [((NSString *)[respone.data valueForKey:@"id"])longLongValue];
+            }
             user.phoneNum = account;
             user.userPwd = password;
             user.isSavePwd = YES;
             
-//            UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:[AppDelegate shareDelegate].mainVC];
-//            [navi setNavigationBarHidden:YES];
-//            [AppDelegate shareDelegate].mainVC.firstEnter = YES;
-//            [[AppDelegate shareDelegate].mainVC enterView];
-//            [navi setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-//            [self presentViewController:navi animated:YES completion:^{
-//                [[AppDelegate shareDelegate].window setRootViewController:navi];
-//            }];
+            UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:[AppDelegate shareDelegate].mainVC];
+            [navi setNavigationBarHidden:YES];
+            [AppDelegate shareDelegate].mainVC.firstEnter = YES;
+            [[AppDelegate shareDelegate].mainVC enterView];
+            [navi setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [self presentViewController:navi animated:YES completion:^{
+                [[AppDelegate shareDelegate].window setRootViewController:navi];
+            }];
         }
         else
         {
             [hub setLabelText:respone.msg];
             [hub hide:YES afterDelay:0.7];
             [_errorWarnLable setText:respone.msg];
+            [_userInputView setResult:kGDInputViewStatusError];
+            [_codeInputView setResult:kGDInputViewStatusError];
         }
     }failure:^(NSError *error) {
         [hub hide:YES];
@@ -295,16 +309,43 @@
 //    }
 //}
 #pragma mark - textDelegate
+-(void)textFieldDidChanged:(UITextField *)textField
+{
+    
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [_errorWarnLable setText:@""];
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if([textField.text length] == 0)
+    {
+        [_userInputView setResult:kGDInputViewStatusNomal];
+        return;
+    }
+    //输入正确与否判断
+    if (textField.tag == 110) {
+        if(![AppUtility validateMobile:textField.text])
+        {
+            [_errorWarnLable setText:@"手机号格式不正确"];
+            [_userInputView setResult:kGDInputViewStatusError];
+        }
+    }
+    if (textField.tag == 111) {
+        if([textField.text length] < 6)
+        {
+            [_errorWarnLable setText:@"密码长度不正确"];
+            [_codeInputView setResult:kGDInputViewStatusError];
+        }
+    }
+}
 
 -(void)backToMain
 {
-//    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     [self.navigationController popViewControllerAnimated:YES];
-}
-
--(void)dealloc
-{
-    [super dealloc];
 }
 
 - (void)didReceiveMemoryWarning

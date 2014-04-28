@@ -69,49 +69,49 @@
     bool everEntered = [[NSUserDefaults standardUserDefaults]boolForKey:@"AlreadyEnterApp"];
     User *user = [User shareInstance];
 
-    ProfileViewController * profileVC = [[ProfileViewController alloc]init];
-    profileVC.uid = [User shareInstance].userId;
-    profileVC.state = 2;
-    UINavigationController *profileNav = [[UINavigationController alloc]initWithRootViewController:profileVC];
-    [profileVC release];
-    [profileNav setNavigationBarHidden:YES];
-    self.window.rootViewController = profileNav;
+//    ProfileViewController * profileVC = [[ProfileViewController alloc]init];
+//    profileVC.uid = [User shareInstance].userId;
+//    profileVC.state = 2;
+//    UINavigationController *profileNav = [[UINavigationController alloc]initWithRootViewController:profileVC];
+//    [profileVC release];
+//    [profileNav setNavigationBarHidden:YES];
+//    self.window.rootViewController = profileNav;
     
 //    PhpTestTableViewController *phpTestTableVC = [[PhpTestTableViewController alloc]init];
 //    self.window.rootViewController = phpTestTableVC;
     //密码是否保存了
-//    if (!everEntered) {
-//        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"AlreadyEnterApp"];
-//        StartViewController * startVC = [[StartViewController alloc] init];
-//        UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:startVC];
-//        [navi setNavigationBarHidden:YES];
-//        self.window.rootViewController = navi;
-//        [startVC release];
-//        [navi release];
-//    }
-//    else
-//        if (user.isSavePwd != YES) {
-//            LogInViewController * logInVC = [[LogInViewController alloc]init];
-//            UINavigationController*nav = [[UINavigationController alloc]initWithRootViewController:logInVC];
-//            [nav setNavigationBarHidden:YES animated:NO];
-//            [nav setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-////            [self presentViewController:nav animated:YES completion:nil];
-//            [[AppDelegate shareDelegate].window setRootViewController:nav];
-//            [logInVC release];
-//            [nav release];
-//        }
-//        else{
-//
-//            [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-//            UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:self.mainVC];
-//            self.mainVC.firstEnter = NO;
-//            [self.mainVC enterView];
-//            [navi setNavigationBarHidden:YES];
-//            self.window.rootViewController = navi;
-//            [self.mainVC release];
-//            [navi release];
-//        }
-    
+    if (!everEntered) {
+        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"AlreadyEnterApp"];
+        StartViewController * startVC = [[StartViewController alloc] init];
+        UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:startVC];
+        [navi setNavigationBarHidden:YES];
+        self.window.rootViewController = navi;
+        [startVC release];
+        [navi release];
+    }
+    else
+        if (user.isSavePwd != YES) {
+            LogInViewController * logInVC = [[LogInViewController alloc]init];
+            UINavigationController*nav = [[UINavigationController alloc]initWithRootViewController:logInVC];
+            [nav setNavigationBarHidden:YES animated:NO];
+            [nav setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+//            [self presentViewController:nav animated:YES completion:nil];
+            [[AppDelegate shareDelegate].window setRootViewController:nav];
+            [logInVC release];
+            [nav release];
+        }
+        else{
+
+            [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+            UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:self.mainVC];
+            self.mainVC.firstEnter = NO;
+            [self.mainVC enterView];
+            [navi setNavigationBarHidden:YES];
+            self.window.rootViewController = navi;
+            [self.mainVC release];
+            [navi release];
+        }
+
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -236,7 +236,7 @@
     DLog(@"applicationDidEnterBackground");
     //清除应用推送数字
     [application setApplicationIconBadgeNumber:0];
-    [[XmppManager sharedInstance]disconnect];
+//    [[XmppManager sharedInstance]disconnect];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -245,10 +245,10 @@
     DLog(@"applicationWillEnterForeground");
     //清除应用推送数字
     [application setApplicationIconBadgeNumber:0];
-    if ([User shareInstance].isSavePwd) {
-        [[LocationServer shareInstance] startLocation];
-        [[XmppManager sharedInstance] connect];
-    }
+//    if ([User shareInstance].isSavePwd) {
+//        [[LocationServer shareInstance] startLocation];
+//        [[XmppManager sharedInstance] connect];
+//    }
     
 }
 

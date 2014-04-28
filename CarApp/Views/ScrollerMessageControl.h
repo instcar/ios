@@ -10,4 +10,6 @@
 
 @interface ScrollerMessageControl : UIControl
 
+- (id)initWithFrame:(CGRect)frame delegate:(id)delegate;
+
 @end

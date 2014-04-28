@@ -80,7 +80,7 @@
     
     UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 27, 200, 30)];
     [titleLabel setBackgroundColor:[UIColor clearColor]];
-    [titleLabel setText:self.myInfo.userName];
+    [titleLabel setText:self.myInfo.name];
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
     [titleLabel setTextColor:[UIColor appNavTitleColor]];
     [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];

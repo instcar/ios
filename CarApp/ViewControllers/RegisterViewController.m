@@ -30,6 +30,8 @@
 {
     [super viewDidLoad];
     
+    _leftSeconds = 60;
+    
 //    UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
 //    naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
 //    
@@ -44,7 +46,7 @@
 //    [navBar release];
 
     UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    [backButton setFrame:CGRectMake(0, 0, 70, 44)];
+    [backButton setFrame:CGRectMake(BarButtonoffsetX, 7, 40, 30)];
     [backButton setBackgroundColor:[UIColor clearColor]];
     [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_normal@2x"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_pressed@2x"] forState:UIControlStateHighlighted];
@@ -60,6 +62,8 @@
     //输入框
     _inputView = [[GDInputView alloc]initWithFrame:CGRectMake(45, 44 + 50 , 230, 36)];
     [_inputView setAlpha:1.0];
+    [_inputView setGdInputDelegate:self];
+    [_inputView.textfield setTag:110];
     [_inputView.textfield setPlaceholder:@"请输入您的手机号"];
     [self.view addSubview:_inputView];
     [_inputView release];
@@ -79,6 +83,8 @@
     
     //输入框
     _authInputView = [[GDInputView alloc]initWithFrame:CGRectMake(45,176+10, 230, 36)];
+    [_authInputView setGdInputDelegate:self];
+    [_authInputView.textfield setTag:111];
     [_authInputView.textfield setPlaceholder:@"请输入6位短信验证"];
     [self.view addSubview:_authInputView];
     [_authInputView release];
@@ -86,6 +92,8 @@
     //输入框
     _passInputView = [[GDInputView alloc]initWithFrame:CGRectMake(45,222+10, 230, 36)];
     [_passInputView.textfield setSecureTextEntry:YES];
+    [_passInputView setGdInputDelegate:self];
+    [_passInputView.textfield setTag:112];
     [_passInputView.textfield setPlaceholder:@"请输入6-12位密码"];
     [self.view addSubview:_passInputView];
     [_passInputView release];
@@ -135,11 +143,12 @@
         [self checkPhone:numbers success:^{
             
             [_confirmBtn setEnabled:YES];
+            
+            _leftSeconds = 60;
             //保存信息
             [User shareInstance].phoneNum = numbers;
             self.countTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(countSecond:) userInfo:nil repeats:YES];
-            _leftSeconds = 60;
-
+            
         } failure:^(NSString *message) {
             [MBProgressHUD showError:message toView:self.view];
         }];
@@ -182,23 +191,35 @@
     //输入异常
     if (phoneNumbers.length < 11) {
         [MBProgressHUD showError:@"手机号有误" toView:self.view];
+        [_inputView setResult:kGDInputViewStatusError];
         return;
     }
     
     if (authword.length < 6 && authword.length > 6) {
         [MBProgressHUD showError:@"验证码有误" toView:self.view];
+        [_authInputView setResult:kGDInputViewStatusError];
         return;
     }
     
     if (password.length < 6 && password.length > 12) {
         [MBProgressHUD showError:@"密码长度有误" toView:self.view];
+        [_passInputView setResult:kGDInputViewStatusError];
         return;
     }
     //注册用户
     [APIClient networkUserRegistWithPhone:phoneNumbers password:password authcode:authword smsid:_smsid success:^(Respone *respone) {
         if (respone.status == kEnumServerStateSuccess) {
-            [[User shareInstance]setUserId:[[respone.data valueForKey:@"uid"] longValue]];
+            
+            User *user = [User shareInstance];
+            [user setPhoneNum:phoneNumbers];
+            [user setPhoneNum:password];
+            [user setIsSavePwd:YES];
+            [user setIsFirstUse:YES];
+            
             [MBProgressHUD showSuccess:respone.msg toView:self.view];
+            
+            [self userLoginWithAccount:phoneNumbers passWord:password];
+            
         }
         else
         {
@@ -209,6 +230,44 @@
     }];
 }
 
+#pragma mark - 注册后直接登入
+-(void)userLoginWithAccount:(NSString *)account passWord:(NSString *)password
+{
+     MBProgressHUD *hub = [MBProgressHUD showMessag:@"正在登录" toView:self.view];
+    [APIClient networkUserLoginWithPhone:account password:password success:^(Respone *respone) {
+        if (respone.status == kEnumServerStateSuccess) {
+            
+            [hub setLabelText:@"登录成功"];
+            [hub hide:YES afterDelay:0.7];
+            
+            //保存信息
+            User * user = [User shareInstance];
+            if ([respone.data valueForKey:@"id"]) {
+                user.userId = [((NSString *)[respone.data valueForKey:@"id"])longLongValue];
+            }
+            user.phoneNum = account;
+            user.userPwd = password;
+            user.isSavePwd = YES;
+            
+            UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:[AppDelegate shareDelegate].mainVC];
+            [navi setNavigationBarHidden:YES];
+            [AppDelegate shareDelegate].mainVC.firstEnter = YES;
+            [[AppDelegate shareDelegate].mainVC enterView];
+            [navi setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [self presentViewController:navi animated:YES completion:^{
+                [[AppDelegate shareDelegate].window setRootViewController:navi];
+            }];
+        }
+        else
+        {
+            [hub setLabelText:respone.msg];
+            [hub hide:YES afterDelay:1.0];
+        }
+    }failure:^(NSError *error) {
+        [hub hide:YES];
+    }];
+}
+
 #pragma mark --验证手机号、获取验证码
 -(void)checkPhone:(NSString *)phone success:(void (^)(void))success failure:(void (^)(NSString *message))failure
 {
@@ -216,18 +275,20 @@
     [APIClient networkCheckPhone:phone success:^(Respone *respone)
     {
          if (respone.status == kEnumServerStateSuccess) {
+             MBProgressHUD *hub = [MBProgressHUD showMessag:@"获取验证码" toView:self.view];
              //获取验证码
              [APIClient networkGetauthcodeWithPhone:phone success:^(Respone *respone) {
                  if (respone.status == kEnumServerStateSuccess) {
                      _phoneNum = [respone.data valueForKey:@"phone"];
-                     _smsid = [respone.data valueForKey:@"smsid"];
+                     _smsid = [[respone.data  valueForKey:@"smsid"] longValue];
                      success();
                  }
                  else
                  {
-                     [_authInputView setResult:kGDInputViewStatusError];
                      failure(respone.msg);
                  }
+                 [hub setLabelText:respone.msg];
+                 [hub hide:YES afterDelay:1.0];
              } failure:^(NSError *error) {
                  
              }];
@@ -241,6 +302,39 @@
 
      }];
 }
+
+#pragma mark - textdelgate gdinputDelegate
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    //输入正确与否判断
+    if (textField.tag == 110) {
+        if(![AppUtility validateMobile:textField.text])
+        {
+            [MBProgressHUD showError:@"手机号格式不正确" toView:self.view];
+            [_inputView setResult:kGDInputViewStatusError];
+        }
+    }
+    if (textField.tag == 111) {
+        if([textField.text length]< 6 || [textField.text length]> 6)
+        {
+            [MBProgressHUD showError:@"验证码长度不正确" toView:self.view];
+            [_authInputView setResult:kGDInputViewStatusError];
+        }
+    }
+    if (textField.tag == 112) {
+        if([textField.text length]< 6)
+        {
+            [MBProgressHUD showError:@"密码长度不正确" toView:self.view];
+            [_passInputView setResult:kGDInputViewStatusError];
+        }
+    }
+}
+
 
 -(void)backToMain
 {

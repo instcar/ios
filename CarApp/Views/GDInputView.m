@@ -12,6 +12,7 @@
 
 -(void)dealloc
 {
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
     [super dealloc];
 }
 
@@ -65,6 +66,8 @@
         
         [self addSubview:_textfield];
         [_textfield release];
+        
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textFieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 
     }
     return self;
@@ -90,13 +93,13 @@
             break;
         case kGDInputViewStatusNomal:
         {
-            [_backGtextImgView setImage:txfBackSelectedImg];
+//            [_backGtextImgView setImage:txfBackSelectedImg];
             [_arrowImgView setImage:[UIImage imageNamed:@"ic_agree_no"]];
         }
             break;
         case kGDInputViewStatusTure:
         {
-            [_backGtextImgView setImage:txfBackSelectedImg];
+//            [_backGtextImgView setImage:txfBackSelectedImg];
             [_arrowImgView setImage:[UIImage imageNamed:@"ic_agree_ok"]];
         }
             break;
@@ -122,6 +125,7 @@
 -(void)hideKeyBorad:(UITapGestureRecognizer *)tappp
 {
     [self downKeyBoard];
+    
 }
 
 -(void)downKeyBoard
@@ -132,6 +136,13 @@
 - (BOOL)textFieldShouldClear:(UITextField *)textField
 {
     return YES;
+}
+
+- (void)textFieldDidChanged:(UITextField *)textField
+{
+    if (self.gdInputDelegate && [self.gdInputDelegate respondsToSelector:@selector(textFieldDidChanged:)]) {
+        [self.gdInputDelegate textFieldDidChanged:textField];
+    }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -148,6 +159,10 @@
     {
         [self setResult:kGDInputViewStatusNomal];
     }
+    
+    if (self.gdInputDelegate && [self.gdInputDelegate respondsToSelector:@selector(textFieldDidEndEditing:)]) {
+        [self.gdInputDelegate textFieldDidEndEditing:textField];
+    }
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -157,10 +172,15 @@
     txfBackSelectedImg = [txfBackSelectedImg stretchableImageWithLeftCapWidth:5 topCapHeight:5];
     
     [_backGtextImgView setImage:txfBackSelectedImg];
-    [_arrowImgView setImage:[UIImage imageNamed:@"ic_agree_no"]];
+//    [_arrowImgView setImage:[UIImage imageNamed:@"ic_agree_no"]];
+    [self setResult:kGDInputViewStatusNomal];
+    
+    if (self.gdInputDelegate && [self.gdInputDelegate respondsToSelector:@selector(textFieldDidBeginEditing:)]) {
+        [self.gdInputDelegate textFieldDidBeginEditing:textField];
+    }
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     //    if (textField.tag == kCodeTextFieldTag) {
     //        [_codeInputView setResult:kGDInputViewStatusNomal];
@@ -172,6 +192,10 @@
     if ([string isEqualToString:@"\n"])
     {
         return YES;
+    }
+    
+    if (self.gdInputDelegate && [self.gdInputDelegate respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:)]) {
+        [self.gdInputDelegate textField:textField shouldChangeCharactersInRange:range replacementString:string];
     }
     
     return YES;

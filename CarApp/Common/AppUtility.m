@@ -374,13 +374,6 @@ static NSDateFormatter *dateFormate=nil;
     return roomName;
 }
 
-+(NSString *)jidWithuid:(long)uid
-{
-    //格式化xmpp uid名字
-    NSString *uidStr = [NSString stringWithFormat:@"%@%ld",kJidPrdfix,uid];
-    NSString *jid = [NSString stringWithFormat:@"%@@%@/InstcarXmppIOS",uidStr,kopenFireMasterName];
-    return jid;
-}
 
 
 @end

@@ -253,7 +253,7 @@
                 break;
         }
         
-        NSString *showText = [NSString stringWithFormat:@"%@,%@",[PeopleManager getPeopleWithFriendID:systemMessage.fid].userName,inputText]; //谁，干嘛了
+        NSString *showText = [NSString stringWithFormat:@"%@,%@",[PeopleManager getPeopleWithFriendID:systemMessage.fid].name,inputText]; //谁，干嘛了
         
         sayBubble = [NSBubbleData dataWithText:showText date:systemMessage.date type:BubbleTypeSystem contentType:BubbleContentSystem];
     }
@@ -413,7 +413,7 @@
                 break;
         }
         
-        NSString *showText = [NSString stringWithFormat:@"%@,%@",[PeopleManager getPeopleWithFriendID:systemMessage.fid].userName,inputText]; //谁，干嘛了
+        NSString *showText = [NSString stringWithFormat:@"%@,%@",[PeopleManager getPeopleWithFriendID:systemMessage.fid].name,inputText]; //谁，干嘛了
         NSBubbleData *bubbleData = [NSBubbleData dataWithText:showText date:[NSDate date] type:BubbleTypeSystem contentType:BubbleContentSystem];
         bubbleData.avatar = [PeopleManager getPeopleWithFriendID:systemMessage.fid].headpic;
         [_bubbleArray addObject:bubbleData];

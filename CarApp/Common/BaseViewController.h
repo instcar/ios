@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#define BarButtonoffsetY (SYSTEM_VERSION_MORE_THAN(7.0)?(20+7):7)
+#define BarButtonoffsetX 10.0
+
 @interface BaseViewController : UIViewController
 
 @end

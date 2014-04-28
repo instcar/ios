@@ -50,6 +50,5 @@
 +(NSString *)userNameFromUserID:(long)userid;
 +(long)useridFromUserName:(NSString *)userName;//群聊天室
 +(long)useridFromRoomName:(NSString *)userName;//群聊天室里面的用户
-+(NSString *)jidWithuid:(long)uid;//用户ID
 
 @end

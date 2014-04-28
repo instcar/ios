@@ -56,6 +56,7 @@
 
 +(void)insertPeopleShortInfo:(People *)people
 {
+    /*
     FMDatabase * db = [DataBase getDataBase];
 	if (![db open])
     {
@@ -78,11 +79,12 @@
     {
         [db executeUpdate:@"INSERT INTO PeopleCacheList (headpic ,LastCoord ,LastLoginTime,UserID,Sex,UserName)  VALUES (?,?,?,?,?,?)",people.headpic,people.lastcoord,people.lastloginTime,[NSNumber numberWithLong:people.ID],people.sex,people.userName];
     }
+     */
 }
 
 +(People *)getPeopleWithFriendID:(int)peopleID
 {
-    
+    /*
     FMDatabase * db = [DataBase getDataBase];
 	if (![db open])
     {
@@ -109,6 +111,8 @@
         people.sex = [[rs stringForColumn:@"Sex"] copy];
     }
     return people;
+     */
+    return nil;
 }
 
 +(BOOL)deletePeopleCache

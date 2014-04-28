@@ -16,6 +16,7 @@
 
 //@property (retain, nonatomic) NSDictionary * configurationDic;//聊天室的配置 创建房间的时候使用
 @property (assign, nonatomic) long roomID;  //房间id
+@property (copy, nonatomic) NSString *openfireRoomName;   //openfire的房间Name 手机号
 @property (assign, nonatomic) BOOL isRoomMaster; //是不是房主
 @property (assign, nonatomic) int status; //房间状态
 @property (assign, nonatomic) int userState; //1为为未准备 2为准备

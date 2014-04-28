@@ -16,7 +16,7 @@
 static XmppManager *sharedXmppManagerInstance = nil;
 @interface XmppManager()
 
--(NSString *)jidWithuid:(long)uid;//格式化jid
+-(NSString *)jidWithPhone:(NSString *)phone;//格式化jid
 @property (copy, nonatomic)void (^createGroupRoomResult)(bool state);
 @property (copy, nonatomic)void (^configurationRoomResult)(bool state);
 @end
@@ -67,7 +67,7 @@ static XmppManager *sharedXmppManagerInstance = nil;
 - (void)networkChanged
 {
     if (![self.xmppStream isConnected] && [[AppDelegate shareDelegate].reachability currentReachabilityStatus] != kNotReachable) {
-        [self connect];
+//        [self connect];
     }
     
     if ([[AppDelegate shareDelegate].reachability currentReachabilityStatus] == kNotReachable && [self.xmppStream isConnected]) {
@@ -84,7 +84,7 @@ static XmppManager *sharedXmppManagerInstance = nil;
         return YES;
     }
     
-    NSString *jid = [self jidWithuid:[User shareInstance].userId];
+    NSString *jid = [self jidWithPhone:[User shareInstance].phoneNum];
     NSString *ps = kXmppAccountPassword;
 //    [JDStatusBarNotification showWithStatus:@"连接中" styleName:@"style"];
     if (jid == nil || ps == nil) {
@@ -134,33 +134,28 @@ static XmppManager *sharedXmppManagerInstance = nil;
 	_xmppReconnect	= nil;
 }
 
-
--(NSString *)jidWithuid:(long)uid
+//2.0版本
+-(NSString *)jidWithPhone:(NSString *)phone
 {
     //格式化xmpp uid名字
-    NSString *uidStr = [NSString stringWithFormat:@"%@%ld",kJidPrdfix,uid];
-    NSString *jid = [NSString stringWithFormat:@"%@@%@/InstcarXmppIOS",uidStr,kopenFireMasterName];
+    NSString *jid = [NSString stringWithFormat:@"%@@%@/InstcarXmppIOS",phone,kopenFireMasterName];
     return jid;
 }
 
--(void)createGroup:(NSString *)groupName result:(void(^)(bool state))resultState;
+-(void)joinGroup:(NSString *)groupName result:(void(^)(bool state))resultState;
 {
-    groupName = [NSString stringWithFormat:@"%@%@",KRoomNamePrdFix,groupName];
+//    groupName = [NSString stringWithFormat:@"%@%@",KRoomNamePrdFix,groupName];
 //创建一个新的群聊房间,roomName是房间名 Nickname是房间里自己所用的昵称
-    NSString * username= [self jidWithuid:[User shareInstance].userId];
-//    NSString * username= [User shareInstance].userName;
-    NSString * hostname = kopenFireMasterName;
-    
-    NSString * roomName = [NSString stringWithFormat:@"%@@conference.%@/%@",groupName,hostname,username];
-//    NSString * roomName = [NSString stringWithFormat:@"%@@conference.%@",groupName,hostname];
+    NSString *username = [self jidWithPhone:[User shareInstance].phoneNum];
+//    NSString * hostname = kopenFireMasterName;
+//    NSString * roomName = [NSString stringWithFormat:@"%@@conference.%@/%@",groupName,hostname,username];
+    DLog(@"%@",groupName);
+    NSString *roomName = [NSString stringWithFormat:@"%@/%@",groupName,username];
     self.roomName = roomName;
-    
     _xmppRoomStorage  = [XMPPRoomCoreDataStorage sharedInstance];
-    
     XMPPJID *roomJID = [XMPPJID jidWithString:roomName];
     
     self.xmppRoom = [[XMPPRoom alloc] initWithRoomStorage:_xmppRoomStorage jid:roomJID dispatchQueue:dispatch_get_main_queue()];
-    
     [self.xmppRoom activate:_xmppStream];
     //设为默认设置
     [self.xmppRoom fetchConfigurationForm];
@@ -168,7 +163,6 @@ static XmppManager *sharedXmppManagerInstance = nil;
     
     NSXMLElement *historyElement=[NSXMLElement elementWithName:@"history"];
     
-    //    [xmppRoom joinRoomUsingNickname:[[NSUserDefaults standardUserDefaults] valueForKey:kMyJID] history:historyElement password:@"111"];
     [self.xmppRoom joinRoomUsingNickname:username history:historyElement password:KRoomPass];
     
     self.createGroupRoomResult = [resultState copy];

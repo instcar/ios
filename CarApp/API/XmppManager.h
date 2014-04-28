@@ -13,10 +13,11 @@
 
 //服务器地址
 #define kOpenFireHost @"115.28.231.132"
-#define kopenFireMasterName @"ay140222164105110546z"
-#define kOpenFirePort 5222													// openFire服务器地址
-#define kXmppAccountPassword @"instcar123456"                               // openfire用户地址
-#define kJidPrdfix @"instcar"                                               // openfire用户前缀
+#define kopenFireMasterName @"ay140222164105110546z" //@"ay140222164105110546z"
+#define kOpenFirePort 13000 //5222													// openFire服务器地址
+#define kXmppAccountPassword @"123456" //@"instcar123456"                           // openfire用户地址
+//v2.0版本使用 手机号替代 instcar + uid
+#define kJidPrdfix @"instcar"                                                       // openfire用户前缀
 
 @class CommonMessage;
 @protocol ChatDelegate;
@@ -47,12 +48,12 @@
 +(XmppManager *)sharedInstance;
 
 //辅助属性
--(NSString *)jidWithuid:(long)uid;
+-(NSString *)jidWithPhone:(NSString *)phone;//格式化jid
 
 - (void)setupStream;
 - (BOOL)connect;
 
-- (void)createGroup:(NSString*)groupName result:(void(^)(bool state))resultState;;//创建房间
+- (void)joinGroup:(NSString*)groupName result:(void(^)(bool state))resultState;;//加入房间
 //房主配置房间 配置属性在 xmppRoomManager
 - (void)configuration:(NSXMLElement *)configuration result:(void(^)(bool state))resultState;;
 - (void)leaveRoom; //没有准备的用户 离开房间直接退出房间///准备的用户将不退出房间，可以接受推送消息

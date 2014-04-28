@@ -111,7 +111,7 @@
     }
 
     //xmpp连接
-    [[XmppManager sharedInstance]connect];
+//    [[XmppManager sharedInstance]connect];
     
     //获取用户信息
     [self getUserInfo];
@@ -303,7 +303,7 @@
         
         if (flag) {
             People *people = [[People alloc]initFromDic:userInfo];
-            [User shareInstance].userName = people.userName;
+            [User shareInstance].userName = people.name;
             [User shareInstance].userData = [NSMutableDictionary dictionaryWithDictionary:userInfo];//保存网络请求下来的数据
             [PeopleManager insertPeopleShortInfo:people];
         }

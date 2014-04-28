@@ -36,6 +36,12 @@
     [super dealloc];
 }
 
+- (id)initWithFrame:(CGRect)frame delegate:(id)delegate
+{
+    self = [super initWithFrame:frame];
+    return self;
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

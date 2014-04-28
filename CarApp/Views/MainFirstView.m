@@ -9,6 +9,7 @@
 #import "MainFirstView.h"
 #import "PassengerRouteUIViewController.h"
 #import "GetRouteViewController.h"
+#import "GroupChatViewController.h"
 
 @implementation MainFirstView
 
@@ -48,19 +49,56 @@
 -(void)driverGetRoute
 {
     if (self.mainVC) {
-        GetRouteViewController * routeVC = [[GetRouteViewController alloc]init];
-        [self.mainVC.navigationController pushViewController:routeVC animated:YES];
-        [routeVC release];
+//        GetRouteViewController * routeVC = [[GetRouteViewController alloc]init];
+//        [self.mainVC.navigationController pushViewController:routeVC animated:YES];
+//        [routeVC release];
+        DLog(@"%@",[User shareInstance].phoneNum);
+        [APIClient networkCreatRoomWithUser_phone:[User shareInstance].phoneNum line_id:1 price:10 description:@"MrLu测试房间" start_time:@"2014-04-27"  max_seat_num:4 success:^(Respone *respone) {
+            if (respone.status == kEnumServerStateSuccess) {
+                DLog(@"%@",respone.data);
+                [SVProgressHUD showSuccessWithStatus:respone.msg];
+                //创建成功进入聊天室
+                GroupChatViewController * gVC = [[GroupChatViewController alloc]init];
+                gVC.roomID = [(NSString *)[respone.data valueForKey:@"id"] intValue];
+                gVC.openfireRoomName = [respone.data valueForKey:@"openfire"];
+                gVC.isRoomMaster = NO;
+                gVC.userState = 1;
+                [self.mainVC.navigationController pushViewController:gVC animated:YES];
+                [gVC release];
+            }
+            else
+            {
+                [SVProgressHUD showErrorWithStatus:respone.msg];
+            }
+        } failure:^(NSError *error) {
+            
+        }];
     }
 }
 
 -(void)enterPassenger
 {
     if (self.mainVC) {
+        /*
         PassengerRouteUIViewController * pVC = [[PassengerRouteUIViewController alloc]init];
         pVC.state = 1;
         [self.mainVC.navigationController pushViewController:pVC animated:YES];
         [pVC release];
+         */
+        
+        [APIClient networkCloseRoomWithroom_id:5 success:^(Respone *respone) {
+            if (respone.status == kEnumServerStateSuccess) {
+                DLog(@"%@",respone.msg);
+            }
+            else
+            {
+                DLog(@"");
+            }
+        } failure:^(NSError *error) {
+            
+        }];
+        
+        
     }
 }
 

@@ -389,11 +389,11 @@
 {
     //保存聊天记录
     [self insertCommonMessage:message];
-    
-    XMPPMessage *xmessage = [XMPPMessage messageWithType:@"chat" to:[XMPPJID jidWithString: [AppUtility jidWithuid:message.fid]]];
-    //发送到xmpp时对内容进行加密，客户端接受的时候进行解密
-    [xmessage addBody:[message.content stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    [[XmppManager sharedInstance].xmppStream sendElement:xmessage];
+
+//    XMPPMessage *xmessage = [XMPPMessage messageWithType:@"chat" to:[XMPPJID jidWithString: [AppUtility jidWithuid:message.fid]]];
+//    //发送到xmpp时对内容进行加密，客户端接受的时候进行解密
+//    [xmessage addBody:[message.content stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//    [[XmppManager sharedInstance].xmppStream sendElement:xmessage];
 }
 //+(void)sendMessage:(CommonMessage *)message
 //{

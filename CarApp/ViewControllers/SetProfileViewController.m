@@ -195,7 +195,7 @@
         
         if (flag) {
             People *people = [[People alloc]initFromDic:userInfo];
-            [User shareInstance].userName = people.userName;
+            [User shareInstance].userName = people.name;
             [User shareInstance].userData = [NSMutableDictionary dictionaryWithDictionary:userInfo];//保存网络请求下来的数据
             [User shareInstance].phoneNum = people.phone;
             [User shareInstance].userId = people.ID;
@@ -261,7 +261,7 @@
 //            [headCell.carImageView setHidden:NO];
             [headCell.titleLabel setHidden:YES];
             
-            [headCell.nameLabel setText:self.userInfo.userName];
+            [headCell.nameLabel setText:self.userInfo.name];
             [headCell.sexLabel setText:self.userInfo.sex];
             [headCell.ageLable setText:[NSString stringWithFormat:@"%d",self.userInfo.age]];
 //            if (self.userInfo.realName && [self.userInfo.realName isEqualToString:@""]) {
@@ -300,7 +300,7 @@
             [headCell.photoImgView setFrame:CGRectMake(9, 9, 92, 92)];
         }
         
-        if (self.userInfo.userName && ![self.userInfo.userName isEqualToString:@""]) {
+        if (self.userInfo.name && ![self.userInfo.name isEqualToString:@""]) {
             [headCell.photoImgView setImageWithURL:[NSURL URLWithString:self.userInfo.headpic] placeholderImage:[UIImage imageNamed:@"delt_camera"]];
         }
         else
@@ -327,9 +327,9 @@
 
             if (indexPath.row == 0) {
                 [cell.titleLabel setText:@"昵称"];
-                if (self.userInfo.userName && ![self.userInfo.userName isEqualToString:@""]) {
+                if (self.userInfo.name && ![self.userInfo.name isEqualToString:@""]) {
                     [cell.infoLabel setTextColor:[UIColor blackColor]];
-                    [cell.infoLabel setText:self.userInfo.userName];
+                    [cell.infoLabel setText:self.userInfo.name];
                 }
                 else
                 {
@@ -408,7 +408,7 @@
 
             [cell.titleLabel setText:@"公司地址"];
             
-            NSString * company = self.userInfo.companyaddress;
+            NSString * company = self.userInfo.detail.comp_addr;
             
             if ([company isEqualToString:@""] || company.length ==0) {
                 [cell.infoLabel setTextColor:[UIColor lightGrayColor]];
@@ -425,7 +425,7 @@
         if (indexPath.row == (self.canEdit==YES?5:2)) {
             [cell.titleLabel setText:@"家庭地址"];
             
-            NSString * home = self.userInfo.homeaddress;
+            NSString * home = self.userInfo.detail.home_addr;
             
             if ([home isEqualToString:@""] || home.length ==0) {
                 [cell.infoLabel setTextColor:[UIColor lightGrayColor]];

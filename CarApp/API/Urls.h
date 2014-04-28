@@ -48,6 +48,7 @@
 
 
 //PHPServer RequestUrl
+#pragma mark - 用户
     /**
      检测手机号是否可用
      @pram   phone (NSString *) 手机号
@@ -83,19 +84,64 @@
     #define API_POST_Login [NSString stringWithFormat:@"%@server/user/login",PHPHOST]
 
     /**
+     登出
+     @pram phone (NSString) 电话号码
+     @pram password (NSString) 手机号
+     */
+    #define API_POST_LoginOut [NSString stringWithFormat:@"%@server/user/logout",PHPHOST]
+
+    /**
      获取用户信息
      @pram uid (lond) 用户ID
      */
     #define API_POST_GetUserDetail [NSString stringWithFormat:@"%@server/user/detail",PHPHOST]
 
     /**
-     根据ID获取路线列表
+     编辑用户信息
+     */
+    #define API_POST_EditUserInfo [NSString stringWithFormat:@"%@server/user/edit",PHPHOST]
+
+    /**
+     用户新增车辆信息
+     */
+    #define API_POST_UserAddCar [NSString stringWithFormat:@"%@server/user/addcar",PHPHOST]
+
+    /**
+     获取用户全部车辆
+     */
+    #define API_POST_UserGetCars [NSString stringWithFormat:@"%@server/user/getcars",PHPHOST]
+    /**
+     用户实名请求
+     */
+    #define API_POST_UserRealnameRequest [NSString stringWithFormat:@"%@server/user/realnamerequest",PHPHOST]
+
+
+
+#pragma mark - 管理员/用户自主管理线路<暂未使用>
+    /**
+     新增线路基本信息
+     */
+    #define API_POST_AddLine [NSString stringWithFormat:@"%@server/line/addline",PHPHOST]
+
+    /**
+     编辑线路
+     */
+    #define API_POST_EditLine [NSString stringWithFormat:@"%@ server/line/editline",PHPHOST]
+
+    /**
+     删除路线
+     */
+    #define API_POST_DelLine [NSString stringWithFormat:@"%@ server/line/delline",PHPHOST]
+
+#pragma mark - 据点
+    /**
+     根据据点ID获取路线列表
      @pram pointid (long) 聚点ID
      @pram page (int) 获取的页码
      @pram rows (int) 每页条数
      @pram all (int) 是否回去全部据点信息
      */
-    #define API_POST_GetListLienByJudianID [NSString stringWithFormat:@"%@server/line/listlinebypointid",PHPHOST]
+    #define API_POST_GetListLineByJudianID [NSString stringWithFormat:@"%@server/line/listlinebypointid",PHPHOST]
 
     /**
      根据关键词获取路线列表
@@ -104,7 +150,48 @@
      @pram rows (int) 每页条数
      @pram all (int) 是否回去全部据点信息
      */
-    #define API_POST_GetListLienByTag [NSString stringWithFormat:@"%@server/line/listlinebypointid",PHPHOST]
+    #define API_POST_GetListLineByTag [NSString stringWithFormat:@"%@server/line/listlinebypointid",PHPHOST]
+    /**
+     根据线路ID获取线路详情
+     */
+    #define API_POST_GetlistlineByID [NSString stringWithFormat:@"%@server/line/listlinebyid",PHPHOST]
+
+    /**
+     收藏路线
+     */
+    #define API_POST_AddFavoriteLine [NSString stringWithFormat:@"%@server/line/favorite",PHPHOST]
+
+    /**
+     获取用户收藏线路列表
+     */
+    #define API_POST_GetFavoriteLineList [NSString stringWithFormat:@"%@server/line/favoritelist",PHPHOST]
+
+#pragma mark - 用户管理据点<暂时不使用>
+
+    /**
+     新增聚点
+     */
+    #define API_POST_AddPoint [NSString stringWithFormat:@"%@server/point/add",PHPHOST]
+
+    /**
+     编辑据点
+     */
+    #define API_POST_EditPoint [NSString stringWithFormat:@"%@server/point/edit",PHPHOST]
+
+    /**
+     删除据点
+     */
+    #define API_POST_DelPoint  [NSString stringWithFormat:@"%@server/point/del",PHPHOST]
+
+    /**
+     获取聚点分页数据
+     */
+    #define API_POST_GetPointList [NSString stringWithFormat:@"%@server/point/list",PHPHOST]
+
+    /**
+     根据经纬度获取最近的聚点分页数据
+     */
+    #define API_POST_GetNearestList [NSString stringWithFormat:@"%@server/point/nearestlist",PHPHOST]
 
     /**
      上传图片
@@ -118,5 +205,61 @@
      file_*	FILE		文件*
      */
     #define API_POST_UpLoadImageFile [NSString stringWithFormat:@"%@server/image/upload",PHPHOST]
+
+#pragma mark - 房间
+    /**
+     创建房间
+     */
+    #define API_POST_CreatRoom [NSString stringWithFormat:@"%@server/room/create",PHPHOST]
+
+    /**
+     删除房间
+     */
+    #define API_POST_CloseRoom [NSString stringWithFormat:@"%@server/room/close",PHPHOST]
+
+    /**
+     司机修改房间说明
+     */
+    #define API_POST_Changeroomdesc [NSString stringWithFormat:@"%@server/room/changeroomdesc",PHPHOST]
+
+    /**
+     司机修改出发时间
+     */
+    #define API_POST_Changestarttime [NSString stringWithFormat:@"%@server/room/changestarttime",PHPHOST]
+
+    /**
+     司机修改最大座位数目
+     */
+    #define API_POST_Changeroommaxseatnum [NSString stringWithFormat:@"%@server/room/changemaxseatnum",PHPHOST]
+
+    /**
+     司机修改房间状态
+     */
+    #define API_POST_Changeroomstate [NSString stringWithFormat:@"%@server/room/changestate",PHPHOST]
+
+    /**
+     乘客加入房间
+     */
+    #define API_POST_RoomJoin [NSString stringWithFormat:@"%@server/room/join",PHPHOST]
+
+    /**
+     乘客退出房间
+     */
+    #define API_POST_QuitRoom [NSString stringWithFormat:@"%@server/room/quit",PHPHOST]
+
+    /**
+     查询某条路线的房间列表
+     */
+    #define API_POST_Getlinerooms [NSString stringWithFormat:@"%@server/room/getlinerooms",PHPHOST]
+
+    /**
+     查询某房间的用户列表
+     */
+    #define API_POST_Getroomusers [NSString stringWithFormat:@"%@server/room/getroomusers",PHPHOST]
+
+    /**
+     查询单个房间信息
+     */
+
 
 #endif

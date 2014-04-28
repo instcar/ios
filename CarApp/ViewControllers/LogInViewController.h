@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GDInputView.h"
 
-@interface LogInViewController : UIViewController<UITextFieldDelegate>
+@interface LogInViewController : UIViewController<UITextFieldDelegate,GDInputDelegate>
 {
     UIImageView *_bottomView;
     UIView *_inputView;
@@ -20,5 +20,6 @@
     UIButton *_registerBtn;
     UIButton *_forgetBtn;
     UIScrollView *_mainScrollView;
+    
 }
 @end

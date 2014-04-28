@@ -7,6 +7,7 @@
 //
 
 #import "NetTool.h"
+#import "APIClient.h" //登入超时后自动登入
 
 @implementation NetTool
 
@@ -79,12 +80,13 @@
     [request setCacheStoragePolicy:ASICachePermanentlyCacheStoragePolicy];
     [request setDownloadCache:[ASIDownloadCache sharedCache]];
     [request setRequestMethod:@"GET"];
+    [request setResponseEncoding:NSUnicodeStringEncoding];
     [request setCompletionBlock:^{
         NSString *responseString = [request responseString];
         //保存cookies
         [[User shareInstance]setCookies:[request responseCookies]];
         NSDictionary *jsonDic = [responseString objectFromJSONString];
-        
+        DLog(@"%@",jsonDic);
         kEnumServerState status = [[jsonDic valueForKey:@"status"]intValue];
         NSObject *data = [jsonDic objectForKey:@"data"];
         NSString *msg = [jsonDic valueForKey:@"msg"];
@@ -114,9 +116,12 @@
     NSMutableArray *cookies = [NSMutableArray arrayWithArray:[User shareInstance].cookies];
     [request setRequestCookies:cookies];
     [request setRequestMethod:@"POST"];
+    [request setResponseEncoding:NSUnicodeStringEncoding];
     [request setCompletionBlock:^{
         NSString *responseString = [request responseString];
+        
         NSDictionary *jsonDic = [responseString objectFromJSONString];
+        DLog(@"%@",jsonDic);
         //保存cookies
         [[User shareInstance]setCookies:[request responseCookies]];
         
@@ -128,6 +133,16 @@
         
         if (respone.status == kEnumServerStateNoLogin) {
             //后台重新登入
+            DLog(@"登入超时");
+            User *user = [User shareInstance];
+            if (!user.phoneNum || !user.userPwd || !user.isSavePwd) {
+                return;
+            }
+            [APIClient networkUserLoginWithPhone:user.phoneNum password:user.userPwd success:^(Respone *respone) {
+                DLog(@"重新自动登入");
+            } failure:^(NSError *error) {
+               
+            }];
         }
         
         success(respone);
@@ -163,11 +178,12 @@
     {
         [request setPostValue:[formData valueForKey:key] forKey:key];
     }
-    
+    [request setResponseEncoding:NSUnicodeStringEncoding];
     [request setRequestMethod:@"POST"];
     [request setCompletionBlock:^{
         
         NSString *responseString = [request responseString];
+         DLog(@"%@",responseString);
         //保存cookies
         [[User shareInstance]setCookies:[request responseCookies]];
         NSDictionary *jsonDic = [responseString objectFromJSONString];
@@ -211,10 +227,11 @@
     {
         [request setPostValue:[formData valueForKey:key] forKey:key];
     }
-    
+    [request setResponseEncoding:NSUnicodeStringEncoding];
     [request setRequestMethod:@"POST"];
     [request setCompletionBlock:^{
         NSString *responseString = [request responseString];
+        DLog(@"%@",responseString);
         //保存cookies
         [[User shareInstance]setCookies:[request responseCookies]];
         NSDictionary *jsonDic = [responseString objectFromJSONString];

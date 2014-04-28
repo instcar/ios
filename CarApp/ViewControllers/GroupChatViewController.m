@@ -87,12 +87,13 @@
 {
     [super viewWillAppear:animated];
     
+    [[XmppManager sharedInstance] connect];
+    
     //聊天数据代理绑定
     [[XmppManager sharedInstance] setChatDelegate:self];
-
+    
     //刷新房间信息
     [self refreshRoomInfo];
-
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -100,7 +101,7 @@
     [super viewDidAppear:animated];
 
     
-    [self performSelector:@selector(connectRoom) withObject:nil afterDelay:0.1];
+//    [self performSelector:@selector(connectRoom) withObject:nil afterDelay:0.1];
 }
 
 - (void)UIApplicationbecomeActivity
@@ -317,7 +318,9 @@
     [flowHelpView showWithInView:mainView];
     self.flowHelpView = flowHelpView;
     
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(UIApplicationbecomeActivity) name:UIApplicationDidBecomeActiveNotification object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(UIApplicationbecomeActivity) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(connectRoom) name:@"XmppStreamConnected" object:nil];
 }
 
 -(void)connectRoom
@@ -330,8 +333,9 @@
         return;
     }
     
-    [[XmppManager sharedInstance]createGroup:[NSString stringWithFormat:@"%ld",self.roomID]result:^(bool state) {
+    [[XmppManager sharedInstance]joinGroup:self.openfireRoomName result:^(bool state) {
         if (state) {
+            DLog(@"登入房间成功");
             if (self.roomConfiguration && self.roomConfiguration != nil) {
                [ [XmppManager sharedInstance] configuration:self.roomConfiguration result:^(bool state) {
                     if (state) {
@@ -448,7 +452,7 @@
                 break;
         }
         
-        NSString *showText = [NSString stringWithFormat:@"%@,%@",[PeopleManager getPeopleWithFriendID:systemMessage.fid].userName,inputText]; //谁，干嘛了
+        NSString *showText = [NSString stringWithFormat:@"%@,%@",[PeopleManager getPeopleWithFriendID:systemMessage.fid].name,inputText]; //谁，干嘛了
     
         sayBubble = [NSBubbleData dataWithText:showText date:systemMessage.date type:BubbleTypeSystem contentType:BubbleContentSystem];
         sayBubble.message = systemMessage;
@@ -693,7 +697,7 @@
                 break;
         }
         
-        NSString *showText = [NSString stringWithFormat:@"%@,%@",[PeopleManager getPeopleWithFriendID:systemMessage.fid].userName,inputText]; //谁，干嘛了
+        NSString *showText = [NSString stringWithFormat:@"%@,%@",[PeopleManager getPeopleWithFriendID:systemMessage.fid].name,inputText]; //谁，干嘛了
         NSBubbleData *bubbleData = [NSBubbleData dataWithText:showText date:[NSDate date] type:BubbleTypeSystem contentType:BubbleContentSystem];
         bubbleData.avatar = [PeopleManager getPeopleWithFriendID:systemMessage.fid].headpic;
         [_bubbleArray addObject:bubbleData];

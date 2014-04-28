@@ -62,6 +62,13 @@
     [_navBar addSubview:_titleLabel];
     [_titleLabel release];
     
+    _headerImgView = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH - 110,BarButtonoffsetY+2, 110, 25)];
+    [_headerImgView setBackgroundColor:[UIColor clearColor]];
+    [_headerImgView setImage:[UIImage imageNamed:@"logo_start"]];
+    [_navBar addSubview:_headerImgView];
+    [_headerImgView setHidden:YES];
+    [_headerImgView release];
+    
     float messageOffsetY = (kDeviceVersion >= 7.0?64:44);
     
     UIImage * welcomeImage = [UIImage imageNamed:@"nav_hint@2x"];
@@ -82,7 +89,7 @@
     [_desLable release];
     
     UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    [backButton setFrame:CGRectMake(0, 20, 70, 44)];
+    [backButton setFrame:CGRectMake(BarButtonoffsetX, BarButtonoffsetY, 40, 30)];
     [backButton setBackgroundColor:[UIColor clearColor]];
     [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_normal@2x"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_pressed@2x"] forState:UIControlStateHighlighted];
@@ -96,16 +103,40 @@
         [_ctitle release];
         _ctitle = ctitle;
     }
+    if ([ctitle isEqualToString:@"logo"]) {
+        [_titleLabel setHidden:YES];
+        [_headerImgView setHidden:NO];
+    }
+    else
+    {
+        [_titleLabel setHidden:NO];
+        [_headerImgView setHidden:YES];
+    }
+
     [_titleLabel setText:ctitle];
 }
 
 - (void)setDesText:(NSString *)desText
 {
     if (desText) {
+        
         [_desText release];
         _desText = desText;
+        
+        if ([desText isEqualToString:@"null"]) {
+            [_messageBgView setHidden:YES];
+        }
+        else
+        {
+            [_messageBgView setHidden:NO];
+            [_desLable setText:desText];
+        }
     }
-    [_desLable setText:desText];
+    else
+    {
+        [_desLable setText:@"主人比较懒，都没有写心情偶"];
+    }
+    
 }
 
 - (void)setMessageView:(UIView *)messageView
@@ -119,7 +150,8 @@
         [_leftBtn release];
         _leftBtn = leftBtn;
     }
-    [_leftBtn setFrame:CGRectMake(0, 20, 70, 44)];
+    [_leftBtn setFrame:CGRectMake(BarButtonoffsetX, BarButtonoffsetY, 40, 30)];
+    [_navBar addSubview:_leftBtn];
 }
 
 - (void)setRightBtn:(UIButton *)rightBtn
@@ -128,7 +160,9 @@
         [_rightBtn release];
         _rightBtn = rightBtn;
     }
-    [_rightBtn setFrame:CGRectMake(320- 70, 20, 70, 44)];
+    [_rightBtn setFrame:CGRectMake(SCREEN_WIDTH - 40 - BarButtonoffsetX, BarButtonoffsetY, 40, 30)];
+    [_navBar addSubview:_rightBtn];
+    
 }
 
 - (void)backToMain

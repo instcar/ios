@@ -17,6 +17,7 @@
         [self setClipsToBounds:NO];
         [self.contentView setClipsToBounds:NO];
         [self.contentView setBackgroundColor:[UIColor whiteColor]];
+        
         self.photoImgView = [[[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 95, 95)]autorelease];
 //        [self.photoImgView.layer setShadowColor:[UIColor darkGrayColor].CGColor];
 //        [self.photoImgView.layer setShadowOpacity:1.0];
@@ -30,13 +31,59 @@
         [self.photoImgView setHidden:NO];
         [self.contentView addSubview:self.photoImgView];
         
+        self.userSingleInfoImageView = [[[UIImageView alloc]initWithFrame:CGRectMake(110, 10, 320-115, 95)]autorelease];
+        [self.userSingleInfoImageView setImage:[[UIImage imageNamed:nil] stretchableImageWithLeftCapWidth:10 topCapHeight:10]];
+        [self.userSingleInfoImageView.layer setCornerRadius:2.0];
+        [self.userSingleInfoImageView.layer setMasksToBounds:YES];
+        [self.userSingleInfoImageView.layer setBorderWidth:0.5];
+        [self.userSingleInfoImageView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+        [self.userSingleInfoImageView setHidden:NO];
+        [self.contentView addSubview:self.userSingleInfoImageView];
+        
+        UILabel *alisLable = [[[UILabel alloc]initWithFrame:CGRectMake(15, 17, 40, 15)]autorelease];
+        [alisLable setBackgroundColor:[UIColor clearColor]];
+        [alisLable setTextAlignment:NSTextAlignmentRight];
+        [alisLable setTextColor:[UIColor lightGrayColor]];
+        [alisLable setFont:[UIFont boldSystemFontOfSize:12]];
+        [alisLable setHidden:NO];
+        [alisLable setText:@"昵称:"];
+        [self.userSingleInfoImageView addSubview:alisLable];
+        
+        _alisLableView = [[[UILabel alloc]initWithFrame:CGRectMake(60, 17, 70, 15)]autorelease];
+        [_alisLableView setBackgroundColor:[UIColor clearColor]];
+        [_alisLableView setTextAlignment:NSTextAlignmentLeft];
+        [_alisLableView setTextColor:[UIColor lightGrayColor]];
+        [_alisLableView setFont:[UIFont boldSystemFontOfSize:12]];
+        [_alisLableView setHidden:NO];
+        [_alisLableView setText:@""];
+        [self.userSingleInfoImageView addSubview:_alisLableView];
+        
+        UILabel *phoneLable = [[[UILabel alloc]initWithFrame:CGRectMake(15, 37, 40, 15)]autorelease];
+        [phoneLable setBackgroundColor:[UIColor clearColor]];
+        [phoneLable setTextAlignment:NSTextAlignmentRight];
+        [phoneLable setTextColor:[UIColor lightGrayColor]];
+        [phoneLable setFont:[UIFont boldSystemFontOfSize:12]];
+        [phoneLable setHidden:NO];
+        [phoneLable setText:@"手机号:"];
+        [self.userSingleInfoImageView addSubview:phoneLable];
+        
+        _phoneButtonView = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_phoneButtonView setFrame:CGRectMake(60, 37, 100, 15)];
+        [_phoneButtonView setBackgroundColor:[UIColor clearColor]];
+        [_phoneButtonView setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [_phoneButtonView.titleLabel setFont:[UIFont boldSystemFontOfSize:12]];
+        [_phoneButtonView setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+        [_phoneButtonView setHidden:NO];
+        [self.userSingleInfoImageView addSubview:_phoneButtonView];
+        
+        //暂时不显示
         self.detailInfoImageView = [[[UIImageView alloc]initWithFrame:CGRectMake(110, 10, 320-115, 95)]autorelease];
         [self.detailInfoImageView setImage:[[UIImage imageNamed:nil] stretchableImageWithLeftCapWidth:10 topCapHeight:10]];
         [self.detailInfoImageView.layer setCornerRadius:2.0];
         [self.detailInfoImageView.layer setMasksToBounds:YES];
         [self.detailInfoImageView.layer setBorderWidth:0.5];
         [self.detailInfoImageView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
-        [self.detailInfoImageView setHidden:NO];
+        [self.detailInfoImageView setHidden:YES];
         [self.contentView addSubview:self.detailInfoImageView];
         
         UILabel *xyLable = [[[UILabel alloc]initWithFrame:CGRectMake(15, 17, 70, 15)]autorelease];
@@ -105,19 +152,17 @@
     return self;
 }
 
-//-(void)prepareForReuse
-//{
-//    [self.photoImgView setHidden:YES];
-//    [self.titleLabel setHidden:YES];
-//    [self.nameLabel setHidden:YES];
-//    [self.sexLabel setHidden:YES];
-//    [self.ageLable setHidden:YES];
-//    [self.realAuthImageView setHidden:YES];
-//    [self.weiboImageView setHidden:YES];
-//    [self.emailImageView setHidden:YES];
-//    [self.carImageView setHidden:YES];
-//    [self.arrowImgView setHidden:YES];
-//}
+- (void)setData:(People *)data
+{
+    if (data) {
+        [_data release];
+        _data = [data retain];
+        
+        [self.photoImgView setImageWithURL: [NSURL URLWithString:data.headpic] placeholderImage:[UIImage imageNamed:@"delt_user_b"]];
+        [_alisLableView setText:([_data.name  isEqualToString:@""]?@"暂无":_data.name)];
+        [_phoneButtonView setTitle:_data.phone forState:UIControlStateNormal];
+    }
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

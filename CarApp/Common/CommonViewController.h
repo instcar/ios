@@ -16,6 +16,7 @@
     UIImageView *_messageBgView;
     UILabel *_titleLabel;
     UILabel *_desLable;
+    UIImageView *_headerImgView;
 }
 
 @property (copy, nonatomic) NSString *ctitle;

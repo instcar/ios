@@ -10,9 +10,9 @@
 #import "BaseViewController.h"
 #import "GDInputView.h"
 
-@interface RegisterViewController : BaseViewController<UITextFieldDelegate>
+@interface RegisterViewController : BaseViewController<UITextFieldDelegate,GDInputDelegate>
 {
-    NSString *_smsid;                               //smsid码
+    long _smsid;                               //smsid码
     NSString *_phoneNum;                            //电话号码
     
     NSTimer * _countTimer;

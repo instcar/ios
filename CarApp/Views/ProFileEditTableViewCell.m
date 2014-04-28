@@ -56,24 +56,25 @@
 
 - (void)setTitleStr:(NSString *)titleStr
 {
-    if (_titleStr) {
+    if (titleStr) {
         [_titleStr release];
-        _titleStr = titleStr;
+        _titleStr = [titleStr copy];
+        [_titleLabel setText:_titleStr];
+        float width = [_titleLabel labelLength:_titleStr withFont:AppFont(14)];
+        [_titleLabel setFrame:CGRectMake(10, (self.contentView.frame.size.height-20)/2.0, width, 20)];
     }
-    [_titleLabel setText:_titleStr];
-    float width = [_titleLabel labelLength:_titleStr withFont:AppFont(14)];
-    [_titleLabel setFrame:CGRectMake(10, (self.contentView.frame.size.height-20)/2.0, width, 20)];
 }
 
 - (void)setInfoStr:(NSString *)infoStr
 {
-    if (_infoStr) {
+    if (infoStr) {
         [_infoStr release];
-        _infoStr = infoStr;
+        _infoStr = [infoStr copy];
+        [_infoLabel setText:_infoStr];
+        float x = _titleLabel.bounds.size.width + _titleLabel.frame.origin.x;
+        [_infoLabel setFrame:CGRectMake(10+x, (self.contentView.frame.size.height-20)/2.0, SCREEN_WIDTH - x - 40, 20)];
     }
-    [_infoLabel setText:_infoStr];
-    float x = _titleLabel.bounds.size.width + _titleLabel.frame.origin.x;
-    [_titleLabel setFrame:CGRectMake(10+x, (self.contentView.frame.size.height-20)/2.0, SCREEN_WIDTH - x - 40, 20)];
+
 }
 
 - (void)layoutSubviews

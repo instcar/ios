@@ -23,12 +23,18 @@
     return self;
 }
 
-//- (void)loadView
-//{
-//    UIView *view = [[UIView alloc]initWithFrame:[UIScreen mainScreen].bounds];
-//    self.view = view;
-//    [view release];
-//}
+- (void)loadView
+{
+    UIView *view = [[UIView alloc]initWithFrame:[UIScreen mainScreen].bounds];
+    self.view = view;
+    [view release];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES];
+}
 
 - (void)viewDidLoad
 {
@@ -37,6 +43,8 @@
         [self setAutomaticallyAdjustsScrollViewInsets:NO];
     }
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+    
     
 }
 

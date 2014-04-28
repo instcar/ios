@@ -83,7 +83,7 @@
     
     UIButton * loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [loginBtn setBackgroundColor:[UIColor clearColor]];
-    [loginBtn setFrame:CGRectMake(320*3+55, SCREEN_HEIGHT-48-77/2, 210, 35)];
+    [loginBtn setFrame:CGRectMake(320*3+45, IS_IPHONE_5?SCREEN_HEIGHT-48-82:SCREEN_HEIGHT-48-55, 210, 35)];
     [loginBtn setBackgroundImage:nil forState:UIControlStateNormal];
     [loginBtn setBackgroundImage:nil forState:UIControlStateHighlighted];
     [loginBtn setShowsTouchWhenHighlighted:YES];
@@ -101,6 +101,7 @@
     [_registerBtn setFrame:CGRectMake(20, 9, 130, 32)];
     [_registerBtn setBackgroundImage:[UIImage imageNamed:@"btn_blue_m"] forState:UIControlStateNormal];
     [_registerBtn setImage:[UIImage imageNamed:@"ic_registration"] forState:UIControlStateNormal];
+    [_registerBtn.titleLabel setFont:AppFont(14)];
     [_registerBtn setTitle:@"免费注册" forState:UIControlStateNormal];
     [_registerBtn addTarget:self action:@selector(registerBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_registerBtn];
@@ -109,6 +110,7 @@
     [_loginBtn setBackgroundColor:[UIColor clearColor]];
     [_loginBtn setFrame:CGRectMake(170, 9, 130, 32)];
     [_loginBtn setBackgroundImage:[UIImage imageNamed:@"btn_green"] forState:UIControlStateNormal];
+    [_loginBtn.titleLabel setFont:AppFont(14)];
     [_loginBtn setImage:[UIImage imageNamed:@"ic_login"] forState:UIControlStateNormal];
     [_loginBtn setTitle:@"登入" forState:UIControlStateNormal];
     [_loginBtn addTarget:self action:@selector(loginBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
