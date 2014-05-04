@@ -38,7 +38,6 @@
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor flatWhiteColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -46,13 +45,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     else
     {
@@ -74,7 +71,6 @@
     [titleLabel setTextColor:[UIColor flatGreenColor]];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
 
     
     _resultsTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 65, 320, SCREEN_HEIGHT -65)];
@@ -83,7 +79,6 @@
     [_resultsTable setBackgroundColor:[UIColor clearColor]];
     [_resultsTable setBackgroundView:Nil];
     [mainView addSubview:_resultsTable];
-    [_resultsTable release];
     
     
     //发起获取关键字结果的请求
@@ -117,7 +112,7 @@
     static NSString *CellIdentifier = @"ResultsTable";
     DriverRouteCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[DriverRouteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[DriverRouteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     [cell.routeLabel setHidden:NO];
@@ -145,22 +140,6 @@
     }];
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 -(void)backToMain
 {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -168,7 +147,6 @@
 
 -(void)dealloc
 {
-    [super dealloc];
 }
 
 - (void)didReceiveMemoryWarning

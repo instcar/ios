@@ -17,9 +17,7 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_adWebView];
-    [SafetyRelease release:_url];
-    [super dealloc];
+
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -37,12 +35,10 @@
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:mainView];
-    [mainView release];
 
     UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(backAction:)];
     [swipeGesture setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer:swipeGesture];
-    [swipeGesture release];
     
     UIWebView *adWebView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 20, 320, SCREEN_HEIGHT-40-20)];
     [adWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_url]]];
@@ -53,7 +49,6 @@
 //    [adWebView.scrollView setClipsToBounds:NO];
     [mainView addSubview:adWebView];
     self.adWebView = adWebView;
-    [adWebView release];
     
     //底部导航栏
     UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-40, 320, 40)];
@@ -70,7 +65,6 @@
         [toolBar setBackgroundImage:[UIImage imageNamed:@"navgationbar_44"] forToolbarPosition:UIBarPositionTop barMetrics:UIBarMetricsDefault];
     }
     [mainView addSubview:toolBar];
-    [toolBar release];
     
     UIButton *backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 28, 28)];
     [backBtn setShowsTouchWhenHighlighted:YES];
@@ -78,7 +72,6 @@
     [backBtn setBackgroundImage:[UIImage imageNamed:@"tb_icon_toolbar_back_56"] forState:UIControlStateNormal];
     [backBtn addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backBtn];
-    [backBtn release];
     
     UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
@@ -88,7 +81,6 @@
     [backForwardBtn setBackgroundImage:[UIImage imageNamed:@"tb_icon_toolbar_backward_normal_56"] forState:UIControlStateNormal];
     [backForwardBtn addTarget:self action:@selector(backForwardAction:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backForwardBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backForwardBtn];
-    [backForwardBtn release];
     
     UIButton *frontForwardBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 28, 28)];
     [frontForwardBtn setShowsTouchWhenHighlighted:YES];
@@ -96,7 +88,6 @@
     [frontForwardBtn setBackgroundImage:[UIImage imageNamed:@"tb_icon_toolbar_forward_normal_56"] forState:UIControlStateNormal];
     [frontForwardBtn addTarget:self action:@selector(frontForwardAction:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *frontForwardBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:frontForwardBtn];
-    [frontForwardBtn release];
     
     UIButton *reflushBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 28, 28)];
     [reflushBtn setShowsTouchWhenHighlighted:YES];
@@ -104,13 +95,8 @@
 //    [reflushBtn setBackgroundImage:[UIImage imageNamed:@"btn_back_pressed@2x"] forState:UIControlStateHighlighted];
     [reflushBtn addTarget:self action:@selector(reflushAction:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *reflushButtonItem = [[UIBarButtonItem alloc]initWithCustomView:reflushBtn];
-    [reflushBtn release];
     
     [toolBar setItems:[NSArray arrayWithObjects:backBarButtonItem,spaceItem,backForwardBarButtonItem,frontForwardBarButtonItem,reflushButtonItem,nil]];
-    [backBarButtonItem release];
-    [backForwardBarButtonItem release];
-    [frontForwardBarButtonItem release];
-    [reflushButtonItem release];
 }
 
 - (void)backAction:(UIButton *)sender

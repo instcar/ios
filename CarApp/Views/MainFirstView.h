@@ -10,6 +10,6 @@
 
 @interface MainFirstView : UIView
 
-@property (retain, nonatomic) UIViewController *mainVC;
+@property (strong, nonatomic) UIViewController *mainVC;
 
 @end

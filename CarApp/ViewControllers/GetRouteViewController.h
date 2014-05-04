@@ -6,13 +6,15 @@
 //  Copyright (c) 2013年 Leno. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
+#import "CommonViewController.h"
 #import "PullingRefreshTableView.h"
 #import "HZscrollerView.h"
 #import "EnumCommon.h"
+#import "BMapKit.h"
+#import "CusLocateInputView.h"
+#import "CusVoiceInputView.h"
 
-@interface GetRouteViewController : UIViewController<CLLocationManagerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate,UIScrollViewDelegate>
+@interface GetRouteViewController : CommonViewController<CLLocationManagerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate,BMKMapViewDelegate,BMKSearchDelegate>
 {
     float _keyBoardOriginY;//键盘的高度
 
@@ -27,7 +29,14 @@
     NSMutableArray *_judianArray;
     
     PullingRefreshTableView *_tableView;
-    HZscrollerView *_hzScrollerView;
+    BMKMapView *_mapView;
+    BMKSearch *_search;
+    BMKUserLocation *_bmklocation;
+    
+    BOOL _locate;    //定位
+    
+    CusLocateInputView *_cusLocateInputView;
+    CusVoiceInputView *_cusVoiceInputView;
 }
 
 @end

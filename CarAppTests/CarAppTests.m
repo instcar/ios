@@ -31,7 +31,7 @@
 
 - (void)testExample
 {
-    STFail(@"Unit tests are not implemented yet in CarAppTests");
+    XCTFail(@"Unit tests are not implemented yet in CarAppTests");
 }
 
 @end

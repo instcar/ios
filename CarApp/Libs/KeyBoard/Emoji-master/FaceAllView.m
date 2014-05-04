@@ -33,7 +33,6 @@
             [fview loadFacialView:i size:CGSizeMake(42.5, 43) row:3 column:7];
             fview.delegate=self;
             [_emojiScrollView addSubview:fview];
-            [fview release];
         }
     }
     
@@ -43,7 +42,6 @@
     _emojiScrollView.pagingEnabled=YES;
     _emojiScrollView.delegate=self;
     [self addSubview:_emojiScrollView];
-    [_emojiScrollView release];
     
     _emojiPageControl=[[UIPageControl alloc]initWithFrame:CGRectMake(98, self.frame.size.height-80, 150, 30)];
     [_emojiPageControl setCurrentPage:0];
@@ -57,13 +55,11 @@
 //    _emojiPageControl.hidden=YES;
     [_emojiPageControl addTarget:self action:@selector(changeEmojiPage:)forControlEvents:UIControlEventValueChanged];
     [self addSubview:_emojiPageControl];
-    [_emojiPageControl release];
     
     UIToolbar *tabbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.frame.size.height-44, 320, 44)];
     tabbar.translucent = NO;
     tabbar.tintColor = [UIColor lightGrayColor];
     [self addSubview:tabbar];
-    [tabbar release];
     
     UIButton *emijiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 //    [emijiBtn setBackgroundImage:[UIImage imageNamed:@"EmotionsBagTabBg@2x"] forState:UIControlStateNormal];
@@ -107,10 +103,6 @@
     sendBarBtn.width = 70.0;
 //    [emojiBtn setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blueColor],UITextAttributeTextColor, nil] forState:UIControlStateNormal];
     [tabbar setItems:[NSArray arrayWithObjects:emojiBarBtn,extendBarBtn,spaceBtn,sendBarBtn, nil] animated:YES];
-    [emojiBarBtn release];
-    [extendBarBtn release];
-    [spaceBtn release];
-    [sendBarBtn release];
     
 }
 

@@ -15,8 +15,7 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_mainVC];
-    [super dealloc];
+
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -27,7 +26,7 @@
         //在第主页添加的按钮们
         //司机的选项按钮
         UIButton * driverButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        [driverButton setFrame:CGRectMake(25,(SCREEN_HEIGHT -146)/2 -45, 125, 125)];
+        [driverButton setFrame:CGRectMake(25,(frame.size.height -125)/2, 125, 125)];
         [driverButton setBackgroundColor:[UIColor clearColor]];
         [driverButton setBackgroundImage:[UIImage imageNamed:@"btn_have_normal@2x"] forState:UIControlStateNormal];
         [driverButton setBackgroundImage:[UIImage imageNamed:@"btn_have_pressed@2x"] forState:UIControlStateHighlighted];
@@ -36,7 +35,7 @@
         
         //乘客的选项按钮
         UIButton * passengerButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        [passengerButton setFrame:CGRectMake(170,(SCREEN_HEIGHT -146)/2 -45, 125, 125)];
+        [passengerButton setFrame:CGRectMake(170,(frame.size.height - 125)/2, 125, 125)];
         [passengerButton setBackgroundColor:[UIColor clearColor]];
         [passengerButton addTarget:self action:@selector(enterPassenger) forControlEvents:UIControlEventTouchUpInside];
         [passengerButton setBackgroundImage:[UIImage imageNamed:@"btn_pool_normal@2x"] forState:UIControlStateNormal];
@@ -49,9 +48,10 @@
 -(void)driverGetRoute
 {
     if (self.mainVC) {
-//        GetRouteViewController * routeVC = [[GetRouteViewController alloc]init];
-//        [self.mainVC.navigationController pushViewController:routeVC animated:YES];
-//        [routeVC release];
+        GetRouteViewController * routeVC = [[GetRouteViewController alloc]init];
+        [self.mainVC.navigationController pushViewController:routeVC animated:YES];
+
+        /*
         DLog(@"%@",[User shareInstance].phoneNum);
         [APIClient networkCreatRoomWithUser_phone:[User shareInstance].phoneNum line_id:1 price:10 description:@"MrLu测试房间" start_time:@"2014-04-27"  max_seat_num:4 success:^(Respone *respone) {
             if (respone.status == kEnumServerStateSuccess) {
@@ -64,7 +64,6 @@
                 gVC.isRoomMaster = NO;
                 gVC.userState = 1;
                 [self.mainVC.navigationController pushViewController:gVC animated:YES];
-                [gVC release];
             }
             else
             {
@@ -72,20 +71,19 @@
             }
         } failure:^(NSError *error) {
             
-        }];
+        }];*/
     }
 }
 
 -(void)enterPassenger
 {
     if (self.mainVC) {
-        /*
+        
         PassengerRouteUIViewController * pVC = [[PassengerRouteUIViewController alloc]init];
         pVC.state = 1;
         [self.mainVC.navigationController pushViewController:pVC animated:YES];
-        [pVC release];
-         */
-        
+
+        /*
         [APIClient networkCloseRoomWithroom_id:5 success:^(Respone *respone) {
             if (respone.status == kEnumServerStateSuccess) {
                 DLog(@"%@",respone.msg);
@@ -96,7 +94,7 @@
             }
         } failure:^(NSError *error) {
             
-        }];
+        }];*/
         
         
     }

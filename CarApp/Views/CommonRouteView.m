@@ -13,9 +13,9 @@
 
 @interface CommonRouteView ()
 
-@property (retain, nonatomic) PullingRefreshTableView *tableView;
-@property (retain, nonatomic) WarnView *warnView;
-@property (retain, nonatomic) NSMutableArray *tableData;
+@property (strong, nonatomic) PullingRefreshTableView *tableView;
+@property (strong, nonatomic) WarnView *warnView;
+@property (strong, nonatomic) NSMutableArray *tableData;
 
 @end
 
@@ -23,12 +23,7 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_mainVC ];
-    [SafetyRelease release:_tableView];
-    [SafetyRelease release:_warnView];
-    [SafetyRelease release:_tableData];
-    
-    [super dealloc];
+
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -46,7 +41,7 @@
     _routeCanLoadMore = YES;
     _tableData = [[NSMutableArray alloc]init];
 
-    PullingRefreshTableView *tableView = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(10, 52, 300, SCREEN_HEIGHT - 96 - 80) pullingDelegate:self];
+    PullingRefreshTableView *tableView = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(10, 0, self.frame.size.width-20, self.frame.size.height) pullingDelegate:self];
     [tableView setDelegate:self];
     [tableView setDataSource:self];
     [tableView setBackgroundView:nil];
@@ -57,7 +52,6 @@
     [tableView setSeparatorColor:[UIColor lightGrayColor]];
     [self addSubview:tableView];
     [self setTableView:tableView];
-    [tableView release];
     
     UIButton *addCommonLineBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [addCommonLineBtn setBackgroundImage:[UIImage imageNamed:@"add_line"] forState:UIControlStateNormal];
@@ -76,7 +70,7 @@
     else
         [self.tableView launchRefreshing];
 }
-
+/*
 -(void)requestTableDataFromServer:(kRequestMode)mode
 {
     User *user = [User shareInstance];
@@ -110,6 +104,7 @@
         [self.tableView setReachedTheEnd:YES];
     }];
 }
+ */
 
 #pragma mark - tableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -128,7 +123,7 @@
     
     CommonRoutCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[CommonRoutCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[CommonRoutCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     
@@ -181,7 +176,6 @@
         PassengerRouteUIViewController * pVC = [[PassengerRouteUIViewController alloc]init];
         pVC.state = 2;
         [self.mainVC.navigationController pushViewController:pVC animated:YES];
-        [pVC release];
     }
 }
 
@@ -191,7 +185,7 @@
 {
     //对tableModel进行判断
     _routepage = 1;
-    [self requestTableDataFromServer:kRequestModeRefresh];
+//    [self requestTableDataFromServer:kRequestModeRefresh];
 }
 
 - (void) loadMoreDataToTable
@@ -199,7 +193,7 @@
     //对tableModel进行判断
     if (_routeCanLoadMore) {
         _routepage ++;
-        [self requestTableDataFromServer:kRequestModeLoadmore];
+//        [self requestTableDataFromServer:kRequestModeLoadmore];
     }
 }
 

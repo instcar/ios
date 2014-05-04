@@ -10,25 +10,25 @@
 
 @interface ProfileFirstCustomCel : UITableViewCell
 
-@property(retain, nonatomic)UIView * cellBackGroundView;
-@property(retain, nonatomic)UIButton * cellFirstBtn;
-@property(retain, nonatomic)UIButton * cellSecondBtn;
-@property(retain, nonatomic)UIButton * cellThirdBtn;
-@property(retain, nonatomic)UIButton * cellFourthBtn;
+@property(strong, nonatomic)UIView * cellBackGroundView;
+@property(strong, nonatomic)UIButton * cellFirstBtn;
+@property(strong, nonatomic)UIButton * cellSecondBtn;
+@property(strong, nonatomic)UIButton * cellThirdBtn;
+@property(strong, nonatomic)UIButton * cellFourthBtn;
 
-@property(retain, nonatomic)UILabel * successNumberFirstLabel;
-@property(retain, nonatomic)UILabel * successNumberSecondLabel;
-@property(retain, nonatomic)UILabel * successNumberThirdLabel;
+@property(strong, nonatomic)UILabel * successNumberFirstLabel;
+@property(strong, nonatomic)UILabel * successNumberSecondLabel;
+@property(strong, nonatomic)UILabel * successNumberThirdLabel;
 
-@property(retain, nonatomic)UILabel * cancelNumberFirstLabel;
-@property(retain, nonatomic)UILabel * cancelNumberSecondLabel;
-@property(retain, nonatomic)UILabel * cancelNumberThirdLabel;
+@property(strong, nonatomic)UILabel * cancelNumberFirstLabel;
+@property(strong, nonatomic)UILabel * cancelNumberSecondLabel;
+@property(strong, nonatomic)UILabel * cancelNumberThirdLabel;
 
-@property(retain, nonatomic)UILabel * percentNumberFirstLabel;
-@property(retain, nonatomic)UILabel * percentNumberSecondLabel;
-@property(retain, nonatomic)UILabel * percentNumberThirdLabel;
+@property(strong, nonatomic)UILabel * percentNumberFirstLabel;
+@property(strong, nonatomic)UILabel * percentNumberSecondLabel;
+@property(strong, nonatomic)UILabel * percentNumberThirdLabel;
 
-@property(retain, nonatomic)UILabel * carTypeFirstLabel;
-@property(retain, nonatomic)UILabel * carTypeSecondLabel;
+@property(strong, nonatomic)UILabel * carTypeFirstLabel;
+@property(strong, nonatomic)UILabel * carTypeSecondLabel;
 
 @end

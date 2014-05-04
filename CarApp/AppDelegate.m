@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 
 #import "StartViewController.h"
-#import "NetWorkManager.h"
 #import "User.h"
 
 #import "SetProfileViewController.h"
@@ -35,20 +34,9 @@
 
 @synthesize mainVC = _mainVC;
 
-- (void)dealloc
-{
-    [_window release];
-    [SafetyRelease release:_mainVC];
-    [SafetyRelease release:_reachability];
-    [SafetyRelease release:_statueBar];
-    [super dealloc];
-    
-    //修改修改修改修改修改修改修改修改修改修改修改修改修改修改修改
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window setBackgroundColor:[UIColor whiteColor]];
     self.mainVC = [[MainViewController alloc] init];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -86,8 +74,6 @@
         UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:startVC];
         [navi setNavigationBarHidden:YES];
         self.window.rootViewController = navi;
-        [startVC release];
-        [navi release];
     }
     else
         if (user.isSavePwd != YES) {
@@ -95,23 +81,17 @@
             UINavigationController*nav = [[UINavigationController alloc]initWithRootViewController:logInVC];
             [nav setNavigationBarHidden:YES animated:NO];
             [nav setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-//            [self presentViewController:nav animated:YES completion:nil];
             [[AppDelegate shareDelegate].window setRootViewController:nav];
-            [logInVC release];
-            [nav release];
         }
         else{
 
             [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
             UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:self.mainVC];
             self.mainVC.firstEnter = NO;
-            [self.mainVC enterView];
-            [navi setNavigationBarHidden:YES];
+//            [self.mainVC enterView];
             self.window.rootViewController = navi;
-            [self.mainVC release];
-            [navi release];
         }
-
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -128,9 +108,12 @@
     // 如果要关注网络及授权验证事件，请设定     generalDelegate参数
     BOOL ret = [_mapManager start:kBaiDuMapKey  generalDelegate:nil];
     if (!ret) {
-//        DLog(@"manager start failed!");
+        DLog(@"manager start failed!");
     }
-    
+    else
+    {
+        DLog(@"BaiduMap_version:----");
+    }
     //友盟key
     [UmengUtil setAnalyticsAppkey];
     
@@ -188,7 +171,6 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
     
     DLog(@"%@",[NSString stringWithFormat:@"收到消息\ndate:%@\ntitle:%@\ncontent:%@", [dateFormatter stringFromDate:[NSDate date]],title,content]);
-    [dateFormatter release];
     
 //    [_statueBar showStatusMessage:title];
 }
@@ -265,6 +247,11 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     DLog(@"applicationWillTerminate");
+}
+
+-(void)dealloc
+{
+    
 }
 
 @end

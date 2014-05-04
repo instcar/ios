@@ -20,15 +20,7 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_backButton];
-    [SafetyRelease release:_backImgView];
-    [SafetyRelease release:_routeTitleLabel];
-    [SafetyRelease release:_routeTimeLabel];
-    [SafetyRelease release:_routeInfoLabel];
-    [SafetyRelease release:_routeAccessImgView];
-    [SafetyRelease release:_commentBtn];
-    
-    [super dealloc];
+
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -73,7 +65,6 @@
         [routeTitleLabel setOpaque:YES];
         [self.contentView addSubview:routeTitleLabel];
         [self setRouteTitleLabel:routeTitleLabel];
-        [routeTitleLabel release];
 
         UILabel *routeInfoLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 30, 155, 30)];
         [routeInfoLabel setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin];
@@ -84,7 +75,6 @@
         [routeInfoLabel setOpaque:YES];
         [self.contentView addSubview:routeInfoLabel];
         [self setRouteInfoLabel:routeInfoLabel];
-        [routeInfoLabel release];
         
         UILabel *routeTimeLabel = [[UILabel alloc]initWithFrame:CGRectMake(195, 15, 100, 30)];
         [routeTimeLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
@@ -96,7 +86,6 @@
         [routeTimeLabel setOpaque:YES];
         [self.contentView addSubview:routeTimeLabel];
         [self setRouteTimeLabel:routeTimeLabel];
-        [routeTimeLabel release];
 
         UIImageView *routeAccessImgView = [[UIImageView alloc]initWithFrame:CGRectMake(285,22.5,15,15)];
         [routeAccessImgView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
@@ -105,7 +94,6 @@
         [routeAccessImgView setOpaque:YES];
         [self.contentView addSubview:routeAccessImgView];
         [self setRouteAccessImgView:routeAccessImgView];
-        [routeAccessImgView release];
 
         UIButton *commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [commentBtn setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
@@ -119,7 +107,6 @@
         [commentBtn setOpaque:YES];
         [self.contentView addSubview:commentBtn];
         [self setCommentBtn:commentBtn];
-        [commentBtn release];
         
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(20, 59.5, 280, 0.5)];
         [lineView setBackgroundColor:[UIColor appLineDarkGrayColor]];
@@ -128,7 +115,6 @@
         [lineView setOpaque:YES];
         [lineView setHidden:NO];
         [self setLineView:lineView];
-        [lineView release];
         
     }
     return self;

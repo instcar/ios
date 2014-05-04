@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "PullingRefreshTableView.h"
+#import "Room.h"
 
 @interface CommentViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate>
 {
     BOOL _editBtnState;
 }
 
-@property (retain, nonatomic) Room *room;
-@property (retain, nonatomic) PullingRefreshTableView * tableView;
+@property (strong, nonatomic) Room *room;
+@property (strong, nonatomic) PullingRefreshTableView * tableView;
 
 @end

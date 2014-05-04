@@ -15,14 +15,10 @@
 
 - (void)dealloc
 {
-    [_date release];
 	_date = nil;
-    [_view release];
     _view = nil;
     self.avatar = nil;
-    [_message release];
     [self setMessage:nil];
-    [super dealloc];
 }
 
 #pragma mark - Text bubble
@@ -32,7 +28,7 @@ const UIEdgeInsets textInsetsSomeone = {5, 15, 11, 10};
 
 + (id)dataWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type contentType:(BubbleContentType)contentType
 {
-    return [[[NSBubbleData alloc] initWithText:text date:date type:type contentType:contentType] autorelease];  
+    return [[NSBubbleData alloc] initWithText:text date:date type:type contentType:contentType];
 }
 
 - (id)initWithText:(NSString *)text date:(NSDate *)date type:(NSBubbleType)type contentType:(BubbleContentType)contentType
@@ -50,8 +46,6 @@ const UIEdgeInsets textInsetsSomeone = {5, 15, 11, 10};
     label.font = font;
     label.textColor = type == BubbleTypeSystem ?[UIColor lightGrayColor]:(type == BubbleTypeMine ?[UIColor blackColor]:[UIColor whiteColor]);
     label.backgroundColor = [UIColor clearColor];
-    
-    [label autorelease];
 
     UIEdgeInsets insets = (type == BubbleTypeMine ? textInsetsMine : textInsetsSomeone);
     return [self initWithView:label date:date type:type insets:insets contentType:contentType];
@@ -67,7 +61,7 @@ const UIEdgeInsets imageInsetsSomeone = {0, 9, 5, 3};
 
 + (id)dataWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type contentType:(BubbleContentType)contentType
 {
-    return [[[NSBubbleData alloc] initWithImage:image date:date type:type contentType:contentType] autorelease];
+    return [[NSBubbleData alloc] initWithImage:image date:date type:type contentType:contentType];
 }
 
 - (id)initWithImage:(UIImage *)image date:(NSDate *)date type:(NSBubbleType)type contentType:(BubbleContentType)contentType
@@ -85,7 +79,6 @@ const UIEdgeInsets imageInsetsSomeone = {0, 9, 5, 3};
     imageView.layer.cornerRadius = 5.0;
     imageView.layer.masksToBounds = YES;
     imageView.userInteractionEnabled = YES;
-    [imageView autorelease];
     
     UIEdgeInsets insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
     return [self initWithView:imageView date:date type:type insets:insets contentType:contentType];
@@ -99,7 +92,7 @@ const UIEdgeInsets imageInsetsSomeone = {0, 9, 5, 3};
         insets = (type == BubbleTypeMine ? imageInsetsMine : imageInsetsSomeone);
     }
     
-    return [[[NSBubbleData alloc] initWithView:view date:date type:type insets:insets contentType:contentType] autorelease];
+    return [[NSBubbleData alloc] initWithView:view date:date type:type insets:insets contentType:contentType];
 }
 
 - (id)initWithView:(UIView *)view date:(NSDate *)date type:(NSBubbleType)type insets:(UIEdgeInsets)insets contentType:(BubbleContentType)contentType
@@ -107,8 +100,8 @@ const UIEdgeInsets imageInsetsSomeone = {0, 9, 5, 3};
     self = [super init];
     if (self)
     {
-        _view = [view retain];
-        _date = [date retain];
+        _view = view;
+        _date = date;
         _type = type;
         _insets = insets;
         _contentType = contentType;
@@ -155,9 +148,9 @@ const UIEdgeInsets imageInsetsSomeone = {0, 9, 5, 3};
 
 -(UIView *)assembleMessageAtIndex : (NSString *) message from:(BOOL)fromself
 {
-    NSMutableArray *array = [[[NSMutableArray alloc] init]autorelease];
+    NSMutableArray *array = [[NSMutableArray alloc] init];
     [self getImageRange:message :array];
-    UIView *returnView = [[[UIView alloc] initWithFrame:CGRectZero]autorelease];
+    UIView *returnView = [[UIView alloc] initWithFrame:CGRectZero];
     NSArray *data = array;
     UIFont *fon = [UIFont systemFontOfSize:13.0f];
     CGFloat upX = 0;
@@ -207,7 +200,6 @@ const UIEdgeInsets imageInsetsSomeone = {0, 9, 5, 3};
                     la.text = temp;
                     la.backgroundColor = [UIColor clearColor];
                     [returnView addSubview:la];
-                    [la release];
                     upX=upX+size.width;
                     if (X<MAX_WIDTH) {
                         X = upX;

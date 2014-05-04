@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PullingRefreshTableView.h"
 #import "BMapKit.h"
-
+#import "Line.h"
 @interface PassgerEditRouteViewController : UIViewController<PullingRefreshTableViewDelegate,UITableViewDataSource,UITableViewDelegate,BMKMapViewDelegate>
 {
     
@@ -23,6 +23,6 @@
 
 }
 
-@property(retain,nonatomic)Line *line;
+@property(strong,nonatomic)Line *line;
 
 @end

@@ -48,7 +48,6 @@
         textView.delegate = self;
         textView.maximumNumberOfLines=4;
         [toolBar addSubview:textView];
-        [textView release];
         
         //音频按钮
 //        voiceButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -82,7 +81,6 @@
         backGroundView.tag = 10000;
         backGroundView.backgroundColor = [UIColor flatWhiteColor];
         [toolBar addSubview:backGroundView];
-        [backGroundView release];
         
         
         //给键盘注册通知
@@ -96,20 +94,17 @@
                                                    object:nil];
         
         [superView addSubview:toolBar];
-        [toolBar release];
         
         //创建表情键盘
         faceAllView = [[FaceAllView alloc]initWithFrame:CGRectMake(0, superView.frame.size.height, superView.frame.size.width, keyboardHeight)];
         faceAllView.delegate = self;
         [superView addSubview:faceAllView];
-        [faceAllView release];
         
         //格外的键盘
         extendView = [[ExtendView alloc]initWithFrame:CGRectMake(0, superView.frame.size.height, superView.frame.size.width, keyboardHeight)];
         extendView.delegate = self;
         [extendView loadExtendView:1 size:CGSizeMake(80, 80) row:2 column:4];
         [superView addSubview:extendView];
-        [extendView release];
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -486,7 +481,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidShowNotification
                                                   object:nil];
-    [super dealloc];
 }
 
 @end

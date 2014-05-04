@@ -15,13 +15,17 @@
 #import "SearchResultViewController.h"
 #import "HZscrollerView.h"
 #import "CustomSearchBarControl.h"
+#import "Line.h"
+#import "Judian.h"
 
-#define kLinePerPageNum 10
-#define kjudianPerPageNum 1000
-#define KResultsTableTag 10000
-#define kBannerScrollViewTag 10001
+#import "RouteAnnotation.h"
+#import "UIImage+InternalMethod.h"
 
-@interface GetRouteViewController ()<HZscrollerViewDelegate,CustomSearchBarControlDelegate>
+#define MYBUNDLE_NAME @ "mapapi.bundle"
+#define MYBUNDLE_PATH [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: MYBUNDLE_NAME]
+#define MYBUNDLE [NSBundle bundleWithPath: MYBUNDLE_PATH]
+
+@interface GetRouteViewController ()<HZscrollerViewDelegate,CustomSearchBarControlDelegate,CusLocateInputViewDelegate,BMKUserLocationDelegate>
 
 @property (retain, nonatomic) NSMutableArray *lineArray;
 @property (retain, nonatomic) NSMutableArray *judianArray;
@@ -35,11 +39,7 @@
 
 -(void)dealloc
 {
-    [InstantCarRelease safeRelease:_lineArray];
-    [InstantCarRelease safeRelease:_judianArray];
-    [InstantCarRelease safeRelease:_searchConditionStr];
-    [InstantCarRelease safeRelease:_warnView];
-    [super dealloc];
+    
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -53,7 +53,20 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [self.navigationController setNavigationBarHidden:YES];
+    [super viewWillAppear:animated];
+    [_mapView viewWillAppear];
+    _mapView.delegate = self;
+    _search.delegate = self;
+    _bmklocation.delegate = self;
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [_mapView viewWillDisappear];
+    _mapView.delegate = nil;
+    _search.delegate = nil;
+    _bmklocation.delegate = nil;
 }
 
 - (void)viewDidLoad
@@ -64,95 +77,72 @@
     _canTableLoadMore = YES;
     _tablePage = 1;
     _searchConditionStr = @"";
+    _locate = YES;
     
-    if (kDeviceVersion >= 7.0) {
-        [self setAutomaticallyAdjustsScrollViewInsets:NO];
-    }
+    [self setTitle:@"我有车"];
     
     _lineArray = [[NSMutableArray alloc]init];
     _judianArray = [[NSMutableArray alloc]init];
     
-    UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
-    [mainView setBackgroundColor:[UIColor flatWhiteColor]];
-    [self.view addSubview:mainView];
-    [mainView release];
     
-    UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
-    naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
+    //Table顶部
+    //    CustomSearchBarControl *customSearchBarControl = [[CustomSearchBarControl alloc]initWithFrame:CGRectMake(0, 64+45, 320, 52) withStyle:kSearchBarStyleGreen];
+    //    [customSearchBarControl setDelegate:self];
+    //    [mainView insertSubview:customSearchBarControl belowSubview:navBar];
     
-    UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
-    [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
-    [mainView addSubview:navBar];
-    [navBar release];
+    //起点输入框
+    _cusLocateInputView = [[CusLocateInputView alloc]initWithFrame:CGRectMake(0, 0, APPLICATION_WIDTH, 45)];
+    [_cusLocateInputView setDelegate:self];
+    [self setMessageView:_cusLocateInputView];
     
-    if (kDeviceVersion < 7.0) {
-        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
-        [lineView setBackgroundColor:[UIColor lightGrayColor]];
-        [navBar addSubview:lineView];
-        [lineView release];
-    }
-    else
-    {
-        self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
-    }
+    _cusVoiceInputView = [[CusVoiceInputView alloc]initWithFrame:CGRectMake(0, 45, APPLICATION_WIDTH, 160)];
+    [self.view insertSubview:_cusVoiceInputView aboveSubview:_messageBgView];
     
-    UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    [backButton setFrame:CGRectMake(0, 20, 70, 44)];
-    [backButton setBackgroundColor:[UIColor clearColor]];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_normal@2x"] forState:UIControlStateNormal];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_pressed@2x"] forState:UIControlStateHighlighted];
-    [backButton addTarget:self action:@selector(backToMain) forControlEvents:UIControlEventTouchUpInside];
-    [navBar addSubview:backButton];
-    
-    UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(100, 27, 120, 30)];
-    [titleLabel setBackgroundColor:[UIColor clearColor]];
-    [titleLabel setText:@"选择出发路线"];
-    [titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [titleLabel setTextColor:[UIColor appNavTitleColor]];
-    [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
-    [navBar addSubview:titleLabel];
-    [titleLabel release];
-    
-    _tableView = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 64+45+52, 320, SCREEN_HEIGHT -64-45-52) pullingDelegate:self];
-    _tableView.tag = KResultsTableTag;
+    _tableView = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 45, 320, APPLICATION_HEGHT -44-45) pullingDelegate:self];
     _tableView.dataSource = self;
     _tableView.delegate = self;
+    [_tableView setHidden:YES];
     [_tableView setBackgroundColor:[UIColor clearColor]];
     UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 2)];
     [_tableView setTableFooterView:footerView];
-    [footerView release];
-    [mainView insertSubview:_tableView belowSubview:navBar];
-    [_tableView release];
+    [self.view insertSubview:_tableView belowSubview:_messageBgView];
+
+    _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 45, 320, APPLICATION_HEGHT - 44- 45)];
+    [_mapView setOverlooking:0];
+    [_mapView setDelegate:self];
+    [_mapView setShowsUserLocation:YES];
+//    [_mapView setUserTrackingMode:BMKUserTrackingModeFollow];
+    //    [_mapView setShowsUserLocation:YES];
+    BMKLocationViewDisplayParam *param = [[BMKLocationViewDisplayParam alloc]init];
+    param.isAccuracyCircleShow = NO;
+    param.isRotateAngleValid = YES;
+    param.locationViewImgName = @"bnavi_icon_location_fixed";
+    [_mapView updateLocationViewWithParam:param];
+    [self.view insertSubview:_mapView belowSubview:_cusVoiceInputView];
     
-    //Table顶部
-    CustomSearchBarControl *customSearchBarControl = [[CustomSearchBarControl alloc]initWithFrame:CGRectMake(0, 64+45, 320, 52) withStyle:kSearchBarStyleGreen];
-    [customSearchBarControl setDelegate:self];
-    [mainView insertSubview:customSearchBarControl belowSubview:navBar];
+    _search = [[BMKSearch alloc]init];
+    [_search setDelegate:self];
     
-    UIImage * bannerImage = [UIImage imageNamed:@"nav_hint@2x"];
-    bannerImage = [bannerImage stretchableImageWithLeftCapWidth:8 topCapHeight:10];
-    //导航栏下方的显示周边的Banner条
-    UIImageView * bannerImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, 49)];
-    bannerImageView.userInteractionEnabled = YES;
-    [bannerImageView setImage:bannerImage];
-    [mainView addSubview:bannerImageView];
-    [bannerImageView release];
-    
-    //据点滚动视图
-    _hzScrollerView = [[HZscrollerView alloc]initWithFrame:CGRectMake(0, 0, 320, 45) withType:1];
-    _hzScrollerView.delegate = self;
-    _hzScrollerView.data = self.judianArray;
-    [bannerImageView addSubview:_hzScrollerView];
-    [_hzScrollerView release];
+    _bmklocation = [[BMKUserLocation alloc]init];
+    [_bmklocation setDelegate:self];
     
 //    //添加对键盘高度的监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasChange:) name:UIKeyboardDidChangeFrameNotification object:nil];
-    
+    /*
     //加载数据
     [self loadDataMode:kEnumRouteModeLineListByTag tag:nil judianID:0 mode:kRequestModeRefresh];
     [self loadDataMode:kEnumRouteModeJudianListByCoorder tag:nil judianID:0 mode:kRequestModeRefresh];
+    */
     
     self.warnView = [WarnView initWarnViewWithText:@"非常抱歉,暂无数据..." withView:_tableView height:100 withDelegate:nil];
+    
+}
+
+//刷新定位信息
+- (void)upDateLocateAction
+{
+    BMKCoordinateRegion adjustedRegion = [_mapView regionThatFits:BMKCoordinateRegionMake(_mapView.userLocation.coordinate, BMKCoordinateSpanMake(0.02, 0.02))];
+    [_mapView setRegion:adjustedRegion animated:YES];
 }
 
 
@@ -167,9 +157,337 @@
 -(void)backToMain
 {
     [self.navigationController popViewControllerAnimated:YES];
+    
+}
+#pragma mark - CusLocateInputViewDelegate
+-(void)locateBtnAction:(UIButton *)sender
+{
+    DLog(@"定位信息");
+    [_bmklocation startUserLocationService];
+}
+
+-(void)inputModeChange:(int)type
+{
+    DLog(@"输入模式切换");
+    if (type == 1) {
+        CGRect frame = _messageBgView.frame;
+        frame.size.height = 49;
+        [_messageBgView setFrame:frame];
+    }
+    if (type == 2) {
+        CGRect frame = _messageBgView.frame;
+        frame.size.height = 69;
+        [_messageBgView setFrame:frame];
+    }
+}
+
+#pragma mark - BMKUserLocationDelegate
+- (void)viewDidGetLocatingUser:(CLLocationCoordinate2D)userLoc
+{
+    //定位回归终点
+    BMKCoordinateRegion adjustedRegion = [_mapView regionThatFits:BMKCoordinateRegionMake(userLoc, BMKCoordinateSpanMake(0.02, 0.02))];
+    [_mapView setRegion:adjustedRegion animated:YES];
+    [_bmklocation stopUserLocationService];
+    
+    //定位点解析
+    BOOL flag = [_search reverseGeocode:userLoc];
+	if (flag) {
+		DLog(@"ReverseGeocode search success.");
+	}
+    else{
+        DLog(@"ReverseGeocode search failed!");
+    }
+
+}
+
+#pragma mark - baidu地图Delegate
+- (NSString*)getMyBundlePath1:(NSString *)filename
+{
+	
+	NSBundle * libBundle = MYBUNDLE ;
+	if ( libBundle && filename ){
+		NSString * s=[[libBundle resourcePath ] stringByAppendingPathComponent : filename];
+		return s;
+	}
+	return nil ;
+}
+
+-(void)mapView:(BMKMapView *)mapView didSelectAnnotationView:(BMKAnnotationView *)view
+{
+    [_mapView setCenterCoordinate:view.annotation.coordinate animated:YES];
+}
+
+-(void)mapView:(BMKMapView *)mapView didUpdateUserLocation:(BMKUserLocation *)userLocation
+{
+    if (_locate) {
+        _locate = !_locate;
+       BMKCoordinateRegion adjustedRegion = [_mapView regionThatFits:BMKCoordinateRegionMake(userLocation.coordinate, BMKCoordinateSpanMake(0.02, 0.02))];
+       [mapView setRegion:adjustedRegion animated:YES];
+    //       self.locateSuccess = YES;
+    //       self.location = userLocation.location.coordinate;
+    //       self.locateState = NO;
+    //       [self.search reverseGeocode:self.mapView.userLocation.location.coordinate];
+    //   [self.mapView setCenterCoordinate:self.mapView.userLocation.coordinate animated:NO];
+    }
+}
+
+-(void)mapView:(BMKMapView *)mapView didFailToLocateUserWithError:(NSError *)error
+{
+    
+}
+
+-(void)mapStatusDidChanged:(BMKMapView *)mapView
+{
+//    [_mapView setUserTrackingMode:BMKUserTrackingModeFollow];
+}
+
+//编码问题
+- (void)onGetAddrResult:(BMKAddrInfo*)result errorCode:(int)error
+{
+	if (error == 0)
+    {
+        DLog(@"%@%@%@%@%@",result.addressComponent.province,result.addressComponent.city,result.addressComponent.district,result.addressComponent.streetName,result.addressComponent.streetNumber);
+		BMKPointAnnotation* item = [[BMKPointAnnotation alloc]init];
+		item.coordinate = result.geoPt;
+		item.title = result.strAddr;
+        //刷新数据
+        [_cusLocateInputView setLocateAddress:result.strAddr];
+        [_mapView addAnnotation:item];
+	}
+}
+
+- (void)onGetDrivingRouteResult:(BMKPlanResult*)result errorCode:(int)error
+{
+    if (result != nil) {
+        NSArray* array = [NSArray arrayWithArray:_mapView.annotations];
+        [_mapView removeAnnotations:array];
+        array = [NSArray arrayWithArray:_mapView.overlays];
+        [_mapView removeOverlays:array];
+        
+        // error 值的意义请参考BMKErrorCode
+        if (error == BMKErrorOk) {
+            BMKRoutePlan* plan = (BMKRoutePlan*)[result.plans objectAtIndex:0];
+            
+            // 添加起点
+            RouteAnnotation* item = [[RouteAnnotation alloc]init];
+            item.coordinate = result.startNode.pt;
+            item.title = @"起点";
+            item.type = 0;
+            [_mapView addAnnotation:item];
+            
+            // 下面开始计算路线，并添加驾车提示点
+            int index = 0;
+            int size = [plan.routes count];
+            for (int i = 0; i < 1; i++) {
+                BMKRoute* route = [plan.routes objectAtIndex:i];
+                for (int j = 0; j < route.pointsCount; j++) {
+                    int len = [route getPointsNum:j];
+                    index += len;
+                }
+            }
+            
+            BMKMapPoint* points = new BMKMapPoint[index];
+            index = 0;
+            for (int i = 0; i < 1; i++) {
+                BMKRoute* route = [plan.routes objectAtIndex:i];
+                for (int j = 0; j < route.pointsCount; j++) {
+                    int len = [route getPointsNum:j];
+                    BMKMapPoint* pointArray = (BMKMapPoint*)[route getPoints:j];
+                    memcpy(points + index, pointArray, len * sizeof(BMKMapPoint));
+                    index += len;
+                }
+                size = route.steps.count;
+                for (int j = 0; j < size; j++) {
+                    // 添加驾车关键点
+                    BMKStep* step = [route.steps objectAtIndex:j];
+                    item = [[RouteAnnotation alloc]init];
+                    item.coordinate = step.pt;
+                    item.title = step.content;
+                    item.degree = step.degree * 30;
+                    item.type = 4;
+                    [_mapView addAnnotation:item];
+                }
+                
+            }
+            
+            // 添加终点
+            item = [[RouteAnnotation alloc]init];
+            item.coordinate = result.endNode.pt;
+            item.type = 1;
+            item.title = @"终点";
+            [_mapView addAnnotation:item];
+            
+            // 添加途经点
+            if (result.wayNodes) {
+                for (BMKPlanNode* tempNode in result.wayNodes) {
+                    item = [[RouteAnnotation alloc]init];
+                    item.coordinate = tempNode.pt;
+                    item.type = 5;
+                    item.title = tempNode.name;
+                    [_mapView addAnnotation:item];
+                }
+            }
+            
+            // 根究计算的点，构造并添加路线覆盖物
+            BMKPolyline* polyLine = [BMKPolyline polylineWithPoints:points count:index];
+            [_mapView addOverlay:polyLine];
+            delete []points;
+            
+            [_mapView setCenterCoordinate:result.startNode.pt animated:YES];
+        }
+    }
+}
+
+- (BMKAnnotationView*)getRouteAnnotationView:(BMKMapView *)mapview viewForAnnotation:(RouteAnnotation *)routeAnnotation
+{
+	BMKAnnotationView* view = nil;
+    
+    //线路
+    switch (routeAnnotation.type) {
+        case 0:
+        {
+            view = [mapview dequeueReusableAnnotationViewWithIdentifier:@"start_node"];
+            if (view == nil) {
+                view = [[BMKPinAnnotationView alloc]initWithAnnotation:routeAnnotation reuseIdentifier:@"start_node"];
+                //                view.image = [UIImage imageWithContentsOfFile:[self getMyBundlePath1:@"images/icon_nav_start.png"]];
+                view.image = [UIImage imageNamed:@"tag_map@2x"];
+                view.centerOffset = CGPointMake(0, -(view.frame.size.height * 0.5));
+                view.canShowCallout = TRUE;
+                [((BMKPinAnnotationView *)view)setAnimatesDrop:YES];
+            }
+            view.annotation = routeAnnotation;
+        }
+            break;
+        case 1:
+        {
+            view = [mapview dequeueReusableAnnotationViewWithIdentifier:@"end_node"];
+            if (view == nil) {
+                view = [[BMKPinAnnotationView alloc]initWithAnnotation:routeAnnotation reuseIdentifier:@"end_node"];
+                //                view.image = [UIImage imageWithContentsOfFile:[self getMyBundlePath1:@"images/icon_nav_end.png"]];
+                view.image = [UIImage imageNamed:@"bg_locate_normal@2x"];
+                view.centerOffset = CGPointMake(0, -(view.frame.size.height * 0.5));
+                view.canShowCallout = TRUE;
+                [((BMKPinAnnotationView *)view)setAnimatesDrop:YES];
+            }
+            view.annotation = routeAnnotation;
+        }
+            break;
+        case 2:
+        {
+            view = [mapview dequeueReusableAnnotationViewWithIdentifier:@"bus_node"];
+            if (view == nil) {
+                view = [[BMKAnnotationView alloc]initWithAnnotation:routeAnnotation reuseIdentifier:@"bus_node"];
+                view.image = [UIImage imageWithContentsOfFile:[self getMyBundlePath1:@"images/icon_nav_bus.png"]];
+                view.canShowCallout = TRUE;
+            }
+            view.annotation = routeAnnotation;
+        }
+            break;
+        case 3:
+        {
+            view = [mapview dequeueReusableAnnotationViewWithIdentifier:@"rail_node"];
+            if (view == nil) {
+                view = [[BMKAnnotationView alloc]initWithAnnotation:routeAnnotation reuseIdentifier:@"rail_node"];
+                view.image = [UIImage imageWithContentsOfFile:[self getMyBundlePath1:@"images/icon_nav_rail.png"]];
+                view.canShowCallout = TRUE;
+            }
+            view.annotation = routeAnnotation;
+        }
+            break;
+        case 4:
+        {
+            view = [mapview dequeueReusableAnnotationViewWithIdentifier:@"route_node"];
+            if (view == nil) {
+                view = [[BMKAnnotationView alloc]initWithAnnotation:routeAnnotation reuseIdentifier:@"route_node"];
+                view.canShowCallout = TRUE;
+            } else {
+                [view setNeedsDisplay];
+            }
+            
+            //            UIImage* image = [UIImage imageWithContentsOfFile:[self getMyBundlePath1:@"images/icon_direction.png"]];
+            //            view.image = [image imageRotatedByDegrees:routeAnnotation.degree];
+            view.annotation = routeAnnotation;
+            
+        }
+            break;
+        case 5:
+        {
+            view = [mapview dequeueReusableAnnotationViewWithIdentifier:@"waypoint_node"];
+            if (view == nil) {
+                view = [[BMKAnnotationView alloc]initWithAnnotation:routeAnnotation reuseIdentifier:@"waypoint_node"];
+                view.canShowCallout = TRUE;
+            } else {
+                [view setNeedsDisplay];
+            }
+            
+            //            UIImage* image = [UIImage imageWithContentsOfFile:[self getMyBundlePath1:@"images/icon_nav_waypoint.png"]];
+            //            view.image = [image imageRotatedByDegrees:routeAnnotation.degree];
+            view.annotation = routeAnnotation;
+        }
+            break;
+        default:
+            break;
+    }
+    
+	return view;
+}
+
+- (BMKAnnotationView *)mapView:(BMKMapView *)mapview viewForAnnotation:(id <BMKAnnotation>)annotation
+{
+    BMKPinAnnotationView* view = nil;
+    //起点
+//    if (self.mode == kMapViewModeAddress) {
+        if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
+            
+            view = (BMKPinAnnotationView *)[mapview dequeueReusableAnnotationViewWithIdentifier:@"start_nodeAddress"];
+            if (view == nil) {
+                view = [[BMKPinAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:@"start_nodeAddress"];
+                view.image = [UIImage imageNamed:@"tag_map@2x"];
+                view.centerOffset = CGPointMake(0, -(view.frame.size.height * 0.5));
+                view.canShowCallout = TRUE;
+                [view setAnimatesDrop:YES];
+            }
+            view.annotation = annotation;
+            BMKCoordinateRegion adjustedRegion = [_mapView regionThatFits:BMKCoordinateRegionMake(annotation.coordinate, BMKCoordinateSpanMake(0.007, 0.007))];
+            [_mapView setRegion:adjustedRegion animated:YES];
+            [_mapView setCenterCoordinate:annotation.coordinate animated:NO];
+            return view;
+        }
+//    }
+//    if (self.mode == kMapViewModeLine) {
+//        
+//        if ([annotation isKindOfClass:[RouteAnnotation class]]) {
+//            return [self getRouteAnnotationView:mapview viewForAnnotation:(RouteAnnotation*)annotation];
+//        }
+//    }
+	return nil;
+}
+
+- (BMKOverlayView*)mapView:(BMKMapView *)map viewForOverlay:(id<BMKOverlay>)overlay
+{
+	if ([overlay isKindOfClass:[BMKPolyline class]]) {
+        BMKPolylineView* polylineView = [[BMKPolylineView alloc] initWithOverlay:overlay];
+        polylineView.fillColor = [[UIColor cyanColor] colorWithAlphaComponent:1];
+        polylineView.strokeColor = [[UIColor flatBlueColor] colorWithAlphaComponent:1.0];
+        polylineView.lineWidth = 5.0;
+        return polylineView;
+    }
+	return nil;
+}
+
+- (void)mapview:(BMKMapView *)mapView onLongClick:(CLLocationCoordinate2D)coordinate
+{
+    BOOL flag = [_search reverseGeocode:coordinate];
+	if (flag) {
+		DLog(@"ReverseGeocode search success.");
+	}
+    else{
+        DLog(@"ReverseGeocode search failed!");
+    }
 }
 
 #pragma mark - 数据交互
+/*
 //type 为 请求类型 mode为 请求方式 mode tag/judianID参数
 -(void)loadDataMode:(kEnumRouteMode)mode tag:(NSString *)tag judianID:(int)judian mode:(kRequestMode)requestMode{
 
@@ -267,7 +585,7 @@
         }];
     }
 
-}
+}*/
 
 #pragma mark - CustomSearchBarDelegate
 -(void)customSearchBarControl:(CustomSearchBarControl *)customSearchBarControl result:(NSString *)result
@@ -275,7 +593,8 @@
     //搜索
     _tablePage = 1;
     self.searchConditionStr = result;
-    [self loadDataMode:kEnumRouteModeLineListByTag tag:result judianID:0 mode:kRequestModeRefresh];
+    
+//    [self loadDataMode:kEnumRouteModeLineListByTag tag:result judianID:0 mode:kRequestModeRefresh];
 }
 
 #pragma mark - Refresh and load more methods
@@ -286,10 +605,10 @@
     _tablePage = 1;
     
     if (_currentMode == kEnumRouteModeLineListByTag) {
-        [self loadDataMode:kEnumRouteModeLineListByTag tag:self.searchConditionStr judianID:0 mode:kRequestModeRefresh];
+//        [self loadDataMode:kEnumRouteModeLineListByTag tag:self.searchConditionStr judianID:0 mode:kRequestModeRefresh];
     }
     if (_currentMode == kEnumRouteModeLineListByJudianID) {
-        [self loadDataMode:kEnumRouteModeLineListByJudianID tag:nil judianID:self.selectJudianId mode:kRequestModeRefresh];
+//        [self loadDataMode:kEnumRouteModeLineListByJudianID tag:nil judianID:self.selectJudianId mode:kRequestModeRefresh];
     }
 }
 
@@ -299,10 +618,10 @@
     if (_canTableLoadMore) {
         _tablePage ++;
         if (_currentMode == kEnumRouteModeLineListByTag) {
-            [self loadDataMode:kEnumRouteModeLineListByTag tag:self.searchConditionStr judianID:0 mode:kRequestModeLoadmore];
+//            [self loadDataMode:kEnumRouteModeLineListByTag tag:self.searchConditionStr judianID:0 mode:kRequestModeLoadmore];
         }
         if (_currentMode == kEnumRouteModeLineListByJudianID) {
-            [self loadDataMode:kEnumRouteModeLineListByJudianID tag:nil judianID:self.selectJudianId mode:kRequestModeLoadmore];
+//            [self loadDataMode:kEnumRouteModeLineListByJudianID tag:nil judianID:self.selectJudianId mode:kRequestModeLoadmore];
         }
     }
 }
@@ -344,7 +663,7 @@
         static NSString *CellIdentifier = @"ResultsTable";
         DriverRouteCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
-            cell = [[[DriverRouteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+            cell = [[DriverRouteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
         }
         if(kDeviceVersion >= 7.0)
@@ -375,7 +694,6 @@
     EditRouteViewController * editRouteVC = [[EditRouteViewController alloc]init];
     editRouteVC.line = [self.lineArray objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:editRouteVC animated:YES];
-    [editRouteVC release];
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -410,28 +728,6 @@
     if (_keyBoardOriginY < SCREEN_HEIGHT) {
         UITextField * txf = (UITextField *)[self.view viewWithTag:8080];
         [txf resignFirstResponder];
-    }
-}
-
-#pragma mark - hzscrollerView
-- (void)HZScrollerView:(HZscrollerView *)hzscrollerView select:(int)index
-{
-    UITextField * txf = (UITextField *)[self.view viewWithTag:8080];
-    [txf setText:@""];
-    [txf resignFirstResponder];
-    self.searchConditionStr = @"";
-    if (index == 0) {
-        _tablePage = 1;
-        [self loadDataMode:kEnumRouteModeLineListByTag tag:@"" judianID:0 mode:kRequestModeRefresh];
-    }
-    else
-    {
-        //视图选择
-        Judian *judian = [self.judianArray objectAtIndex:index-1];
-        
-        _tablePage = 1;
-        self.selectJudianId = judian.ID;
-        [self loadDataMode:kEnumRouteModeLineListByJudianID tag:nil judianID:judian.ID mode:kRequestModeRefresh];
     }
 }
 

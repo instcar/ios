@@ -509,6 +509,7 @@ static XmppManager *sharedXmppManagerInstance = nil;
     //保存用户信息
     if (commonMessage.fid == commonMessage.uid) {
         if (![PeopleManager peopleExitInTableWithFid:commonMessage.fid]) {
+            /*
             [NetWorkManager networkGetUserInfoWithuid:commonMessage.fid success:^(BOOL flag, NSDictionary *userInfo, NSString *msg) {
                 
                 if (flag) {
@@ -518,7 +519,7 @@ static XmppManager *sharedXmppManagerInstance = nil;
                 
             } failure:^(NSError *error) {
                 
-            }];
+            }];*/
         }
         return;
     }
@@ -526,6 +527,7 @@ static XmppManager *sharedXmppManagerInstance = nil;
     if (![PeopleManager peopleExitInTableWithFid:commonMessage.fid]) {
         //保存用户信息
         if (commonMessage.fid != -1 && commonMessage.fid != commonMessage.uid) {
+            /*
             [NetWorkManager networkGetUserInfoWithuid:commonMessage.fid success:^(BOOL flag, NSDictionary *userInfo, NSString *msg) {
                 
                 if (flag) {
@@ -535,7 +537,7 @@ static XmppManager *sharedXmppManagerInstance = nil;
                 
             } failure:^(NSError *error) {
                 
-            }];
+            }];*/
         }
     }
     

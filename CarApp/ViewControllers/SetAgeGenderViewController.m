@@ -35,7 +35,6 @@
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor appBackgroundColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -43,14 +42,12 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     else
     {
@@ -69,17 +66,14 @@
     [headerImgView setBackgroundColor:[UIColor clearColor]];
     [headerImgView setImage:[UIImage imageNamed:@"logo_start"]];
     [navBar addSubview:headerImgView];
-    [headerImgView release];
-
     
-    UILabel * infoLabel = [[[UILabel alloc]initWithFrame:CGRectMake(45, 86, 200, 20)]autorelease];
+    UILabel * infoLabel = [[UILabel alloc]initWithFrame:CGRectMake(45, 86, 200, 20)];
     [infoLabel setBackgroundColor:[UIColor clearColor]];
     [infoLabel setTextAlignment:NSTextAlignmentLeft];
     [infoLabel setTextColor:[UIColor blackColor]];
     [infoLabel setFont:[UIFont fontWithName:kFangZhengFont size:15]];
     [infoLabel setText:@"请选择年龄"];
     [mainView addSubview:infoLabel];
-    [infoLabel release];
     
     UIImage * txfBackSelectedImg = [UIImage imageNamed:@"input_white_normal@2x"];
     txfBackSelectedImg = [txfBackSelectedImg stretchableImageWithLeftCapWidth:20 topCapHeight:0];
@@ -89,7 +83,6 @@
     txfBackBtn.userInteractionEnabled = YES;
     [txfBackBtn setImage:txfBackSelectedImg];
     [mainView addSubview:txfBackBtn];
-    [txfBackBtn release];
     
     UILabel * ageLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 100, 36)];
     [ageLabel setTag:60002];
@@ -100,17 +93,15 @@
     [ageLabel setTextColor:[UIColor grayColor]];
     [ageLabel setFont:[UIFont fontWithName:kFangZhengFont size:16]];
     [txfBackBtn addSubview:ageLabel];
-    [ageLabel release];
     
-    
-    UILabel * infoLabel2 = [[[UILabel alloc]initWithFrame:CGRectMake(45, 158, 200, 20)]autorelease];
+    UILabel * infoLabel2 = [[UILabel alloc]initWithFrame:CGRectMake(45, 158, 200, 20)];
     [infoLabel2 setBackgroundColor:[UIColor clearColor]];
     [infoLabel2 setTextAlignment:NSTextAlignmentLeft];
     [infoLabel2 setTextColor:[UIColor blackColor]];
     [infoLabel2 setFont:[UIFont fontWithName:kFangZhengFont size:15]];
     [infoLabel2 setText:@"请选择性别"];
     [mainView addSubview:infoLabel2];
-    [infoLabel2 release];
+
     
     UIButton * maleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [maleBtn setTag:70001];
@@ -145,11 +136,10 @@
     [nextBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [nextBtn addTarget:self action:@selector(nextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [mainView addSubview:nextBtn];
-    
-    
+
     UITapGestureRecognizer * ageTappp = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeAge:)];
     [ageLabel addGestureRecognizer:ageTappp];
-    [ageTappp release];
+
     
     self.pickerBackView = [AMBlurView new];
     [self.pickerBackView setFrame:CGRectMake(0, SCREEN_HEIGHT, 320, 216)];
@@ -269,6 +259,7 @@
         NSString *phone = [self.registerDic objectForKey:@"phoneNum"];
         NSString *phoneType = kPhotoType;
         NSString *phoneuuid = [[User shareInstance ]getOpenuuid];
+        /*
         //注册
         [NetWorkManager networkUserRegistName:name password:password phone:phone sex:sex age:age phonetype:phoneType phoneuuid:phoneuuid success:^(BOOL flag, NSDictionary *userDic, NSString *msg) {
             
@@ -297,7 +288,7 @@
             
         } failure:^(NSError *error) {
             
-        }];
+        }];*/
        
     }
     else
@@ -318,7 +309,7 @@
 
 -(void)dealloc
 {
-    [super dealloc];
+
 }
 
 - (void)didReceiveMemoryWarning

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface XHBKViewController : UIViewController
-@property (retain, nonatomic)NSDictionary *dataInfo;
+@property (strong, nonatomic)NSDictionary *dataInfo;
 @end

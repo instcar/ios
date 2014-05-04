@@ -17,6 +17,8 @@
 #import "HZscrollerView.h"
 #import "BDVoiceRecognitionClient.h"
 #import "CustomSearchBarControl.h"
+#import "Line.h"
+#import "Judian.h"
 
 #define kLinePerPageNum 10
 #define kjudianPerPageNum 1000
@@ -25,11 +27,11 @@
 
 @interface PassengerRouteUIViewController ()<HZscrollerViewDelegate,CustomSearchBarControlDelegate>
 
-@property (retain, nonatomic) NSMutableArray *lineArray;
-@property (retain, nonatomic) NSMutableArray *judianArray;
+@property (strong, nonatomic) NSMutableArray *lineArray;
+@property (strong, nonatomic) NSMutableArray *judianArray;
 @property (copy, nonatomic) NSString *searchConditionStr;
 @property (assign, nonatomic) int selectJudianId;
-@property (retain, nonatomic) WarnView *warnView;
+@property (strong, nonatomic) WarnView *warnView;
 
 @end
 
@@ -37,12 +39,6 @@
 
 -(void)dealloc
 {
-    [InstantCarRelease safeRelease:_lineArray];
-    [InstantCarRelease safeRelease:_judianArray];
-    [InstantCarRelease safeRelease:_warnView];
-    [InstantCarRelease safeRelease:_searchConditionStr];
-    
-    [super dealloc];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -71,13 +67,12 @@
         [self setAutomaticallyAdjustsScrollViewInsets:NO];
         self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
     }
-    self.lineArray = [[[NSMutableArray alloc]init]autorelease];
-    self.judianArray = [[[NSMutableArray alloc]init]autorelease];
+    self.lineArray = [[NSMutableArray alloc]init];
+    self.judianArray = [[NSMutableArray alloc]init];
     
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor appBackgroundColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -85,13 +80,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     
     UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -109,7 +102,6 @@
     [titleLabel setTextColor:[UIColor appNavTitleColor]];
     [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
     
     _tableView = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 64+45+52, 320, SCREEN_HEIGHT -64-45-52) pullingDelegate:self];
     [_tableView setTag:KResultsTableTag];
@@ -118,10 +110,8 @@
     [_tableView setBackgroundColor:[UIColor clearColor]];
     UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 2)];
     [_tableView setTableFooterView:footerView];
-    [footerView release];
 //    [_tableView setBackgroundView:Nil];
     [mainView insertSubview:_tableView belowSubview:navBar];
-    [_tableView release];
     
     CustomSearchBarControl *customSearchBarControl = [[CustomSearchBarControl alloc]initWithFrame:CGRectMake(0, 64+45, 320, 52) withStyle:kSearchBarStyleBlue];
     [customSearchBarControl setDelegate:self];
@@ -134,21 +124,20 @@
     bannerImageView.userInteractionEnabled = YES;
     [bannerImageView setImage:bannerImage];
     [mainView addSubview:bannerImageView];
-    [bannerImageView release];
 
     //据点滚动视图
     _hzScrollerView = [[HZscrollerView alloc]initWithFrame:CGRectMake(0, 0, 320, 45) withType:2];
     _hzScrollerView.delegate = self;
     _hzScrollerView.data = self.judianArray;
     [bannerImageView addSubview:_hzScrollerView];
-    [_hzScrollerView release];
     
     //    //添加对键盘高度的监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasChange:) name:UIKeyboardDidChangeFrameNotification object:nil];
-    
+    /*
     //加载数据
     [self loadDataMode:kEnumRouteModeLineListByTag tag:@"" judianID:0 mode:kRequestModeRefresh];
     [self loadDataMode:kEnumRouteModeJudianListByCoorder tag:nil judianID:0 mode:kRequestModeRefresh];
+     */
     
     self.warnView = [WarnView initWarnViewWithText:@"非常抱歉,暂无数据..." withView:_tableView height:100 withDelegate:nil];
 }
@@ -168,6 +157,7 @@
 }
 
 #pragma mark - 数据交互
+/*
 //type 为 请求类型 mode为 请求方式 mode tag/judianID参数
 -(void)loadDataMode:(kEnumRouteMode)mode tag:(NSString *)tag judianID:(int)judian mode:(kRequestMode)requestMode{
     
@@ -271,7 +261,7 @@
     }
     
 }
-
+*/
 
 #pragma mark - Refresh and load more methods
 
@@ -285,13 +275,13 @@
      */
     //对tableModel进行判断
     _tablePage = 1;
-    
+    /*
     if (_currentMode == kEnumRouteModeLineListByTag) {
         [self loadDataMode:kEnumRouteModeLineListByTag tag:self.searchConditionStr judianID:0 mode:kRequestModeRefresh];
     }
     if (_currentMode == kEnumRouteModeLineListByJudianID) {
         [self loadDataMode:kEnumRouteModeLineListByJudianID tag:nil judianID:self.selectJudianId mode:kRequestModeRefresh];
-    }
+    }*/
 }
 
 - (void) loadMoreDataToTable
@@ -305,12 +295,13 @@
     //对tableModel进行判断
     if (_canTableLoadMore) {
         _tablePage ++;
+        /*
         if (_currentMode == kEnumRouteModeLineListByTag) {
             [self loadDataMode:kEnumRouteModeLineListByTag tag:self.searchConditionStr judianID:0 mode:kRequestModeLoadmore];
         }
         if (_currentMode == kEnumRouteModeLineListByJudianID) {
             [self loadDataMode:kEnumRouteModeLineListByJudianID tag:nil judianID:self.selectJudianId mode:kRequestModeLoadmore];
-        }
+        }*/
     }
     else
     {
@@ -324,7 +315,8 @@
     //搜索
     _tablePage = 1;
     self.searchConditionStr = result;
-    [self loadDataMode:kEnumRouteModeLineListByTag tag:result judianID:0 mode:kRequestModeRefresh];
+    /*
+    [self loadDataMode:kEnumRouteModeLineListByTag tag:result judianID:0 mode:kRequestModeRefresh];*/
 }
 
 #pragma mark - PullingRefreshTableViewDelegate
@@ -358,7 +350,7 @@
     static NSString *CellIdentifier = @"ResultsTable";
     DriverRouteCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[DriverRouteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[DriverRouteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
     }
     
@@ -390,16 +382,16 @@
     Line *line = (Line *)[self.lineArray objectAtIndex:indexPath.row];
     if (self.state == 1) {
         PassgerEditRouteViewController * editRouteVC = [[PassgerEditRouteViewController alloc]init];
-        editRouteVC.line = [self.lineArray objectAtIndex:indexPath.row];
+        editRouteVC.line = line;
         [self.navigationController pushViewController:editRouteVC animated:YES];
-        [editRouteVC release];
     }
     if (self.state == 2) {
+        /*
         [NetWorkManager networkAddUserfavlineWithUid:[[User shareInstance] userId] lineID:line.ID success:^(BOOL flag, NSString *msg) {
             [self.navigationController popViewControllerAnimated:YES];
         } failure:^(NSError *error) {
             
-        }];
+        }];*/
     }
 }
 
@@ -449,7 +441,9 @@
     
     if (index == 0) {
         _tablePage = 1;
+        /*
         [self loadDataMode:kEnumRouteModeLineListByTag tag:@"" judianID:0 mode:kRequestModeRefresh];
+         */
     }
     else
     {
@@ -458,7 +452,9 @@
         
         _tablePage = 1;
         self.selectJudianId = judian.ID;
+        /*
         [self loadDataMode:kEnumRouteModeLineListByJudianID tag:nil judianID:judian.ID mode:kRequestModeRefresh];
+         */
     }
 }
 

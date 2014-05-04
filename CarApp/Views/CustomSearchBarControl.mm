@@ -16,9 +16,9 @@
 
 @interface CustomSearchBarControl()
 
-@property (nonatomic, retain) BDVRCustomRecognitonViewController *recognizerViewController;
-@property (nonatomic, retain) BDVRRawDataRecognizer *rawDataRecognizer;
-@property (nonatomic, retain) BDVRFileRecognizer *fileRecognizer;
+@property (nonatomic, strong) BDVRCustomRecognitonViewController *recognizerViewController;
+@property (nonatomic, strong) BDVRRawDataRecognizer *rawDataRecognizer;
+@property (nonatomic, strong) BDVRFileRecognizer *fileRecognizer;
 
 @end
 
@@ -26,10 +26,9 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_recognizerViewController];
-    [SafetyRelease release:_rawDataRecognizer];
-    [SafetyRelease release:_fileRecognizer];
-    [super dealloc];
+    _recognizerViewController = nil;
+    _rawDataRecognizer = nil;
+    _fileRecognizer = nil;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -62,24 +61,20 @@
     [searchBackGroundImgView setBackgroundColor:[UIColor colorWithRed:(float)243/255 green:(float)243/255 blue:(float)243/255 alpha:1]];
     searchBackGroundImgView.clipsToBounds = NO;
     [self addSubview:searchBackGroundImgView];
-    [searchBackGroundImgView release];
     
     UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 51.5, 320, 0.5)];
     [lineView setBackgroundColor:[UIColor appLineDarkGrayColor]];
     [searchBackGroundImgView addSubview:lineView];
-    [lineView release];
     
     UIImageView * searchBarImgView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 300, 32)];
     [searchBarImgView setUserInteractionEnabled:YES];
     [searchBarImgView setBackgroundColor:[UIColor clearColor]];
     [searchBarImgView setImage:[[UIImage imageNamed:@"bg_search_pressed"] stretchableImageWithLeftCapWidth:15 topCapHeight:5]];
     [searchBackGroundImgView addSubview:searchBarImgView];
-    [searchBarImgView release];
     
     UIImageView *searchIconView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ic_search"]];
     searchIconView.frame = CGRectMake(20, (52-15)/2, 15, 15);
     [searchBackGroundImgView addSubview:searchIconView];
-    [searchIconView release];
     
     UILabel * placeholderLabel = [[UILabel alloc]initWithFrame:CGRectMake(25, 6, 50, 20)];
     [placeholderLabel setBackgroundColor:[UIColor clearColor]];
@@ -88,7 +83,6 @@
     [placeholderLabel setTextColor:[UIColor appDarkGrayColor]];
     [placeholderLabel setFont:[UIFont fontWithName:kFangZhengFont size:12]];
     [searchBarImgView addSubview:placeholderLabel];
-    [placeholderLabel release];
     
     UIView *toolBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 39)];
     [toolBar setBackgroundColor:[UIColor clearColor]];
@@ -112,7 +106,6 @@
     [searchTxF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [searchTxF setInputAccessoryView:toolBar];
     [searchBarImgView addSubview:searchTxF];
-    [searchTxF release];
     
     UIButton * speechSearchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [speechSearchBtn setFrame:CGRectMake(250, 11, 60, 32)];
@@ -204,7 +197,6 @@
     BDVRCustomRecognitonViewController *tmpAudioViewController = [[BDVRCustomRecognitonViewController alloc] initWithNibName:nil bundle:nil];
     tmpAudioViewController.delegate = self;
     self.recognizerViewController = tmpAudioViewController;
-    [tmpAudioViewController release];
     
     [[UIApplication sharedApplication].keyWindow addSubview:_recognizerViewController.view];
     

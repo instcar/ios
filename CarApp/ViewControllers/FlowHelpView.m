@@ -7,7 +7,7 @@
 //
 
 #import "FlowHelpView.h"
-
+#import "Room.h"
 static FlowHelpView *flowHelp = nil;
 
 #define KFlowHelpViewHeight 44
@@ -50,7 +50,6 @@ typedef enum {
 	_selectImage	= nil;
 	_normalImage	= nil;
      [[NSNotificationCenter defaultCenter]removeObserver:self];
-    [super dealloc];
 }
 
 - (AppDelegate *)shareAppdelegate
@@ -121,7 +120,6 @@ typedef enum {
         
 		UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
 		[self addGestureRecognizer:tapGesture];
-        [tapGesture release];
 
 		self.hidden = YES;
 	}
@@ -133,7 +131,7 @@ typedef enum {
 {
     if (data) {
 //        [_data release];
-        _data = [data copy];
+        _data = data;
     }
     [self reflashView:data];
 }

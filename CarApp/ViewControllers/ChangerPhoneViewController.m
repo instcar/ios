@@ -45,7 +45,6 @@
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor appBackgroundColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -53,13 +52,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     else
     {
@@ -81,7 +78,6 @@
     [titleLabel setTextColor:[UIColor appNavTitleColor]];
     [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
     
     UIButton * saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveBtn setFrame:CGRectMake(320-70, 20, 70, 44)];
@@ -97,7 +93,6 @@
     UIImageView * welcomeImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, 49)];
     [welcomeImgView setImage:welcomeImage];
     [mainView addSubview:welcomeImgView];
-    [welcomeImgView release];
     
     UILabel * welcomeLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 310, 44)];
     [welcomeLabel setBackgroundColor:[UIColor clearColor]];
@@ -106,7 +101,6 @@
     [welcomeLabel setTextColor:[UIColor whiteColor]];
     [welcomeLabel setFont:[UIFont appGreenWarnFont]];
     [welcomeImgView addSubview:welcomeLabel];
-    [welcomeLabel release];
     
     
     SetProfileTableCell *cell = [[SetProfileTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
@@ -118,7 +112,6 @@
     [cell.titleLabel setText:@"手机号码"];
     [cell.infoLabel setText:[User shareInstance].phoneNum];
     [mainView addSubview:cell];
-    [cell release];
 
     CGSize mLblHieht = [cell.infoLabel.text sizeWithFont:[UIFont fontWithName:@"FZY3JW--GB1-0" size:16] constrainedToSize:CGSizeMake(220, 30) lineBreakMode:NSLineBreakByCharWrapping];
     [cell.arrowImgView setFrame:CGRectMake(mLblHieht.width + 120, 19, 12, 12)];
@@ -126,7 +119,6 @@
     UIImageView *bgImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 45)];
     [bgImgView setImage:[UIImage imageNamed:@"bg_rss_pressed@2x"]];
     [cell setBackgroundView:bgImgView];
-    [bgImgView release];
     
     //输入框
     GDInputView *inputView = [[GDInputView alloc]initWithFrame:CGRectMake(45, 65 + 135 + 100, 230, 36)];
@@ -135,7 +127,6 @@
     [inputView.textfield setPlaceholder:@"请输入新的手机号码"];
     [inputView setTag:kGDInputViewTag];
     [mainView addSubview:inputView];
-    [inputView release];
     
     //获取验证码
     UIButton * authBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -179,7 +170,6 @@
     [warnLabel setTextColor:[UIColor flatGreenColor]];
     [warnLabel setFont:[UIFont boldSystemFontOfSize:16]];
     [mainView addSubview:warnLabel];
-    [warnLabel release];
     //--------------------------------------------//
     
     
@@ -307,7 +297,7 @@
 -(void)checkPhone:(NSString *)phone success:(void (^)(void))success failure:(void (^)(NSString *message))failure
 {
     GDInputView * inputView = (GDInputView *)[self.view viewWithTag:kGDInputViewTag];
-
+/*
     [NetWorkManager networkCheckPhone:phone success:^(int status, NSObject *data, NSString *msg) {
         if (status == 200) {
             //保存手机号
@@ -327,13 +317,14 @@
 
     } failure:^(NSError *error) {
         failure([error localizedDescription]);
-    }];
+    }];*/
 }
 
 //获取验证码
 -(void)getAuthCode:(NSString *)phone type:(int)type success:(void (^)(void))success failure:(void (^)(NSString *message))failure
 {
      GDInputView * inputView = (GDInputView *)[self.view viewWithTag:kGDInputViewTag];
+    /*
     [NetWorkManager networkGetauthcodeWithPhone:phone type:type mode:kNetworkrequestModeRequest success:^(BOOL flag, NSString *authcode, NSString *sequenceNo, NSString *msg) {
         if (flag) {
             self.authcode = [authcode copy];
@@ -352,7 +343,7 @@
         }
     } failure:^(NSError *error) {
         failure([error localizedDescription]);
-    }];
+    }];*/
 }
 
 

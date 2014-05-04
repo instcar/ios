@@ -36,7 +36,6 @@
             UIView *view = [[UIView alloc]initWithFrame:CGRectMake(y*size.width, i*self.frame.size.height/row, self.frame.size.width/column, self.frame.size.height/row)];
             view.backgroundColor = [UIColor clearColor];
             [self addSubview:view];
-            [view release];
             
 			UIButton *button=[UIButton buttonWithType:UIButtonTypeCustom];
             [button.layer setBorderColor:[UIColor blackColor].CGColor];

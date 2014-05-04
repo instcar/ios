@@ -11,13 +11,13 @@
 
 @interface MainRouteTableCell : UITableViewCell
 
-@property(retain,nonatomic)UIButton * backButton;
-@property(retain,nonatomic)UIImageView * backImgView;
-@property(retain,nonatomic)UILabel * routeTitleLabel;
-@property(retain,nonatomic)UILabel * routeInfoLabel;
-@property(retain,nonatomic)UILabel * routeTimeLabel;
-@property(retain,nonatomic)UIImageView * routeAccessImgView;
-@property(retain,nonatomic)UIButton *commentBtn;
-@property(retain, nonatomic)UIView *lineView;
+@property(strong,nonatomic)UIButton * backButton;
+@property(strong,nonatomic)UIImageView * backImgView;
+@property(strong,nonatomic)UILabel * routeTitleLabel;
+@property(strong,nonatomic)UILabel * routeInfoLabel;
+@property(strong,nonatomic)UILabel * routeTimeLabel;
+@property(strong,nonatomic)UIImageView * routeAccessImgView;
+@property(strong,nonatomic)UIButton *commentBtn;
+@property(strong, nonatomic)UIView *lineView;
 
 @end

@@ -7,13 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CommonViewController.h"
 #import "ConnectStateView.h"
+#import "MainFirstView.h"
+#import "MainSecondView.h"
+#import "MainThirdView.h"
+#import "CommonRouteView.h"
 
-@interface MainViewController : UIViewController<UIScrollViewDelegate,UIAlertViewDelegate>
+@interface MainViewController :CommonViewController<UIScrollViewDelegate,UIAlertViewDelegate>
 {
     ConnectStateView *_connectStateView;
+    UIPageControl *_pageControl;
+    CommonRouteView *_mainThirdView;
+    MainSecondView *_mainsecondView;
+    UIButton * _moreBtn;
+    UIButton * _profileBtn;
+    UIButton * _settingBtn;
 }
-@property(retain,nonatomic)UIScrollView * mainScrollView;
+@property(strong,nonatomic)UIScrollView * mainScrollView;
 @property(assign,nonatomic)bool firstEnter;
 
 -(void)enterView;

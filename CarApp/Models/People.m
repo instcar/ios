@@ -80,12 +80,11 @@
 //从网络获取对象
 +(NSArray *)arrayWithArrayDic:(NSArray *)array;
 {
-    NSMutableArray * mutableArray = [[[NSMutableArray alloc]init]autorelease];
+    NSMutableArray * mutableArray = [[NSMutableArray alloc]init];
     [mutableArray removeAllObjects];
     for (NSDictionary * dic in array) {
         People *room = [[People alloc]initFromDic:dic];
         [mutableArray addObject:room];
-        [room release];
     }
     return mutableArray;
 }

@@ -16,12 +16,7 @@
 
 -(void)dealloc
 {
-//    [SafetyRelease release:_addBtn];
-//    [SafetyRelease release:_subBtn];
-//    [SafetyRelease release:_normalImage];
-//    [SafetyRelease release:_selectImage];
-    
-    [super dealloc];
+
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -32,7 +27,6 @@
         UIImageView *bgImageView = [[UIImageView alloc]initWithFrame:self.bounds];
         [bgImageView setImage:[UIImage imageNamed:@"btn_empty@2x"]];
         [self addSubview:bgImageView];
-        [bgImageView release];
         
         _addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _addBtn.frame = CGRectMake(self.bounds.size.width-45, 0, 45, 45);
@@ -55,7 +49,6 @@
         seatConstaion.tag = 50000;
         seatConstaion.center = bgImageView.center;
         [self addSubview:seatConstaion];
-        [seatConstaion release];
     }
     return self;
 }
@@ -87,7 +80,6 @@
         passImg.frame = CGRectMake(x, 0, _size.width, _size.height);
         passImg.contentMode = UIViewContentModeScaleAspectFit;
         [seatConstain addSubview:passImg];
-        [passImg release];
     }
 }
 

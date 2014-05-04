@@ -10,10 +10,10 @@
 
 @interface SetProfileTableCell : UITableViewCell
 
-@property(retain, nonatomic)UIImageView * photoImgView;
-@property(retain, nonatomic)UILabel * titleLabel;
-@property(retain, nonatomic)UILabel * infoLabel;
-@property(retain, nonatomic)UIImageView * arrowImgView;
+@property(strong, nonatomic)UIImageView * photoImgView;
+@property(strong, nonatomic)UILabel * titleLabel;
+@property(strong, nonatomic)UILabel * infoLabel;
+@property(strong, nonatomic)UIImageView * arrowImgView;
 
 @end
 

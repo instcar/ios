@@ -26,7 +26,7 @@
         [self.backButton setBackgroundImage:[UIImage imageNamed:@"bg_rss_pressed@2x"] forState:UIControlStateHighlighted];
         [self.contentView addSubview:self.backButton];
         
-        self.contentTextLable = [[[UILabel alloc]initWithFrame:CGRectMake(8, 7, 200, 60)]autorelease];
+        self.contentTextLable = [[UILabel alloc]initWithFrame:CGRectMake(8, 7, 200, 60)];
         [self.contentTextLable  setBackgroundColor:[UIColor clearColor]];
         [self.contentTextLable  setTextAlignment:NSTextAlignmentLeft];
         [self.contentTextLable  setTextColor:[UIColor colorWithRed:(float)63/255 green:(float)63/255 blue:(float)63/255 alpha:1]];
@@ -36,7 +36,7 @@
         [self.contentTextLable setLineBreakMode:NSLineBreakByWordWrapping];
         [self.backButton addSubview:self.contentTextLable];
         
-        self.contentImageView = [[[UIImageView alloc]initWithFrame:CGRectMake(212,7,80,60)]autorelease];
+        self.contentImageView = [[UIImageView alloc]initWithFrame:CGRectMake(212,7,80,60)];
         self.contentImageView.backgroundColor = [UIColor orangeColor];
         [self.backButton addSubview:self.contentImageView];
     }

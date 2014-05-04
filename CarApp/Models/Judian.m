@@ -29,11 +29,10 @@
 
 +(NSArray *)arrayWithArrayDic:(NSArray *)array
 {
-    NSMutableArray * mutableArray = [[[NSMutableArray alloc]init]autorelease];
+    NSMutableArray * mutableArray = [[NSMutableArray alloc]init];
     for (NSDictionary * dic in array) {
         Judian *judian = [[Judian alloc]initWithDic:dic];
         [mutableArray addObject:judian];
-        [judian release];
     }
     return mutableArray;
 }

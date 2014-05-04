@@ -11,8 +11,8 @@
 
 @interface ImageViewCell : UIView
 
-@property (retain, nonatomic)UIImage * image;
-@property (retain, nonatomic)UIImageView * imageView;
+@property (strong, nonatomic)UIImage * image;
+@property (strong, nonatomic)UIImageView * imageView;
 @property (assign, nonatomic)id<ImageViewCellDelegate> delegate;
 
 -(id)initWithImage:(UIImage *)image;

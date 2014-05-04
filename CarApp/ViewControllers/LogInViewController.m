@@ -21,7 +21,7 @@
 
 -(void)dealloc
 {
-    [super dealloc];
+
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -55,7 +55,6 @@
     _mainScrollView = [[UIScrollView alloc]initWithFrame:self.view.bounds];
     [_mainScrollView setScrollEnabled:YES];
     [self.view addSubview:_mainScrollView];
-    [_mainScrollView release];
     
     UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 30, 180, 50)];
     [titleLabel setBackgroundColor:[UIColor clearColor]];
@@ -66,21 +65,18 @@
     [titleLabel setTextColor:[UIColor colorWithRed:60./255.0 green:60./255.0 blue:60./255.0 alpha:1]];
     [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
     [_mainScrollView addSubview:titleLabel];
-    [titleLabel release];
     
     UIImageView * headerImgView = [[UIImageView alloc]initWithFrame:CGRectMake(320-130,30, 110, 25)];
     [headerImgView setTag:10002];
     [headerImgView setBackgroundColor:[UIColor clearColor]];
     [headerImgView setImage:[UIImage imageNamed:@"logo_start"]];
     [_mainScrollView addSubview:headerImgView];
-    [headerImgView release];
     
     //输入框
     _inputView = [[UIView alloc]initWithFrame:CGRectMake(40,24+55, 240, 180)];
     [_inputView setClipsToBounds:NO];
     [_inputView setHidden:YES];
     [_mainScrollView addSubview:_inputView];
-    [_inputView release];
     
     _errorWarnLable = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 230, 36)];
     [_errorWarnLable setBackgroundColor:[UIColor clearColor]];
@@ -88,7 +84,6 @@
     [_errorWarnLable setTextColor:[UIColor redColor]];
     [_errorWarnLable setFont:[UIFont fontWithName:kFangZhengFont size:14]];
     [_inputView addSubview:_errorWarnLable];
-    [_errorWarnLable release];
     
     //账号
     _userInputView = [[GDInputView alloc]initWithFrame:CGRectMake(5, 40, 230, 36)];
@@ -100,7 +95,6 @@
     [_userInputView.textfield setText:[User shareInstance].phoneNum];
     [_userInputView setResult:([User shareInstance].phoneNum && ![[User shareInstance].phoneNum isEqualToString:@""])?kGDInputViewStatusTure:kGDInputViewStatusNomal];
     [_inputView addSubview:_userInputView];
-    [_userInputView release];
     
     //密码
     _codeInputView = [[GDInputView alloc]initWithFrame:CGRectMake(5, 90, 230, 36)];
@@ -112,7 +106,6 @@
     [_codeInputView.textfield setText:[User shareInstance].userPwd];
     [_codeInputView setResult:([User shareInstance].userPwd && ![[User shareInstance].userPwd isEqualToString:@""])?kGDInputViewStatusTure:kGDInputViewStatusNomal];
     [_inputView addSubview:_codeInputView];
-    [_codeInputView release];
     
     //登入按钮
     UIImage * logBackImg = [UIImage imageNamed:@"btn_blue"];
@@ -133,7 +126,6 @@
     [_bottomView setImage:[UIImage imageNamed:@"tab_bar"]];
     [_bottomView setUserInteractionEnabled:YES];
     [self.view addSubview:_bottomView];
-    [_bottomView release];
     
     _registerBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_registerBtn setBackgroundColor:[UIColor clearColor]];
@@ -206,7 +198,6 @@
     DLog(@"注册");
     RegisterViewController * registerVC = [[RegisterViewController alloc]init];
     [self.navigationController pushViewController:registerVC animated:YES];
-    [registerVC release];
 }
 
 //忘记密码
@@ -215,7 +206,6 @@
     DLog(@"忘记密码");
     ForgetPassWordViewController * forgetVC = [[ForgetPassWordViewController alloc]init];
     [self.navigationController pushViewController:forgetVC animated:YES];
-    [forgetVC release];
 }
 
 //登入按钮
@@ -261,7 +251,6 @@
             user.isSavePwd = YES;
             
             UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:[AppDelegate shareDelegate].mainVC];
-            [navi setNavigationBarHidden:YES];
             [AppDelegate shareDelegate].mainVC.firstEnter = YES;
             [[AppDelegate shareDelegate].mainVC enterView];
             [navi setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];

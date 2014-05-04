@@ -114,6 +114,10 @@
     }
     [request setUseCookiePersistence:YES];
     NSMutableArray *cookies = [NSMutableArray arrayWithArray:[User shareInstance].cookies];
+    
+    DLog(@"url:%@",request.url);
+    DLog(@"postData:%@",request.postBody);
+    
     [request setRequestCookies:cookies];
     [request setRequestMethod:@"POST"];
     [request setResponseEncoding:NSUnicodeStringEncoding];
@@ -178,6 +182,10 @@
     {
         [request setPostValue:[formData valueForKey:key] forKey:key];
     }
+    
+    DLog(@"url:%@",request.url);
+    DLog(@"postData:%@,file:%@",request.postBody,request.postBodyFilePath);
+    
     [request setResponseEncoding:NSUnicodeStringEncoding];
     [request setRequestMethod:@"POST"];
     [request setCompletionBlock:^{
@@ -227,6 +235,10 @@
     {
         [request setPostValue:[formData valueForKey:key] forKey:key];
     }
+    
+    DLog(@"url:%@",request.url);
+    DLog(@"postData:%@,file:%@",request.postBody,request.postBodyFilePath);
+    
     [request setResponseEncoding:NSUnicodeStringEncoding];
     [request setRequestMethod:@"POST"];
     [request setCompletionBlock:^{

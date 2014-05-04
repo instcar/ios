@@ -10,16 +10,17 @@
 #import "PListSettingView.h"
 #import "UIButton+WebCache.h"
 #import "ProfileViewController.h"
+#import "Room.h"
 #define kEnsurePingcheTag 97777
 #define kJojinPingcheTag 97776
 #define kExitPingcheTag 97775
 
 @interface RoomInfoView()<PListSettingViewDelegate>
 
-@property (retain, nonatomic) UIView *infoView; //房间情况按钮
-@property (retain, nonatomic) UIButton *infoBtn; //显示按钮
-@property (retain, nonatomic) UILabel *numLable; //空位剩余
-@property (retain, nonatomic) UIButton *closeBtn; //关闭按钮
+@property (strong, nonatomic) UIView *infoView; //房间情况按钮
+@property (strong, nonatomic) UIButton *infoBtn; //显示按钮
+@property (strong, nonatomic) UILabel *numLable; //空位剩余
+@property (strong, nonatomic) UIButton *closeBtn; //关闭按钮
 @property (assign, nonatomic) CGRect fullScreenRect; //全屏大小
 @property (assign, nonatomic) BOOL isOpen;
 @property (assign, nonatomic) BOOL isRoomMaster;
@@ -46,7 +47,6 @@
         UIImageView *background = [[UIImageView alloc]initWithFrame:CGRectMake(5, 0, 310, 180)];
         [background setImage:[[UIImage imageNamed:@"bg_sound"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [self.infoView addSubview:background];
-        [background release];
         
         self.headImgView = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.headImgView setFrame:CGRectMake(10, -5, 40, 40)];
@@ -117,7 +117,6 @@
         UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(bgtapAction:)];
         [swipeGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionUp];
         [self addGestureRecognizer:swipeGestureRecognizer];
-        [swipeGestureRecognizer release];
     }
     return self;
 }
@@ -304,7 +303,6 @@
         profileVC.uid = [[user valueForKey:@"id"] doubleValue];
         profileVC.state = 1;
         [self.groupVC.navigationController pushViewController:profileVC animated:YES];
-        [profileVC release];
     }
 }
 
@@ -317,7 +315,6 @@
         profileVC.uid = [[owner valueForKey:@"id"] doubleValue];
         profileVC.state = 1;
         [self.groupVC.navigationController pushViewController:profileVC animated:YES];
-        [profileVC release];
     }
 }
 

@@ -44,7 +44,6 @@
     self.customView = nil;
     self.bubbleImage = nil;
     self.avatarImage = nil;
-    [super dealloc];
 }
 
 - (void)setDataInternal:(NSBubbleData *)value

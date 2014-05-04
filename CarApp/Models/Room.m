@@ -45,12 +45,11 @@
 
 +(NSArray *)arrayWithArrayDic:(NSArray *)array
 {
-    NSMutableArray * mutableArray = [[[NSMutableArray alloc]init]autorelease];
+    NSMutableArray * mutableArray = [[NSMutableArray alloc]init];
     [mutableArray removeAllObjects];
     for (NSDictionary * dic in array) {
         Room *room = [[Room alloc]initWithDic:dic];
         [mutableArray addObject:room];
-        [room release];
     }
     return mutableArray;
 }

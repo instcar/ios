@@ -10,18 +10,9 @@
 
 @implementation SetProfileTableCell
 
-@synthesize photoImgView = _photoImgView;
-@synthesize titleLabel = _titleLabel;
-@synthesize infoLabel = _infoLabel;
-@synthesize arrowImgView = _arrowImgView;
-
 -(void)dealloc
 {
-    [SafetyRelease release:_titleLabel];
-    [SafetyRelease release:_infoLabel];
-    [SafetyRelease release:_arrowImgView];
-    
-    [super dealloc];
+
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -36,14 +27,12 @@
         [backgroundView setBackgroundColor:[UIColor whiteColor]];
         [backgroundView setOpaque:YES];
         [self setBackgroundView:backgroundView];
-        [backgroundView release];
         
         UIImageView *photoImgView = [[UIImageView alloc]initWithFrame:CGRectMake(9, 9, 92, 92)];
         [photoImgView setBackgroundColor:[UIColor clearColor]];
         [photoImgView setHidden:YES];
         [self.contentView addSubview:photoImgView];
         [self setPhotoImgView:photoImgView];
-        [photoImgView release];
         
         UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 200, 30)];
         [titleLabel setBackgroundColor:[UIColor clearColor]];
@@ -53,7 +42,6 @@
         [titleLabel setHidden:YES];
         [self.contentView addSubview:titleLabel];
         [self setTitleLabel:titleLabel];
-        [titleLabel release];
         
         UILabel *infoLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 10, 180, 30)];
         [infoLabel setBackgroundColor:[UIColor clearColor]];
@@ -63,14 +51,12 @@
         [infoLabel setHidden:YES];
         [self.contentView addSubview:infoLabel];
         [self setInfoLabel:infoLabel];
-        [infoLabel release];
 
         UIImageView *arrowImgView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 19, 12, 12)];
         [arrowImgView setImage:[UIImage imageNamed:@"ic_start_ture@2x"]];
         [arrowImgView setHidden:YES];
         [self.contentView addSubview:arrowImgView];
         [self setArrowImgView:arrowImgView];
-        [arrowImgView release];
     }
     
     return self;

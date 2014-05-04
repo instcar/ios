@@ -35,7 +35,6 @@
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor appBackgroundColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -43,14 +42,12 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
 
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     else
     {
@@ -69,7 +66,6 @@
     [headerImgView setBackgroundColor:[UIColor clearColor]];
     [headerImgView setImage:[UIImage imageNamed:@"logo_start"]];
     [navBar addSubview:headerImgView];
-    [headerImgView release];
     
     UILabel * infoLabel = [[UILabel alloc]initWithFrame:CGRectMake(40,64+40, 200, 20)];
     [infoLabel setBackgroundColor:[UIColor clearColor]];
@@ -78,7 +74,6 @@
     [infoLabel setFont:[UIFont fontWithName:kFangZhengFont size:12]];
     [infoLabel setText:@"请输入昵称:"];
     [mainView addSubview:infoLabel];
-    [infoLabel release];
     
     //输入框
     GDInputView *inputView = [[GDInputView alloc]initWithFrame:CGRectMake(40, 122 , 240, 40)];
@@ -88,7 +83,7 @@
     [inputView setTag:kGDInputViewTag];
     [inputView.textfield setTag:kGDInputTextFieldTag];
     [mainView addSubview:inputView];
-    [inputView release];
+
 
     UIImage * logBackImg = [UIImage imageNamed:@"btn_orange_normal"];
     logBackImg = [logBackImg stretchableImageWithLeftCapWidth:5 topCapHeight:5];
@@ -115,6 +110,7 @@
     GDInputView *inputView = (GDInputView *)[self.view viewWithTag:kGDInputViewTag];
     UITextField * nickTxf = inputView.textfield;
     if ([self validateNickName:nickTxf.text]) {
+        /*
         [NetWorkManager networkCheckUserName:nickTxf.text success:^(int status, NSObject *data, NSString *msg) {
             if (status == 200) {
                 [inputView setResult:kGDInputViewStatusTure];
@@ -134,7 +130,7 @@
             }
         } failure:^(NSError *error) {
             
-        }];
+        }];*/
     }
     else
     {
@@ -153,6 +149,7 @@
     NSString *phone = [self.registerDic objectForKey:@"phoneNum"];
     NSString *phoneType = kPhotoType;
     NSString *phoneuuid = [[User shareInstance ]getOpenuuid];
+    /*
     //注册
     [NetWorkManager networkUserRegistName:name password:password phone:phone sex:sex age:age phonetype:phoneType phoneuuid:phoneuuid success:^(BOOL flag, NSDictionary *userDic, NSString *msg) {
         if (flag) {
@@ -181,10 +178,10 @@
         {
             [UIAlertView showAlertViewWithTitle:@"失败" message:msg cancelTitle:@"确定"];
         }
-        
+     
     } failure:^(NSError *error) {
         
-    }];
+    }];*/
 
 }
 

@@ -57,7 +57,7 @@
 	int minimumNumberOfLines;
 	BOOL animateHeightChange;
 	NSObject <UIExpandingTextViewDelegate> *delegate;
-	NSString *text;
+    NSString *text;
 	UIFont *font;
 	UIColor *textColor;
 	NSTextAlignment textAlignment;

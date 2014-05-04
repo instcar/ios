@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface SettingViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
+#import "CommonViewController.h"
+@interface SettingViewController : CommonViewController<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
 {
 }
 @end

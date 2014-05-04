@@ -21,8 +21,8 @@ typedef enum
 @interface PListSettingView : UIView
 
 @property (assign, nonatomic) BOOL canEdit;
-@property (retain, nonatomic) NSArray *personArray;
-@property (retain, nonatomic) NSDictionary *roomMaster;
+@property (strong, nonatomic) NSArray *personArray;
+@property (strong, nonatomic) NSDictionary *roomMaster;
 @property (assign, nonatomic) int seatNum;
 @property (assign, nonatomic) id<PListSettingViewDelegate> delegate;
 

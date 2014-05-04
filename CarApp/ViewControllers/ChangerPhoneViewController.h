@@ -16,7 +16,7 @@
     int _leftSeconds;
 }
 
-@property (retain, nonatomic) id<ChangerPhoneViewControllerDelegate> delegate;
+@property (strong, nonatomic) id<ChangerPhoneViewControllerDelegate> delegate;
 
 @end
 

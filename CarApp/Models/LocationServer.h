@@ -12,7 +12,7 @@
 /**定位服务采用百度ip定位和自带的定位功能**/
 @interface LocationServer : NSObject<CLLocationManagerDelegate,UIAlertViewDelegate>
 @property (assign, nonatomic)CLLocationCoordinate2D locate; //定位点
-@property (retain, nonatomic)CLLocationManager *locationManager; //定位管理器
+@property (strong, nonatomic)CLLocationManager *locationManager; //定位管理器
 
 /**
  *	实例化网络模块单例

@@ -32,7 +32,6 @@
         UIView *btnView = [[UIView alloc]initWithFrame:CGRectMake(i*80, 0, 80, 80)];
         btnView.tag = 100+i;
         [self addSubview:btnView];
-        [btnView release];
         
         UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, 60)];
         btn.tag = 200+i;
@@ -51,14 +50,12 @@
         btn.center = CGPointMake(btnView.frame.size.width/2, btnView.frame.size.height/2-10);
         [btn addTarget:self action:@selector(pListCellAction:) forControlEvents:UIControlEventTouchUpInside];
         [btnView addSubview:btn];
-        [btn release];
         
         UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 60, 60)];
         [imageview setTag:333];
         imageview.center = CGPointMake(btnView.frame.size.width/2, btnView.frame.size.height/2-10);
         [imageview setImage:[UIImage imageNamed:@"seat_ready@2x"]];
         [btnView addSubview:imageview];
-        [imageview release];
         imageview.hidden = YES;
         
         UILabel *lable = [[UILabel alloc]initWithFrame:CGRectMake(0, 60, 80, 20)];
@@ -68,7 +65,6 @@
         [lable setTextAlignment:NSTextAlignmentCenter];
         [lable setFont:[UIFont fontWithName:kFangZhengFont size:12]];
         [btnView addSubview:lable];
-        [lable release];
         
     }
 }

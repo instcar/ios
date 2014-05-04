@@ -58,7 +58,6 @@
     [mainView setBackgroundColor:[UIColor appBackgroundColor]];
     [mainView setTag:10000];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -66,13 +65,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     else
     {
@@ -93,7 +90,6 @@
     UIImageView * welcomeImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, 49)];
     [welcomeImgView setImage:welcomeImage];
     [mainView addSubview:welcomeImgView];
-    [welcomeImgView release];
     
     UILabel * welcomeLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 310, 44)];
     [welcomeLabel setBackgroundColor:[UIColor clearColor]];
@@ -102,7 +98,6 @@
     [welcomeLabel setTextColor:[UIColor whiteColor]];
     [welcomeLabel setFont:[UIFont appGreenWarnFont]];
     [welcomeImgView addSubview:welcomeLabel];
-    [welcomeLabel release];
     
     // 1.创建UIScrollView
     [self createScrollView];

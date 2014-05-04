@@ -23,7 +23,6 @@
 
     #import "AppUtility.h"
     #import "APIClient.h"
-    #import "NetWorkManager.h"
     #import "LocationServer.h"
     #import "SVProgressHUD.h"
     #import "MBProgressHUD+Add.h"
@@ -39,8 +38,13 @@
     #endif
 
     #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
-    #define SCREEN_HEIGHT       ([AppDelegate shareDelegate].window.frame.size.height)
-    #define SCREEN_WIDTH        ([AppDelegate shareDelegate].window.frame.size.width)
+
+    #define SCREEN_HEIGHT       [UIScreen mainScreen].bounds.size.height
+    #define SCREEN_WIDTH        [UIScreen mainScreen].bounds.size.width
+
+    #define APPLICATION_HEGHT [UIScreen mainScreen].applicationFrame.size.height
+    #define APPLICATION_WIDTH [UIScreen mainScreen].applicationFrame.size.width
+
     #define APPKEY				@"instcar"          // 客户端用户名(appkey)
     #define SECRETCODE			@"1astehla1lcgqh7zvs3dxhwbzqn7rzk5"	// 密钥(secretcode)。
 
@@ -68,6 +72,8 @@
     #define kHarpyAppID         @"743564913" //@"691955620" 测试
     #define kFangZhengFont      @"FZY3JW--GB1-0"
     #define kDefaultHoldPlaceImage @""
+    #define kDefaultSHoldPlaceImage @"delt_pic_s"
+    #define kDefaultBHoldPlaceImage @"delt_pic_b"
 
     #define AppFont(x) [UIFont fontWithName:kFangZhengFont size:x] //正常字体 +size
     //        #define AppBoldFont  @"Helvetica-Bold" //加粗字体

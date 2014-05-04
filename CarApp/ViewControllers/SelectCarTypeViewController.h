@@ -7,11 +7,12 @@
 //
 
 #import "CommonViewController.h"
-
+#import "CarD.h"
 @interface SelectCarTypeViewController : CommonViewController<UITableViewDelegate,UITableViewDataSource>
 {
     UITableView *_tableView;
-    
 }
+
+@property (strong, nonatomic) CarD *car;  //汽车别名
 
 @end

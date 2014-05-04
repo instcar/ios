@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "Line.h"
 @interface AddressImageViewController : UIViewController
-@property (retain, nonatomic) Line *line;
+@property (strong, nonatomic) Line *line;
 @end

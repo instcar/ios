@@ -7,9 +7,14 @@
 //
 
 #import "IdentityAuthViewController.h"
+#import "MBProgressHUD+Add.h"
 #import "PhotoSelectManager.h"
+#import "UIImage+Compress.h"
 
 @interface IdentityAuthViewController ()
+
+@property (copy, nonatomic) NSString *imageUrl;         //上传取到的图片路径
+@property (copy, nonatomic)NSString *imagePath;         //上传的图片路径
 
 @end
 
@@ -17,7 +22,7 @@
 
 -(void)dealloc
 {
-    [super dealloc];
+
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -33,15 +38,14 @@
 {
     [super viewDidLoad];
     
-	[self setCtitle:@"实名认证"];
-    [self setDesText:@"请按照以下样例拍摄或上传本人手持身份证的清晰照片"];
+	[self setTitle:@"实名认证"];
+    [self setMessageText:@"请按照以下样例拍摄或上传本人手持身份证的清晰照片"];
     
     _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, KOFFSETY, SCREEN_WIDTH, SCREEN_HEIGHT - KOFFSETY)];
     [_scrollView setBackgroundColor:[UIColor clearColor]];
     [_scrollView setScrollEnabled:YES];
     [_scrollView setAlwaysBounceVertical:YES];
     [self.view addSubview:_scrollView];
-    [_scrollView release];
     
     CGRect bound = _scrollView.bounds;
 
@@ -52,30 +56,26 @@
     [_peopleSampleBookImageView.layer setMasksToBounds:YES];
     [_peopleSampleBookImageView setContentMode:UIViewContentModeScaleAspectFill];
     [_scrollView addSubview:_peopleSampleBookImageView];
-    [_peopleSampleBookImageView release];
     
     _peopleBookbg = [[UIView alloc]initWithFrame:CGRectMake(20, 200, bound.size.width-40, 180)];
     [_peopleBookbg.layer setCornerRadius:2.0];
     [_peopleBookbg.layer setBorderColor:[UIColor lightGrayColor].CGColor];
     [_peopleBookbg.layer setBorderWidth:0.5];
     [_scrollView addSubview:_peopleBookbg];
-    [_peopleBookbg release];
     
-    _peopleBookImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 85, bound.size.width-20, 200)];
+    _peopleBookImageView = [[UIImageView alloc]initWithFrame:_peopleBookbg.bounds];
     [_peopleBookImageView.layer setCornerRadius:2.0];
     [_peopleBookImageView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
     [_peopleBookImageView.layer setBorderWidth:0.5];
     [_peopleBookImageView.layer setMasksToBounds:YES];
     [_peopleBookImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [_scrollView addSubview:_peopleBookImageView];
+    [_peopleBookbg addSubview:_peopleBookImageView];
     [_peopleBookImageView setHidden:YES];
-    [_peopleBookImageView release];
     
     UIImageView *carbookImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 213.0/2.0, 134.0/2.0)];
     [carbookImage setCenter:CGPointMake(_peopleBookbg.bounds.size.width/2, _peopleBookbg.bounds.size.height/2 - 25)];
     [carbookImage setImage:[UIImage imageNamed:@"ic_paperwork"]];
     [_peopleBookbg addSubview:carbookImage];
-    [carbookImage release];
     
     UIButton *addcarbookBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [addcarbookBtn setFrame:CGRectMake(0, 0, 220, 40)];
@@ -104,16 +104,43 @@
 - (void)confirmBtnAction:(UIButton *)sender
 {
     DLog(@"提交");
+    MBProgressHUD *hubView = [MBProgressHUD showMessag:@"正在上传" toView:self.view];
+    [APIClient networkUpLoadImageFileByType:2 user_id:[User shareInstance].userId dataFile:[NSArray arrayWithObject:self.imagePath] success:^(Respone *respone) {
+        DLog(@"%@",[respone description]);
+        if (respone.status == kEnumServerStateSuccess) {
+            [hubView setLabelText:@"上传成功"];
+            self.imageUrl = [respone.data valueForKey:@"file_0"];
+            //获取用户实名认证
+            [APIClient networkUserRealNameRequestWithid_cards_1:self.imageUrl id_cards_2:nil success:^(Respone *respone) {
+                if (respone.status == kEnumServerStateSuccess) {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                [hubView setLabelText:respone.msg];
+                [hubView hide:YES afterDelay:1.0];
+            } failure:^(NSError *error) {
+                [hubView setLabelText:respone.msg];
+                [hubView hide:YES afterDelay:1.0];
+            }];
+        }
+        else
+        {
+            [hubView setLabelText:respone.msg];
+            [hubView hide:YES afterDelay:1.0];
+        }
+        
+    } failure:^(NSError *error) {
+        [hubView setLabelText:error.description];
+        [hubView hide:YES afterDelay:1.0];
+    }];
 }
 
 - (void)addpeoplebookBtn:(UIButton *)sender
 {
-    DLog(@"上传");
+    DLog(@"选择照相机");
 
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"拍摄照片",@"从相册中选择照片", nil];
     [alertView setTag:110];
     [alertView show];
-    [alertView release];
 
 }
 
@@ -140,12 +167,12 @@
 {
     //选择拍照
     if (style == 0) {
-        [PhotoSelectManager selectPhotoFromCamreWithDelegate:self withVC:self withEdit:YES];
+        [PhotoSelectManager selectPhotoFromCamreWithDelegate:self withVC:self withEdit:NO];
     }
     
     //选择相册
     if (style == 1) {
-        [PhotoSelectManager selectPhotoFromPhotoWithDelegate:self withVC:self withEdit:YES];
+        [PhotoSelectManager selectPhotoFromPhotoWithDelegate:self withVC:self withEdit:NO];
     }
 }
 
@@ -155,10 +182,20 @@
     [picker dismissViewControllerAnimated:YES completion:^{
         [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     }];
-    UIImage *image = [[info objectForKey:UIImagePickerControllerEditedImage] retain];
-    [self performSelector:@selector(saveImage:)
-               withObject:image
-               afterDelay:0.5];
+    
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    //更新显示
+    [_peopleBookImageView setImage:image];
+    [_peopleBookImageView setHidden:NO];
+    [_confirmBtn setEnabled:YES];
+    
+    self.imagePath = nil;
+    //压缩保存
+    self.imagePath = [self saveImage:image];
+//    //更新上传到服务器
+//    [self performSelector:@selector(saveImage:)
+//               withObject:image
+//               afterDelay:0.5];
 }
 
 
@@ -177,47 +214,21 @@
     NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
     // and then we write it out
     [imageData writeToFile:fullPathToFile atomically:NO];
-    
 }
 
--(void)saveImage:(UIImage *)image
+-(NSString *)saveImage:(UIImage *)image
 {
     DLog(@"已选择头像");
     
-    NSData* imageData = UIImagePNGRepresentation(image);
-    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString* documentsDirectory = [paths objectAtIndex:0];
-    // Now we get the full path to the file
-    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:@"img00.png"];
-    // and then we write it out
+    //可以对图片进行处理后上传
+    NSData  *imageData = [image compressedDataSize:2*1024];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *fullPathToFile = [documentsDirectory stringByAppendingPathComponent:@"img00.png"];
     [imageData writeToFile:fullPathToFile atomically:NO];
-    [[User shareInstance]setUserId:1];
-    
-    [APIClient networkUpLoadImageFileByType:1 user_id:[User shareInstance].userId dataFile:[NSArray arrayWithObject:fullPathToFile] success:^(Respone *respone) {
-        DLog(@"%@",[respone description]);
-    } failure:^(NSError *error) {
-        
-    }];
-    //
-    //
-    //    SetProfileTableCell * cell = (SetProfileTableCell *)[self.view viewWithTag:77007];
-    //    [cell.photoImgView setImage:image];
-    //    self.headImage  = image;
-    //    User * user = [User shareInstance];
-    //    //保存请求
-    //    ASIFormDataRequest * editPhotoRequest =  [NetWorkManager networkEditHeadpic:image uid:user.userId mode:kNetworkrequestModeQueue success:^(BOOL flag, NSString *newHeadPicUrl, NSString *msg) {
-    //        //        if (flag) {
-    //        //            [cell.photoImgView setImage:image];
-    //        //        }
-    //        //        else
-    //        //        {
-    //        //            [UIAlertView showAlertViewWithTitle:@"失败" message:msg cancelTitle:@"确定"];
-    //        //        }
-    //    } failure:^(NSError *error) {}];
-    //    [self.networkRequestArray addObject:editPhotoRequest];
-    //    //    [editPhotoRequest release];
-    //    [_setProfileTable reloadData];
-    
+   
+    return fullPathToFile;
 }
 
 - (void)didReceiveMemoryWarning

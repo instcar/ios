@@ -7,16 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EditTimeViewController.h"
+#import "Line.h"
 
-@interface EditRouteViewController : UIViewController<EditTimeViewControllerDelegate,BMKMapViewDelegate>
+@interface EditRouteViewController : UIViewController<BMKMapViewDelegate>
 {
     int _currentPeople;
     BOOL _boolll;
 
 }
 
-@property(retain, nonatomic)Line *line;
+@property(strong, nonatomic)Line *line;
 @property (assign, nonatomic) int currentPeople;
 
 @end

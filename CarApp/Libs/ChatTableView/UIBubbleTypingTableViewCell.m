@@ -26,7 +26,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        _typingImageView = [[[UIImageView alloc] init]autorelease];
+        _typingImageView = [[UIImageView alloc] init];
         [self.contentView addSubview:_typingImageView];
     }
     return self;

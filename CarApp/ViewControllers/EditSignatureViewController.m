@@ -7,6 +7,8 @@
 //
 
 #import "EditSignatureViewController.h"
+#import "MBProgressHUD+Add.h"
+#import "ProfileViewController.h"
 
 @interface EditSignatureViewController ()
 
@@ -26,15 +28,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setCtitle:@"编辑签名"];
-    [self setDesText:@"签名最大字数不超过40字"];
+    [self setTitle:@"编辑签名"];
+    [self setMessageText:@"签名最大字数不超过40字"];
     
-    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, KOFFSETY, SCREEN_WIDTH, SCREEN_HEIGHT - KOFFSETY)];
+    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, KOFFSETY, SCREEN_WIDTH, SCREEN_HEIGHT - KOFFSETY-44)];
     [_scrollView setBackgroundColor:[UIColor clearColor]];
     [_scrollView setScrollEnabled:YES];
     [_scrollView setAlwaysBounceVertical:YES];
     [self.view addSubview:_scrollView];
-    [_scrollView release];
 
     UIImage * txfBackImg = [UIImage imageNamed:@"input_white_normal"];
     txfBackImg = [txfBackImg stretchableImageWithLeftCapWidth:5 topCapHeight:5];
@@ -47,23 +48,28 @@
     
     UIImageView *backGtextImgView = [[UIImageView alloc]initWithFrame:CGRectMake(10,  15, 300, 105)];
     [backGtextImgView setImage:txfBackImg];
+    [backGtextImgView setUserInteractionEnabled:YES];
     [_scrollView addSubview:backGtextImgView];
-    [backGtextImgView release];
     
-    UITextView *textView = [[UITextView alloc]initWithFrame:CGRectMake(25, 25, 270, 85)];
-    [textView  setBackgroundColor:[UIColor whiteColor]];
-    [textView  setTextAlignment:NSTextAlignmentLeft];
-    [textView  setTextColor:[UIColor colorWithRed:(float)63/255 green:(float)63/255 blue:(float)63/255 alpha:1.0]];
-    [textView  setFont:[UIFont fontWithName:kFangZhengFont size:16]];
-    [_scrollView addSubview:textView];
-    [textView release];
+    _textView = [[UITextView alloc]initWithFrame:CGRectMake(5, 5, 290, 75)];
+    [_textView setBackgroundColor:[UIColor clearColor]];
+    [_textView setTextAlignment:NSTextAlignmentLeft];
+    [_textView setDelegate:self];
+    [_textView setTextColor:[UIColor colorWithRed:(float)63/255 green:(float)63/255 blue:(float)63/255 alpha:1.0]];
+    if ([self.parentVC.formData valueForKey:@"signature"]) {
+        [_textView setText:[self.parentVC.formData valueForKey:@"signature"]];
+    }
+    else
+        [_textView setText:self.peopleInfo.detail.signature];
+    [_textView  setFont:[UIFont fontWithName:kFangZhengFont size:14]];
+    [backGtextImgView addSubview:_textView];
     
-    _lastWordLable = [[UILabel alloc]initWithFrame:CGRectMake(300 - 100, backGtextImgView.bounds.size.height - 20, 90, 15)];
+    _lastWordLable = [[UILabel alloc]initWithFrame:CGRectMake(300 - 90, backGtextImgView.bounds.size.height - 20, 80, 15)];
     [_lastWordLable setFont:AppFont(12)];
     [_lastWordLable setText:@"剩余40个字"];
-    [_lastWordLable setTextColor:[UIColor lightTextColor]];
+    [_lastWordLable setTextColor:[UIColor lightGrayColor]];
+    [_lastWordLable setBackgroundColor:[UIColor clearColor]];
     [backGtextImgView addSubview:_lastWordLable];
-    [_lastWordLable release];
 }
 
 - (void)didReceiveMemoryWarning
@@ -72,14 +78,33 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - textDelegate
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
     
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([textView.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] > 80) {
+        [MBProgressHUD showError:@"字数不能超过40字" toView:self.view];
+        return NO;
+    }
+    
+    return YES;
+}
+
 -(void)textViewDidChange:(UITextView *)textView
 {
-    
+    DLog(@"长度%d",[textView.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding]/2);
+    if ([textView.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] > 80) {
+        [MBProgressHUD showError:@"字数不能超过40字" toView:self.view];
+    }
+    else
+    {
+        [_lastWordLable setText:[NSString stringWithFormat:@"剩余%d个字",40 -([textView.text lengthOfBytesUsingEncoding:NSUnicodeStringEncoding]/2)]];
+    }
+
 }
 
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView
@@ -92,15 +117,13 @@
     return YES;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)backAction:(UIButton *)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if (![_textView.text isEqualToString:self.peopleInfo.detail.signature] || ![self.parentVC.formData valueForKey:@"signature"]) {
+        [self.parentVC.formData setValue:_textView.text forKey:@"signature"];
+    }
+    
+    [super backAction:sender];
 }
-*/
 
 @end

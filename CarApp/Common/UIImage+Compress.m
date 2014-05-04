@@ -139,15 +139,34 @@
     }
 }
 
+-(CGFloat)compressionQuality:(float)size {
+    // size kb单位 * 1024 字节长度
+    size = size*1000;
+    NSData *data = UIImageJPEGRepresentation(self, 1.0);
+    NSUInteger dataLength = [data length];
+    if(dataLength > size) {
+        return size / dataLength;
+    } else {
+        return 1.0;
+    }
+}
+
 -(NSData *)compressedData {
     CGFloat quality = [self compressionQuality];
     
     return [self compressedData:quality];
 }
 
+- (NSData *)compressedDataSize:(float)size
+{
+    CGFloat quality = [self compressionQuality:size];
+    
+    return [self compressedData:quality];
+}
 
 -(NSData *)compressedDataWithRate
 {
+    UIImage *image = nil;
     if (self.size.width > 480 ) {
         
         float rate = 480 * 1.0 / self.size.width < 720 * 1.0 / self.size.height ? 480 * 1.0 / self.size.width : 720 * 1.0 / self.size.height;
@@ -155,10 +174,10 @@
         int toheight = self.size.height * rate;
         int towidth = self.size.width * rate;
         
-        self = [self imageByScalingAndCroppingForSize:CGSizeMake(towidth, toheight)];
+        image = [self imageByScalingAndCroppingForSize:CGSizeMake(towidth, toheight)];
     }
     
-    NSData * data = [self compressedData];
+    NSData * data = [image compressedData];
     return data;
 }
 

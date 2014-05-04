@@ -17,8 +17,8 @@
     BOOL _myroomCanLoadMore;
 }
 
-@property(retain, nonatomic) PullingRefreshTableView * tableView;
-@property (retain, nonatomic) UIViewController *mainVC;
+@property (strong, nonatomic) PullingRefreshTableView * tableView;
+@property (strong, nonatomic) UIViewController *mainVC;
 
 -(void)autoRefreshTable;
 

@@ -52,7 +52,7 @@
 
 //    message.loginLocate = self.loginLocate;
     
-    return [message autorelease];
+    return message;
 }
 
 -(ImageMessage *)confromFromMessage:(CommonMessage *)message
@@ -86,7 +86,7 @@
 
         
     }
-    return [imgMessage autorelease];
+    return imgMessage;
 }
 
 +(void)imageManager:(CommonMessage *)message

@@ -10,7 +10,7 @@
 
 @interface GDCustomAlertView ()
 
-@property(nonatomic, retain) NSMutableArray *buttonArrays;
+@property(nonatomic, strong) NSMutableArray *buttonArrays;
 @property(nonatomic, assign) CGRect frame;
 @end
 
@@ -75,7 +75,6 @@
 //        contentview.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
         contentview.frame = CGRectMake(0, 0, _backgroundImage.size.width, _backgroundImage.size.height);
         [self addSubview:contentview];
-        [contentview release];
     }
 }
 
@@ -105,13 +104,10 @@
 
 - (void)dealloc {
     [_buttonArrays removeAllObjects];
-    [_backgroundImage release];
+
     if (_contentImage) {
-        [_contentImage release];
         _contentImage = nil;
     }
-    
-    [super dealloc];
 }
 
 /*

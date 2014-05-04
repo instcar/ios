@@ -30,7 +30,6 @@
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor appBackgroundColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -38,13 +37,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     else
     {
@@ -66,7 +63,6 @@
     [titleLabel setTextColor:[UIColor appNavTitleColor]];
     [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
     
     UILabel *zLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 10+64, 200, 10)];
     [zLable setBackgroundColor:[UIColor clearColor]];
@@ -75,7 +71,6 @@
     [zLable setTextColor:[UIColor appBlackColor]];
     [zLable setFont:[UIFont fontWithName:kFangZhengFont size:10]];
     [navBar addSubview:zLable];
-    [zLable release];
     
     MrSegmentedControl *segmentControl = [[MrSegmentedControl alloc]initWithItems:3];
     [segmentControl setFrame:CGRectMake(0, 30+64, 320, 45)];
@@ -92,7 +87,6 @@
     segmentControl.backgroundColor = [UIColor clearColor];
     segmentControl.delegate = self;
     [mainView addSubview:segmentControl];
-    [segmentControl release];
     
 //    [segmentControl setBackgroundImage:[UIImage imageNamed:@"btn_left_normal@2x"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
 //    [segmentControl setBackgroundImage:[UIImage imageNamed:@"btn_left_pressed@2x"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
@@ -104,14 +98,12 @@
     [yLable setTextColor:[UIColor appBlackColor]];
     [yLable setFont:[UIFont fontWithName:kFangZhengFont size:10]];
     [navBar addSubview:yLable];
-    [yLable release];
     
     //言而有信数
     PassengerControl *YXControl = [[PassengerControl alloc]initWithFrame:CGRectMake((320-233)/2, 115+64, 233, 45) NormalImage:[UIImage imageNamed:@"ic_star_none@2x"] SelectImage:[UIImage imageNamed:@"ic_star@2x"] indexs:5 size:CGSizeMake(20, 30)];
     YXControl.tag = kStarsYXControlTag;;
     YXControl.currentNum = 5;
     [mainView addSubview:YXControl];
-    [YXControl release];
     
     UILabel *jLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 170+64, 200, 10)];
     [jLable setBackgroundColor:[UIColor clearColor]];
@@ -120,14 +112,12 @@
     [jLable setTextColor:[UIColor appBlackColor]];
     [jLable setFont:[UIFont fontWithName:kFangZhengFont size:10]];
     [navBar addSubview:jLable];
-    [jLable release];
     
     //举止文明数
     PassengerControl *JZcontrol = [[PassengerControl alloc]initWithFrame:CGRectMake((320-233)/2, 190+64, 233, 45) NormalImage:[UIImage imageNamed:@"ic_star_none@2x"] SelectImage:[UIImage imageNamed:@"ic_star@2x"] indexs:5 size:CGSizeMake(20, 30)];
     JZcontrol.tag = kStarsJZControlTag;
     JZcontrol.currentNum = 5;
     [mainView addSubview:JZcontrol];
-    [JZcontrol release];
     
     UILabel *rLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 245+64, 200, 10)];
     [rLable setBackgroundColor:[UIColor clearColor]];
@@ -136,14 +126,12 @@
     [zLable setTextColor:[UIColor appBlackColor]];
     [rLable setFont:[UIFont fontWithName:kFangZhengFont size:10]];
     [navBar addSubview:rLable];
-    [rLable release];
     
     //热心体贴数
     PassengerControl *RXcontrol = [[PassengerControl alloc]initWithFrame:CGRectMake((320-233)/2, 265+64, 233, 45) NormalImage:[UIImage imageNamed:@"ic_star_none@2x"] SelectImage:[UIImage imageNamed:@"ic_star@2x"] indexs:5 size:CGSizeMake(20, 30)];
     RXcontrol.tag = kStarsRXControlTag;
     RXcontrol.currentNum = 5;
     [mainView addSubview:RXcontrol];
-    [RXcontrol release];
     
     //发送验证码
     UIButton * confirmBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -204,7 +192,6 @@
     
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"是否给予以下评价" message:[NSString stringWithFormat:@"言而有信:%d星\n举止文明:%d星\n热心体贴:%d星",YXControl.currentNum,JZControl.currentNum,RXControl.currentNum] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [alertView show];
-    [alertView release];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -222,6 +209,7 @@
         int commentLevel = 3 - segmentControl.selectedSegmentIndex;
         int userstatus = (self.userid == self.room.userid ? 0:1);//房主评乘客
         int ownerstatus = (self.userid == self.room.userid ? 1:0);//乘客评房主
+        /*
         [NetWorkManager networkCommemtWithRoomID:self.room.ID uid:[User shareInstance].userId touid:self.userid content:@"" commentLever:commentLevel userstatus:userstatus yeyxstar:YXControl.currentNum jzwmstar:JZControl.currentNum rxttstar:RXControl.currentNum ownertatus:ownerstatus success:^(BOOL flag, NSString *msg) {
             if (flag) {
                 [SVProgressHUD showSuccessWithStatus:@"评论成功"];
@@ -230,7 +218,7 @@
             }
         } failure:^(NSError *error) {
             
-        }];
+        }];*/
     }
 }
 

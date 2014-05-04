@@ -25,7 +25,7 @@ typedef enum
     UIImageView *_backGtextImgView;
     UIImageView *_arrowImgView;
 }
-@property (retain, nonatomic)UITextField *textfield;
+@property (strong, nonatomic)UITextField *textfield;
 @property (assign, nonatomic)id<UITextFieldDelegate,GDInputDelegate>gdInputDelegate;
 
 -(void)setResult:(kGDInputViewStatus)status;

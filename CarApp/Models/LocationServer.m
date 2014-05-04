@@ -89,7 +89,6 @@ static LocationServer *locationServer = nil;
                alertView = [[UIAlertView alloc]initWithTitle:@"您的定位服务没有开启,将导致定位相关功能无法正常使用" message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
             }
             [alertView show];
-            [alertView release];
             break;
         }
         case kCLErrorLocationUnknown:
@@ -140,73 +139,73 @@ static LocationServer *locationServer = nil;
         return;
     }
     
-    [NetWorkManager networkGetUserAddressWithLongitude:self.locate.longitude latitude:self.locate.latitude success:^(BOOL flag, NSDictionary *addressInfo) {
-        /**百度api取得的样例数据，参照解析出来**/
-               /**
-                {
-                "status":"OK",
-                "result":{
-                "location":{
-                "lng":118.17759,
-                "lat":24.491939
-                },
-                "formatted_address":"福建省厦门市思明区吕岭路",
-                "business":"前埔医院,莲前,金山小区",
-                "addressComponent":{
-                "city":"厦门市",
-                "district":"思明区",
-                "province":"福建省",
-                "street":"吕岭路",
-                "street_number":""
-                },
-                "cityCode":194
-                }
-                }
-                **/
-        if (flag) {
-
-               if([addressInfo isKindOfClass:[NSDictionary class]])
-               {
-                   //解析出所需要要的数据，城市/以及街道
-                   NSDictionary * result = addressInfo;
-                   NSDictionary * addressComponent = [result objectForKey:@"addressComponent"];
-                   NSString * city = [addressComponent valueForKey:@"city"];
-                   NSString *province = [addressComponent valueForKey:@"province"];
-                   NSString * area = [addressComponent valueForKey:@"district"];
-                   NSString * street = [addressComponent valueForKey:@"street"];
-                   NSString * addressStr = [NSString stringWithFormat:@"%@,%@,%@,%@",province,city,area,street];
-
-                   NSDictionary * location = [result objectForKey:@"location"];
-                   double lng = [[location objectForKey:@"lng"]doubleValue];
-                   double lat = [[location objectForKey:@"lat"]doubleValue];
-                   
-                   if ((lng==0.0 && lat==0.0) || [addressStr isEqualToString:@""]) {
-                       return;
-                   }
-                   
-                   //数据存储
-                   User *user = [User shareInstance];
-                   user.lon = self.locate.longitude;
-                   user.lat = self.locate.latitude;
-                   user.address = addressStr;
-                   
-                   [NetWorkManager networkUserLocateAddWithuid:[User shareInstance].userId address:addressStr longitude:lng latitude:lat success:^(BOOL flag, NSDictionary *userDic, NSString *msg) {
-                       if (flag) {
-                           DLog(@"%@",userDic);
-                       }
-                   } failure:^(NSError *error) {
-                       
-                   }];
-                   
-//                       /*解析成服务器上的id*/
-//                      [self analyzeAddressStringToId];
-               }
-            
-        }
-
-    } failure:^(NSError *error) {
-        
-    }];
+//    [NetWorkManager networkGetUserAddressWithLongitude:self.locate.longitude latitude:self.locate.latitude success:^(BOOL flag, NSDictionary *addressInfo) {
+//        /**百度api取得的样例数据，参照解析出来**/
+//               /**
+//                {
+//                "status":"OK",
+//                "result":{
+//                "location":{
+//                "lng":118.17759,
+//                "lat":24.491939
+//                },
+//                "formatted_address":"福建省厦门市思明区吕岭路",
+//                "business":"前埔医院,莲前,金山小区",
+//                "addressComponent":{
+//                "city":"厦门市",
+//                "district":"思明区",
+//                "province":"福建省",
+//                "street":"吕岭路",
+//                "street_number":""
+//                },
+//                "cityCode":194
+//                }
+//                }
+//                **/
+//        if (flag) {
+//
+//               if([addressInfo isKindOfClass:[NSDictionary class]])
+//               {
+//                   //解析出所需要要的数据，城市/以及街道
+//                   NSDictionary * result = addressInfo;
+//                   NSDictionary * addressComponent = [result objectForKey:@"addressComponent"];
+//                   NSString * city = [addressComponent valueForKey:@"city"];
+//                   NSString *province = [addressComponent valueForKey:@"province"];
+//                   NSString * area = [addressComponent valueForKey:@"district"];
+//                   NSString * street = [addressComponent valueForKey:@"street"];
+//                   NSString * addressStr = [NSString stringWithFormat:@"%@,%@,%@,%@",province,city,area,street];
+//
+//                   NSDictionary * location = [result objectForKey:@"location"];
+//                   double lng = [[location objectForKey:@"lng"]doubleValue];
+//                   double lat = [[location objectForKey:@"lat"]doubleValue];
+//                   
+//                   if ((lng==0.0 && lat==0.0) || [addressStr isEqualToString:@""]) {
+//                       return;
+//                   }
+//                   
+//                   //数据存储
+//                   User *user = [User shareInstance];
+//                   user.lon = self.locate.longitude;
+//                   user.lat = self.locate.latitude;
+//                   user.address = addressStr;
+//                   
+//                   [NetWorkManager networkUserLocateAddWithuid:[User shareInstance].userId address:addressStr longitude:lng latitude:lat success:^(BOOL flag, NSDictionary *userDic, NSString *msg) {
+//                       if (flag) {
+//                           DLog(@"%@",userDic);
+//                       }
+//                   } failure:^(NSError *error) {
+//                       
+//                   }];
+//                   
+////                       /*解析成服务器上的id*/
+////                      [self analyzeAddressStringToId];
+//               }
+//            
+//        }
+//
+//    } failure:^(NSError *error) {
+//        
+//    }];
 }
 
 

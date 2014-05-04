@@ -16,9 +16,8 @@
 //图像质量压缩
 -(UIImage *)compressedImage;
 
--(CGFloat)compressionQuality;
-
 -(NSData *)compressedData;
+-(NSData *)compressedDataSize:(float)size;          //kb
 
 -(NSData *)compressedDataWithRate;
 

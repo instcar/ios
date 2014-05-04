@@ -14,20 +14,21 @@
 #import "MapViewController.h"
 #import "AddressImageViewController.h"
 #import "AppUtility.h"
+#import "Room.h"
 
 #define kRoomPerPageNum 10
 
 @interface PassgerEditRouteViewController ()
 
-@property (retain, nonatomic) PullingRefreshTableView *tableView;
-@property (retain, nonatomic) NSMutableArray *roomArray;
-@property (retain, nonatomic) WarnView *warnView;
-@property (retain, nonatomic) BMKMapView *mapView;
+@property (strong, nonatomic) PullingRefreshTableView *tableView;
+@property (strong, nonatomic) NSMutableArray *roomArray;
+@property (strong, nonatomic) WarnView *warnView;
+@property (strong, nonatomic) BMKMapView *mapView;
 
-@property (retain, nonatomic) NSMutableArray *todayArray;
-@property (retain, nonatomic) NSMutableArray *tomorrowArray;
-@property (retain, nonatomic) NSMutableArray *afterTomorrowArray;
-@property (retain, nonatomic) NSMutableArray *resultSortArray;
+@property (strong, nonatomic) NSMutableArray *todayArray;
+@property (strong, nonatomic) NSMutableArray *tomorrowArray;
+@property (strong, nonatomic) NSMutableArray *afterTomorrowArray;
+@property (strong, nonatomic) NSMutableArray *resultSortArray;
 @property (assign, nonatomic) int sortCount;
 //@property (assign, nonatomic) int mode; //1:正常 2:地图 3:图片
 
@@ -37,17 +38,7 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_mapView];
-    [SafetyRelease release:_tableView];
-    [SafetyRelease release:_roomArray];
-    [SafetyRelease release:_warnView];
-    [SafetyRelease release:_todayArray];
-    [SafetyRelease release:_tomorrowArray];
-    [SafetyRelease release:_afterTomorrowArray];
-    [SafetyRelease release:_resultSortArray];
-    [SafetyRelease release:_line];
-    
-    [super dealloc];
+
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -103,7 +94,6 @@
     [mainView setTag:10000];
     [mainView setBackgroundColor:[UIColor flatWhiteColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -112,13 +102,11 @@
     [navBar setTag:10005];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     
     UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -136,7 +124,6 @@
     [titleLabel setTextColor:[UIColor appNavTitleColor]];
     [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
     
     UIImage * welcomeImage = [UIImage imageNamed:@"nav_hint@2x"];
     //    welcomeImage = [welcomeImage stretchableImageWithLeftCapWidth:8 topCapHeight:10];
@@ -144,7 +131,6 @@
     UIImageView * welcomeImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, 49)];
     [welcomeImgView setImage:welcomeImage];
     [mainView addSubview:welcomeImgView];
-    [welcomeImgView release];
     
     UILabel * warnLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 300, 44)];
     [warnLabel setBackgroundColor:[UIColor clearColor]];
@@ -154,7 +140,6 @@
     [warnLabel setTextColor:[UIColor whiteColor]];
     [warnLabel setFont:[UIFont appGreenWarnFont]];
     [welcomeImgView addSubview:warnLabel];
-    [warnLabel release];
     
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 150)];
     
@@ -167,11 +152,10 @@
     [photoImgView setUserInteractionEnabled:YES];
     [photoImgView setBackgroundColor:[UIColor placeHoldColor]];
     [headView addSubview:photoImgView];
-    [photoImgView release];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showAddressImageView)];
     [photoImgView addGestureRecognizer:tapGesture];
-    [tapGesture release];
+
     
     BMKMapView *mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(12, 13+2, 106,106)];
     BMKCoordinateRegion adjustedRegion = [_mapView regionThatFits:BMKCoordinateRegionMake(mapView.userLocation.coordinate, BMKCoordinateSpanMake(0.02, 0.02))];
@@ -185,7 +169,6 @@
     //    [self.mapView setRotation:0];
     //    [self performSelector:@selector(setMapAnonation) withObject:nil afterDelay:0.2];
     [headView addSubview:mapView];
-    [mapView release];
     
     UIButton *mapViewMask = [UIButton buttonWithType:UIButtonTypeCustom];
     [mapViewMask setTag:10003];
@@ -197,7 +180,6 @@
     UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 149.5, 320, 0.5)];
     [lineView setBackgroundColor:[UIColor appLineDarkGrayColor]];
     [headView addSubview:lineView];
-    [lineView release];
     
     self.tableView = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 64+44, 320, SCREEN_HEIGHT -64-44) pullingDelegate:self];
     self.tableView.dataSource = self;
@@ -205,14 +187,12 @@
     [self.tableView setBackgroundColor:[UIColor clearColor]];
     UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 2)];
     [self.tableView setTableFooterView:footerView];
-    [footerView release];
     [mainView insertSubview:self.tableView belowSubview:navBar];
     [self.tableView setTableHeaderView:headView];
-    [headView release];
     
     self.warnView = [WarnView initWarnViewWithText:@"非常抱歉,暂无数据..." withView:self.tableView height:150+80 withDelegate:nil];
     
-    [self loadData:kRequestModeRefresh];
+//    [self loadData:kRequestModeRefresh];
     
     
 }
@@ -222,7 +202,6 @@
     GroupChatViewController * gVC = [[GroupChatViewController alloc]init];
     gVC.isRoomMaster = NO;
     [self.navigationController pushViewController:gVC animated:YES];
-    [gVC release];
 }
 
 -(void)backToMain
@@ -237,6 +216,7 @@
 }
 
 #pragma mark - 数据交互
+/*
 //type 为 请求类型 mode为 请求方式 mode tag/judianID参数
 -(void)loadData:(kRequestMode)mode{
     
@@ -318,6 +298,7 @@
     //    }];
     
 }
+*/
 
 -(void)transformArray
 {
@@ -365,7 +346,6 @@
     [addPoint setTitle:self.line.startaddr];
     [addPoint setCoordinate:CLLocationCoordinate2DMake(self.line.startlatitude, self.line.startlongitude)];
     [_mapView addAnnotation:addPoint];
-    [addPoint release];
 }
 
 -(void)maptapAction:(UIButton *)sender
@@ -375,7 +355,6 @@
     mapVC.mode = kMapViewModeLine;
     [mapVC setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
     [self.navigationController pushViewController:mapVC animated:YES];
-    [mapVC release];
 //    if (self.mode != 2) {
 //        [self showMapView:YES];
 //    }
@@ -392,7 +371,7 @@
     addressImageViewController.line = self.line;
     [addressImageViewController setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
     [self presentViewController:addressImageViewController animated:YES completion:^{}];
-    [addressImageViewController release];
+
 }
 
 #pragma mark - bmkMapViewDelegate methods
@@ -424,7 +403,7 @@
 		BMKAnnotationView* view = nil;
         view = [mapview dequeueReusableAnnotationViewWithIdentifier:@"start_nodeAddress"];
         if (view == nil) {
-            view = [[[BMKAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:@"start_nodeAddress"] autorelease];
+            view = [[BMKAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:@"start_nodeAddress"];
             view.image = [UIImage imageNamed:@"tag_map@2x"];
             view.centerOffset = CGPointMake(0, -(view.frame.size.height * 0.0));
             view.canShowCallout = TRUE;
@@ -449,7 +428,7 @@
     _tablePage = 1;
     _sortCount = 0;
     
-    [self loadData:kRequestModeRefresh];
+//    [self loadData:kRequestModeRefresh];
 }
 
 - (void) loadMoreDataToTable
@@ -460,7 +439,7 @@
     //对tableModel进行判断
     if (_canTableLoadMore) {
         _tablePage ++;
-        [self loadData:kRequestModeLoadmore];
+//        [self loadData:kRequestModeLoadmore];
     }
 }
 
@@ -500,7 +479,7 @@
         [label setText:@"后天"];
     }
     
-    return [label autorelease];
+    return label;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -525,7 +504,7 @@
     static NSString *CellIdentifier = @"_RoomTableCell";
     PassengerRoomCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[PassengerRoomCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[PassengerRoomCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
     }
     if (kDeviceVersion >= 7.0) {
@@ -580,7 +559,6 @@
     gVC.isRoomMaster = NO;
     gVC.userState = 1;
     [self.navigationController pushViewController:gVC animated:YES];
-    [gVC release];
 }
 
 #pragma mark - 头像点击
@@ -593,7 +571,6 @@
     profileVC.uid = room.userid;
     profileVC.state = 1;
     [self.navigationController pushViewController:profileVC animated:YES];
-    [profileVC release];
 }
 
 @end

@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Room.h"
 
 @interface CommentDetailViewController : UIViewController
-@property (retain, nonatomic)Room *room;//房间信息
+@property (strong, nonatomic)Room *room;//房间信息
 @property (assign, nonatomic)long userid;//评论用户id
 @end

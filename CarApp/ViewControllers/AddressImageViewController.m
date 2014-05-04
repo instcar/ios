@@ -37,7 +37,6 @@
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor appBackgroundColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -45,13 +44,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     
     UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -69,7 +66,6 @@
     [titleLabel setTextColor:[UIColor appNavTitleColor]];
     [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
     
     UIImage * welcomeImage = [UIImage imageNamed:@"nav_hint@2x"];
     //    welcomeImage = [welcomeImage stretchableImageWithLeftCapWidth:8 topCapHeight:10];
@@ -77,7 +73,6 @@
     UIImageView * welcomeImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, 49)];
     [welcomeImgView setImage:welcomeImage];
     [mainView addSubview:welcomeImgView];
-    [welcomeImgView release];
     
     UILabel * warnLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 300, 44)];
     [warnLabel setBackgroundColor:[UIColor clearColor]];
@@ -86,12 +81,10 @@
     [warnLabel setTextColor:[UIColor whiteColor]];
     [warnLabel setFont:[UIFont appGreenWarnFont]];
     [welcomeImgView addSubview:warnLabel];
-    [warnLabel release];
     
     MRZoomScrollView *zoomScrollView = [[MRZoomScrollView alloc]initWithFrame:CGRectMake(0, 64+44, 320, SCREEN_HEIGHT - 44-64)];
     [zoomScrollView.imageView setImageWithURL:[NSURL URLWithString:self.line.img] placeholderImage:nil];
     [mainView insertSubview:zoomScrollView belowSubview:welcomeImgView];
-    [zoomScrollView release];
 }
 
 -(void)backToMain

@@ -13,4 +13,7 @@
 
 @interface BaseViewController : UIViewController
 
+//数据交互
+- (void)requestData;
+
 @end

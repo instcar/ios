@@ -18,8 +18,6 @@
 
 -(void)dealloc
 {
-    [super dealloc];
-    [SafetyRelease release:self.dataInfo];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -40,12 +38,10 @@
     mainView.userInteractionEnabled = YES;
     [mainView setBackgroundColor:[UIColor appBackgroundColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(backBtnAction:)];
     [swipeGesture setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer:swipeGesture];
-    [swipeGesture release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -53,13 +49,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     
     UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -77,7 +71,6 @@
     [titleLabel setTextColor:[UIColor appNavTitleColor]];
     [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
     
     UIButton * shareButton = [UIButton buttonWithType: UIButtonTypeCustom];
     [shareButton setFrame:CGRectMake(320- 70, 20, 70, 44)];
@@ -91,7 +84,6 @@
     [scrollView setBackgroundColor:[UIColor clearColor]];
     [scrollView setBounces:NO];
     [mainView addSubview:scrollView];
-    [scrollView release];
     
 //    UIImageView *imageBackGroundView = [[UIImageView alloc]initWithFrame:CGRectMake(69., 20., 182., 222.)];
 //    [imageBackGroundView setBackgroundColor:[UIColor whiteColor]];
@@ -111,8 +103,6 @@
 //    [imageView setContentMode:UIViewContentModeScaleAspectFit];
     [imageView setImageWithURL:[NSURL URLWithString:[self.dataInfo valueForKey:@"largepic"]] placeholderImage:[UIImage imageNamed:@"delt_pic_s"]];
     [scrollView addSubview:imageView];
-    [imageView release];
-    
     
     UITextView *textView = [[UITextView alloc]initWithFrame:CGRectMake(20, 170, 280, 80)];
     [textView  setBackgroundColor:[UIColor clearColor]];
@@ -123,7 +113,6 @@
     [textView setEditable:NO];
     textView.text = [NSString stringWithFormat:@"\t%@",[self.dataInfo valueForKey:@"content"]];
     [scrollView addSubview:textView];
-    [textView release];
     
     float height = [self heightForTextView:textView WithText:textView.text];
     [textView setFrame:CGRectMake(20, 170, 280, height)];
@@ -136,7 +125,6 @@
     [textLable  setUserInteractionEnabled:NO];
     [textLable setText:[NSString stringWithFormat:@"来自: %@",[self.dataInfo valueForKey:@"source"]]];
     [scrollView addSubview:textLable];
-    [textLable release];
     
     [scrollView setContentSize:CGSizeMake(320, height + 200)];
     

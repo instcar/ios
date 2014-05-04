@@ -8,20 +8,31 @@
 
 #import "SelectCarBrandViewController.h"
 #import "SelectCarTypeViewController.h"
+#import "HandleCarData.h"
+#import "CarLogoTableViewCell.h"
+#import "UIColor+utils.h"
 
 @interface SelectCarBrandViewController ()
-@property (retain, nonatomic) NSMutableDictionary *cars;
-@property (retain, nonatomic) NSMutableArray *keys; //城市首字母
+
+@property (retain, nonatomic) NSMutableArray *allSectionKeyArray; //所有关键字数组
+@property (retain, nonatomic) NSMutableArray *sectionArray; //排序好的数组
+
 @end
 
 @implementation SelectCarBrandViewController
+
+- (void)dealloc
+{
+    _allSectionKeyArray = nil;
+    _sectionArray = nil;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.keys = [[NSMutableArray alloc]init];
+        
     }
     return self;
 }
@@ -31,31 +42,23 @@
     [super viewDidLoad];
     
     [self getCityData];
-    [self setCtitle:@"编辑车辆信息"];
-    [self setDesText:@"请选择您的车辆品牌"];
+    [self setTitle:@"编辑车辆信息"];
+    [self setMessageText:@"请选择您的车辆品牌"];
     
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, KOFFSETY, SCREEN_WIDTH, SCREEN_HEIGHT - KOFFSETY) style:UITableViewStylePlain];
-    _tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight);
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, KOFFSETY, APPLICATION_WIDTH, APPLICATION_HEGHT - KOFFSETY - 44) style:UITableViewStylePlain];
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    [self.view insertSubview:_tableView belowSubview:_navBar];
-    [_tableView release];
+    [self.view insertSubview:_tableView belowSubview:_messageBgView];
 }
 
 #pragma mark - 获取城市数据
 -(void)getCityData
 {
-    NSString *path=[[NSBundle mainBundle] pathForResource:@"citydict"
-                                                   ofType:@"plist"];
-    self.cars = [NSMutableDictionary dictionaryWithContentsOfFile:path];
-    
-    [self.keys addObjectsFromArray:[[self.cars allKeys] sortedArrayUsingSelector:@selector(compare:)]];
-    
-    //添加热门Car
-//    NSString *strHot = @"热";
-//    [_keys insertObject:strHot atIndex:0];
-//    [_cities setObject:_arrayHotCity forKey:strHot];
+    HandleCarData * handle = [[HandleCarData alloc] init];
+    NSArray * carInforArray = [handle carDataDidHandled];
+    self.allSectionKeyArray = [[NSMutableArray alloc]initWithArray:[carInforArray objectAtIndex:0]];//存放所有section字母
+    self.sectionArray  = [[NSMutableArray alloc]initWithArray:[carInforArray objectAtIndex:1]];//存放所有汽车信息数组嵌入数组和字母匹配
 }
 
 #pragma mark - tableView
@@ -66,69 +69,54 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *bgView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 20)]autorelease];
-    bgView.backgroundColor = ColorRGB(232.0, 232.0, 232.0);
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
+    bgView.backgroundColor = [UIColor colorHelpWithRed:232.0 green:232.0 blue:232.0 alpha:0.6];
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(13, 0, 250, 20)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textColor = [UIColor blackColor];
     titleLabel.font = [UIFont systemFontOfSize:12];
     
-    NSString *key = [self.keys objectAtIndex:section];
-//    if ([key rangeOfString:@"热"].location != NSNotFound) {
-//        titleLabel.text = @"热门城市";
-//    }
-//    else
-        titleLabel.text = key;
-    
+    NSString *key = [self.allSectionKeyArray objectAtIndex:section];
+    titleLabel.text = key;
     [bgView addSubview:titleLabel];
-    [titleLabel release];
     
     return bgView;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
-    return self.keys;
+    return self.allSectionKeyArray;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return [self.keys count];
+    return [self.allSectionKeyArray count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    NSString *key = [self.keys objectAtIndex:section];
-    NSArray *carSection = [self.cars objectForKey:key];
-    return [carSection count];
+    return [[self.sectionArray objectAtIndex:section] count];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 54.0;
+    return 55.0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"CarBrandCell";
-    
-    NSString *key = [self.keys objectAtIndex:indexPath.section];
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    CarLogoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CarBrandCell"];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] ;
+        cell = [[CarLogoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CarBrandCell"];
         cell.backgroundColor = [UIColor clearColor];
         cell.contentView.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        
-        [cell.textLabel setTextColor:[UIColor blackColor]];
-        cell.textLabel.font = AppFont(18);
     }
-    cell.textLabel.text = [[self.cars objectForKey:key] objectAtIndex:indexPath.row];
-    [cell.imageView setImageWithURL:[NSURL URLWithString:@"http://instcar-user-pic-1.oss-cn-qingdao.aliyuncs.com/java.png"] placeholderImage:[UIImage imageNamed:@"delt_pic_s"]];
+    CarD *car= [[self.sectionArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
+    [cell setData:car];
     return cell;
 }
 
@@ -136,9 +124,10 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     DLog(@"增加车辆车型信息");
+    CarD *car= [[self.sectionArray objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
     SelectCarTypeViewController *selectCarTypeVC = [[SelectCarTypeViewController alloc]init];
+    selectCarTypeVC.car = car;
     [self.navigationController pushViewController:selectCarTypeVC animated:YES];
-    [selectCarTypeVC release];
 }
 
 - (void)didReceiveMemoryWarning

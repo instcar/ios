@@ -10,12 +10,12 @@
 
 @interface DateSelectControl : UIView
 
-@property (retain, nonatomic)NSString *selectTime;
-@property (retain, nonatomic)NSArray *selectDay;
+@property (strong, nonatomic)NSString *selectTime;
+@property (strong, nonatomic)NSArray *selectDay;
 @property (assign, nonatomic)SEL btnAction;
 @property (assign, nonatomic)id target;
 @property (assign, nonatomic)BOOL canEidt;
-@property (retain, nonatomic)NSDate *date;
+@property (strong, nonatomic)NSDate *date;
 
 - (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents;
 //- (void)setSelectDay:(NSArray *)selectDay andSelectTime:(NSString *)selectTime;

@@ -15,7 +15,7 @@
 
 @interface MainThirdView()
 
-@property (retain, nonatomic) WarnView *warnView;
+@property (strong, nonatomic) WarnView *warnView;
 
 @end
 
@@ -31,9 +31,9 @@
         //初始化数据
         _jokepage = 1;
         _jokeCanLoadMore = true;
-        self.jokeArray = [[[NSMutableArray alloc]init]autorelease];
+        self.jokeArray = [[NSMutableArray alloc]init];
         
-        self.tableView = [[[PullingRefreshTableView alloc]initWithFrame:CGRectMake(10, 52, 300, SCREEN_HEIGHT - 96 -80) pullingDelegate:self]autorelease];
+        self.tableView = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(10, 52, 300, SCREEN_HEIGHT - 96 -80) pullingDelegate:self];
         [self.tableView setDelegate:self];
         [self.tableView setDataSource:self];
         [self.tableView setBackgroundView:nil];
@@ -124,7 +124,7 @@
     
     XHBKCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[XHBKCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[XHBKCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     

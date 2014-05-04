@@ -10,15 +10,15 @@
 
 @interface SetProfileHeadTableCell : UITableViewCell
 
-@property (retain, nonatomic) UIImageView *photoImgView;
-@property (retain, nonatomic) UILabel *titleLabel;
-@property (retain, nonatomic) UILabel *nameLabel;
-@property (retain, nonatomic) UILabel *sexLabel;
-@property (retain, nonatomic) UILabel *ageLable;
-@property (retain, nonatomic) UIImageView *realAuthImageView;
-@property (retain, nonatomic) UIImageView *weiboImageView;
-@property (retain, nonatomic) UIImageView *emailImageView;
-@property (retain, nonatomic) UIImageView *carImageView;
-@property (retain, nonatomic) UIImageView *arrowImgView;
+@property (strong, nonatomic) UIImageView *photoImgView;
+@property (strong, nonatomic) UILabel *titleLabel;
+@property (strong, nonatomic) UILabel *nameLabel;
+@property (strong, nonatomic) UILabel *sexLabel;
+@property (strong, nonatomic) UILabel *ageLable;
+@property (strong, nonatomic) UIImageView *realAuthImageView;
+@property (strong, nonatomic) UIImageView *weiboImageView;
+@property (strong, nonatomic) UIImageView *emailImageView;
+@property (strong, nonatomic) UIImageView *carImageView;
+@property (strong, nonatomic) UIImageView *arrowImgView;
 
 @end

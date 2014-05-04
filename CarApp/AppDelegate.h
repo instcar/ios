@@ -17,10 +17,10 @@
     BMKMapManager* _mapManager;
 }
 
-@property (retain, nonatomic) UIWindow *window;
-@property(retain, nonatomic) MainViewController *mainVC;
-@property (retain, nonatomic) Reachability *reachability; //检测网络状态
-@property (retain, nonatomic) CustomStatueBar *statueBar;
+@property (strong, nonatomic) UIWindow *window;
+@property(strong, nonatomic) MainViewController *mainVC;
+@property (strong, nonatomic) Reachability *reachability; //检测网络状态
+@property (strong, nonatomic) CustomStatueBar *statueBar;
 // 获取AppDelegate的单例
 + (AppDelegate *)shareDelegate;
 

@@ -26,7 +26,7 @@
 //        [self.imagerView.layer setBorderWidth:1.0];
         [self.contentView addSubview:self.imagerView];
         
-        self.nameLable = [[[UILabel alloc]initWithFrame:CGRectMake(80, 10, 150, 12)]autorelease];
+        self.nameLable = [[UILabel alloc]initWithFrame:CGRectMake(80, 10, 150, 12)];
         [self.nameLable setBackgroundColor:[UIColor clearColor]];
         [self.nameLable setTextAlignment:NSTextAlignmentLeft];
         [self.nameLable setTextColor:[UIColor colorWithRed:36.0/255.0 green:36.0/255.0 blue:36.0/255.0 alpha:1]];
@@ -42,7 +42,7 @@
         [self.dayLable setFont:[UIFont fontWithName:kFangZhengFont size:12]];
         [self.contentView addSubview:self.dayLable];
          */
-        UILabel *timeDes = [[[UILabel alloc]initWithFrame:CGRectMake(250, 10, 60, 12)]autorelease];
+        UILabel *timeDes = [[UILabel alloc]initWithFrame:CGRectMake(250, 10, 60, 12)];
         [timeDes setBackgroundColor:[UIColor clearColor]];
         [timeDes setTextAlignment:NSTextAlignmentLeft];
         [timeDes setTextColor:UIColorFromRGB(0x999999)];
@@ -52,14 +52,14 @@
         
         [self.contentView addSubview:timeDes];
         
-        self.timeLable = [[[UILabel alloc]initWithFrame:CGRectMake(250, 27, 150, 22)]autorelease];
+        self.timeLable = [[UILabel alloc]initWithFrame:CGRectMake(250, 27, 150, 22)];
         [self.timeLable setBackgroundColor:[UIColor clearColor]];
         [self.timeLable setTextAlignment:NSTextAlignmentLeft];
         [self.timeLable setTextColor:[UIColor appTimerColor:kTimerColorDep0]];
         [self.timeLable setFont:[UIFont boldSystemFontOfSize:24]];
         [self.contentView addSubview:self.timeLable];
         
-        self.desLable = [[[UITextView alloc]initWithFrame:CGRectMake(80, 30, 160, 30)]autorelease];
+        self.desLable = [[UITextView alloc]initWithFrame:CGRectMake(80, 30, 160, 30)];
         [self.desLable setBackgroundColor:[UIColor clearColor]];
         [self.desLable setTextAlignment:NSTextAlignmentLeft];
         [self.desLable setTextColor:UIColorFromRGB(0x666666)];
@@ -79,9 +79,8 @@
         [lastSeatTextLable setFont:[UIFont fontWithName:kFangZhengFont size:10]];
         [lastSeatTextLable setText:@"空位:"];
         [self.contentView addSubview:lastSeatTextLable];
-        [lastSeatTextLable release];
         
-        self.lastSeatLable = [[[UILabel alloc]initWithFrame:CGRectMake(278, 50, 50, 20)]autorelease];
+        self.lastSeatLable = [[UILabel alloc]initWithFrame:CGRectMake(278, 50, 50, 20)];
         [self.lastSeatLable setBackgroundColor:[UIColor clearColor]];
         [self.lastSeatLable setTextAlignment:NSTextAlignmentLeft];
         [self.lastSeatLable setTextColor:UIColorFromRGB(0x333333)];
@@ -89,7 +88,7 @@
         [self.lastSeatLable setClipsToBounds:NO];
         [self.contentView addSubview:self.lastSeatLable];
         
-        self.pubTimeLable = [[[UILabel alloc]initWithFrame:CGRectMake(80, 60, 80, 10)]autorelease];
+        self.pubTimeLable = [[UILabel alloc]initWithFrame:CGRectMake(80, 60, 80, 10)];
         [self.pubTimeLable setBackgroundColor:[UIColor clearColor]];
         [self.pubTimeLable setTextAlignment:NSTextAlignmentLeft];
         [self.pubTimeLable setTextColor:UIColorFromRGB(0x999999)];

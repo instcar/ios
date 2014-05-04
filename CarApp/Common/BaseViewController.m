@@ -27,25 +27,47 @@
 {
     UIView *view = [[UIView alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.view = view;
-    [view release];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if (kDeviceVersion >= 7.0) {
-        [self setAutomaticallyAdjustsScrollViewInsets:NO];
-    }
+
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
+    //默认状态栏
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
     
+    //设置导航栏背景
+    UIImage * naviBarImage = kDeviceVersion >= 7.0?[UIImage imageNamed:@"navgationbar_64"]:[UIImage imageNamed:@"navgationbar_44"];
+    naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
+    [self.navigationController.navigationBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     
+    UINavigationBar *navbar = self.navigationController.navigationBar;
+    
+    if (kDeviceVersion < 7.0) {
+        //添加线
+        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navbar.frame.size.height, navbar.frame.size.width, 1)];
+        [lineView setBackgroundColor:[UIColor lightGrayColor]];
+        [navbar addSubview:lineView];
+    }
+    else
+    {
+        //scroller滚动
+        [self setAutomaticallyAdjustsScrollViewInsets:NO];
+        //手势滑动
+        self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
+    }
+}
+
+- (void)requestData
+{
+    //默认请求数据 需子类重写
 }
 
 - (void)didReceiveMemoryWarning
@@ -54,15 +76,5 @@
     
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

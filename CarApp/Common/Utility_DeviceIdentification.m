@@ -107,7 +107,8 @@
     if ([[[UIDevice currentDevice] systemVersion]floatValue] >= 5.0 && [[[UIDevice currentDevice] systemVersion]floatValue] < 6.0) {
         //使用ARC
         CFUUIDRef newUniqueId = CFUUIDCreate(kCFAllocatorDefault);
-        NSString * uuidString = (NSString*)CFUUIDCreateString(kCFAllocatorDefault, newUniqueId);
+//        NSString * uuidString = (NSString*)CFUUIDCreateString(kCFAllocatorDefault, newUniqueId);
+        NSString *uuidString = nil;
         CFRelease(newUniqueId);
         return uuidString;
     }

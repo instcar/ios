@@ -54,10 +54,9 @@
 {
     [self freeVoiceLevelMeterTimerTimer];
     if (_audioPlayer) {
-        [_audioPlayer release];
+        _audioPlayer = nil;
     }
-	[_dialog release];
-    [super dealloc];
+	_dialog = nil;
 }
 
 #pragma mark - views lifestyle
@@ -68,7 +67,6 @@
     tmpView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
     [tmpView setOpaque:YES];
 	self.view = tmpView;
-	[tmpView release];
 }
 
 - (void)viewDidLoad 
@@ -142,7 +140,6 @@
 //    _audioPlayer = nil;
     AVAudioPlayer *player=[[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:nil];
     [player prepareToPlay];
-    [soundUrl release];
     [player play];
 }
 
@@ -202,7 +199,6 @@
                 if (self.delegate && [self.delegate respondsToSelector:@selector(BDBRCustomRecognitonViewController:result:)]) {
                     [self.delegate BDBRCustomRecognitonViewController:self result:rawText];
                 }
-                [tmpString release];
             }
             else
             {
@@ -325,7 +321,7 @@
         [tmpString appendString:candidateWord];
     }
     
-    return [tmpString autorelease];
+    return tmpString;
 }
 
 - (void)VoiceRecognitionClientNetWorkStatus:(int) aStatus
@@ -444,7 +440,6 @@
             errorMsg = NSLocalizedString(@"StringAudioSearchNOMicrophonePermission", nil);
             UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"错误" message:errorMsg delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
             [alertView show];
-            [alertView release];
             break;
 		}
         //服务器返回错误
@@ -488,14 +483,12 @@
     self.dialog = tmpImageView;
     _dialog.backgroundColor = [UIColor clearColor];
     _dialog.center = self.view.center;
-    [tmpImageView release];
     [self.view addSubview:_dialog];
     
     tmpImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pic_sound@2x"]];
     [tmpImageView setFrame:CGRectMake(0, 0, 60, 60)];
     tmpImageView.center = [[BDVRClientUIManager sharedInstance] VRRecordBackgroundCenter];
     [_dialog addSubview:tmpImageView];
-    [tmpImageView release];
     
     UILabel *tmpLabel = [[UILabel alloc] initWithFrame:[[BDVRClientUIManager sharedInstance] VRRecordTintWordFrame]];
     tmpLabel.backgroundColor = [UIColor clearColor];
@@ -505,7 +498,6 @@
     tmpLabel.textAlignment = NSTextAlignmentCenter;
     tmpLabel.center = [[BDVRClientUIManager sharedInstance] VRTintWordCenter];
     [_dialog addSubview:tmpLabel];
-    [tmpLabel release];
     
     UIButton *tmpButton = [UIButton buttonWithType:UIButtonTypeCustom];
     tmpButton.frame = [[BDVRClientUIManager sharedInstance] VRCenterButtonFrame];
@@ -533,20 +525,17 @@
     self.dialog = tmpImageView;
     _dialog.backgroundColor = [UIColor clearColor];
     _dialog.center = self.view.center;
-    [tmpImageView release];
     [self.view addSubview:_dialog];
     
     UIView *haloView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 300, 225-60) ];
     [haloView setTag:khaloviewtag];
     [tmpImageView addSubview:haloView];
     [haloView setClipsToBounds:YES];
-    [haloView release];
     
     tmpImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pic_sound@2x"]];
     [tmpImageView setFrame:CGRectMake(0, 0, 60, 60)];
     tmpImageView.center = [[BDVRClientUIManager sharedInstance] VRRecordBackgroundCenter];
     [_dialog addSubview:tmpImageView];
-    [tmpImageView release];
     
     PulsingHaloLayer *halo = [PulsingHaloLayer layer];
     halo.position = tmpImageView.center;
@@ -569,7 +558,6 @@
     tmpLabel.textAlignment = NSTextAlignmentCenter;
     tmpLabel.center = [[BDVRClientUIManager sharedInstance] VRTintWordCenter];
     [_dialog addSubview:tmpLabel];
-    [tmpLabel release];
     
     UIButton *tmpButton = [UIButton buttonWithType:UIButtonTypeCustom];
     tmpButton.frame = [[BDVRClientUIManager sharedInstance] VRLeftButtonFrame];
@@ -607,7 +595,6 @@
 //    tmpImageView.alpha = 0.6; /* He Liqiang, TAG-130729 */
     [tmpImageView setOpaque:YES];
     self.dialog = tmpImageView;
-    [tmpImageView release];
     _dialog.center = self.view.center;
     [self.view addSubview:_dialog];
     
@@ -615,7 +602,6 @@
     [circle setFrame:CGRectMake(0, 0, 68, 68)];
 	circle.center = [[BDVRClientUIManager sharedInstance] VRRecognizeBackgroundCenter];
 	[_dialog addSubview:circle];
-	[circle release];
 
     CAAnimationGroup *animationGroup =[[CAAnimationGroup alloc]init];
     [animationGroup setDuration:1.0];
@@ -656,7 +642,6 @@
     [tmpImageView setFrame:CGRectMake(0, 0, 60, 60)];
 	tmpImageView.center = [[BDVRClientUIManager sharedInstance] VRRecognizeBackgroundCenter];
 	[_dialog addSubview:tmpImageView];
-	[tmpImageView release];
     
     UILabel *tmpLabel = [[UILabel alloc] initWithFrame:[[BDVRClientUIManager sharedInstance] VRRecognizeTintWordFrame]];
     tmpLabel.backgroundColor = [UIColor clearColor];
@@ -666,7 +651,6 @@
     tmpLabel.textAlignment = NSTextAlignmentCenter;
     tmpLabel.center = [[BDVRClientUIManager sharedInstance] VRTintWordCenter];
     [_dialog addSubview:tmpLabel];
-    [tmpLabel release];
     
     UIButton *tmpButton = [UIButton buttonWithType:UIButtonTypeCustom];
     tmpButton.frame = [[BDVRClientUIManager sharedInstance] VRCenterButtonFrame];
@@ -695,7 +679,6 @@
     self.dialog = tmpImageView;
     _dialog.backgroundColor = [UIColor clearColor];
     _dialog.center = self.view.center;
-    [tmpImageView release];
     [self.view addSubview:_dialog];
     
     UIButton *soundBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -713,7 +696,6 @@
     tmpLabel.textAlignment = NSTextAlignmentCenter;
     tmpLabel.center = [[BDVRClientUIManager sharedInstance] VRTintWordCenter];
     [_dialog addSubview:tmpLabel];
-    [tmpLabel release];
     
     UIButton *tmpButton = [UIButton buttonWithType:UIButtonTypeCustom];
     tmpButton.frame = [[BDVRClientUIManager sharedInstance] VRCenterButtonFrame];
@@ -846,9 +828,7 @@
 
     NSDate *tmpDate = [[NSDate alloc] initWithTimeIntervalSinceNow:VOICE_LEVEL_INTERVAL];
     NSTimer *tmpTimer = [[NSTimer alloc] initWithFireDate:tmpDate interval:VOICE_LEVEL_INTERVAL target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
-    [tmpDate release];
     self.voiceLevelMeterTimer = tmpTimer;
-    [tmpTimer release];
     [[NSRunLoop currentRunLoop] addTimer:_voiceLevelMeterTimer forMode:NSDefaultRunLoopMode];
 }
 

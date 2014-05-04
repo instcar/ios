@@ -11,7 +11,7 @@ Class nsDictionaryClass;
 Class nsArrayClass;
 
 + (id)objectFromDictionary:(NSDictionary*)dictionary {
-    id item = [[[self alloc] initWithDictionary:dictionary] autorelease];
+    id item = [[self alloc] initWithDictionary:dictionary];
     return item;
 }
 
@@ -35,7 +35,7 @@ Class nsArrayClass;
 			// handle dictionary
 			if ([value isKindOfClass:nsDictionaryClass]) {
 				Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
-				value = [[[klass alloc] initWithDictionary:value] autorelease];
+				value = [[klass alloc] initWithDictionary:value];
 			}
 			// handle array
 			else if ([value isKindOfClass:nsArrayClass]) {
@@ -45,7 +45,7 @@ Class nsArrayClass;
 				
 				for (id child in value) {
 					if ([[child class] isSubclassOfClass:nsDictionaryClass]) {
-						Jastor *childDTO = [[[arrayItemType alloc] initWithDictionary:child] autorelease];
+						Jastor *childDTO = [[arrayItemType alloc] initWithDictionary:child];
 						[childObjects addObject:childDTO];
 					} else {
 						[childObjects addObject:child];
@@ -75,8 +75,6 @@ Class nsArrayClass;
 //	for (NSString *key in [JastorRuntimeHelper propertyNames:[self class]]) {
 //		//[self setValue:nil forKey:key];
 //	}
-	
-	[super dealloc];
 }
 
 - (void)encodeWithCoder:(NSCoder*)encoder {

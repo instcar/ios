@@ -24,7 +24,6 @@
         [bannerScrollView setShowsHorizontalScrollIndicator:NO];
         [bannerScrollView setShowsVerticalScrollIndicator:NO];
         [self addSubview:bannerScrollView];
-        [bannerScrollView release];
         
         [self reloadView];
     }

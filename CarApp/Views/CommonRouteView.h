@@ -15,7 +15,7 @@
     BOOL _routeCanLoadMore;
 }
 
-@property (retain, nonatomic) UIViewController *mainVC;
+@property (strong, nonatomic) UIViewController *mainVC;
 
 - (void)autoRefreshTable;
 

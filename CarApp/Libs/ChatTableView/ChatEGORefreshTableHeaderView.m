@@ -59,7 +59,6 @@
         label.hidden = YES;
 		[self addSubview:label];
 		_statusLabel=label;
-		[label release];
 		
         
 //        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(frame.size.width/2 - 18, frame.size.height - 20.0f, 30.0f, 30.0f)];
@@ -74,10 +73,7 @@
 		UIActivityIndicatorView *activeView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 		activeView.frame = CGRectMake(frame.size.width/2 - 8, frame.size.height + 0.0f, 10.0f, 10.0f);
 		_activityView = activeView;
-//        [view addSubview:activeView];
 		[self addSubview:activeView];
-//        [view release];
-		[activeView release];
 		[self setState:ChatEGOOPullRefreshNormal];
 		
     }
@@ -209,7 +205,6 @@
 	_delegate=nil;
 	_activityView = nil;
 	_statusLabel = nil;
-    [super dealloc];
 }
 
 

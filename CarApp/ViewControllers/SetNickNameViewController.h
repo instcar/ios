@@ -10,6 +10,6 @@
 
 @interface SetNickNameViewController : UIViewController<UITextFieldDelegate>
 
-@property (retain, nonatomic) NSMutableDictionary *registerDic;//保存流程传递的数据
+@property (strong, nonatomic) NSMutableDictionary *registerDic;//保存流程传递的数据
 
 @end

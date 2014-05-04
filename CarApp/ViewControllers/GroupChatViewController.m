@@ -64,14 +64,8 @@
 
 -(void)dealloc
 {
-    [InstantCarRelease safeRelease:_bubbleArray];
-    [InstantCarRelease safeRelease:_currentImageArray];
-    [InstantCarRelease safeRelease:_roomInfo];
-    [InstantCarRelease safeRelease:_flowHelpView];
-    [InstantCarRelease safeRelease:_roomConfiguration];
     [self removeObserver:self forKeyPath:@"remainSeat"];
     [[NSNotificationCenter defaultCenter]removeObserver:self];
-    [super dealloc];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -123,8 +117,8 @@
     
     self.currentPassengers = 0;
     self.remainSeat = 4;
-    self.bubbleArray = [[[NSMutableArray alloc]init]autorelease];
-    self.currentImageArray = [[[NSMutableArray alloc]init]autorelease];
+    self.bubbleArray = [[NSMutableArray alloc]init];
+    self.currentImageArray = [[NSMutableArray alloc]init];
     self.loadMoreNum = 0;
     self.canLoadMore = 1;
     
@@ -137,7 +131,6 @@
     [mainView setBackgroundColor:[UIColor flatWhiteColor]];
     [mainView setTag:1000];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -145,13 +138,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     
     UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -179,7 +170,6 @@
 //    [titleLabel setTextColor:self.isRoomMaster == NO?[UIColor appNavTitleBlueColor]:[UIColor appNavTitleGreenColor]];
     [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
     
 //    UILabel * numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(40, 40, 240, 30)];
 //    [numberLabel setBackgroundColor:[UIColor clearColor]];
@@ -196,7 +186,6 @@
     [welcomeImgView setImage:welcomeImage];
     [welcomeImgView setTag:1001];
     [mainView addSubview:welcomeImgView];
-    [welcomeImgView release];
     
     UILabel *timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 44)];
     [timeLabel setTag:kTimeLabelTag];
@@ -204,13 +193,11 @@
     [timeLabel setTextColor:[UIColor whiteColor]];
     [timeLabel setFont:[UIFont boldSystemFontOfSize:20]];
     [welcomeImgView addSubview:timeLabel];
-    [timeLabel release];
     
     //导航栏下方的信息提示lable
     UILabel * messageWarnLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 300, 44)];
     [messageWarnLable setTag:kMessageWarnLableTag];
     [messageWarnLable setBackgroundColor:[UIColor clearColor]];
-    
 //    [messageWarnLable setText:[NSString stringWithFormat:@"%@,欢迎来到易行",[[User shareInstance] userName]]];
     
     NSString *warnText = (self.isRoomMaster == YES?@"分钟后出发,请准时到标志物接送小朋友":@"分钟后出发,请准时到标志物等待车主");
@@ -219,7 +206,6 @@
     [messageWarnLable setTextColor:[UIColor whiteColor]];
     [messageWarnLable setFont:[UIFont appGreenWarnFont]];
     [welcomeImgView addSubview:messageWarnLable];
-    [messageWarnLable release];
 
     //----begin-- 欢迎条下方房间状态视图
     _groupDesView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 28)];
@@ -232,7 +218,6 @@
     [startTimeLable setFont:[UIFont fontWithName:kFangZhengFont size:12]];
     [startTimeLable setText:@"出发时间:"];
     [_groupDesView addSubview:startTimeLable];
-    [startTimeLable release];
     
     UILabel *startTimeValeLable = [[UILabel alloc]initWithFrame:CGRectMake(10+55+5, 1.5, 40, 25)];
     [startTimeValeLable setTag:kStartTimeLableTag];
@@ -242,7 +227,6 @@
     [startTimeValeLable setText:@""];
 //    [startTimeValeLable setText:@"18:30"];
     [_groupDesView addSubview:startTimeValeLable];
-    [startTimeValeLable release];
     
     UILabel *peoNumLable = [[UILabel alloc]initWithFrame:CGRectMake(10+55+5+40+10, 1.5, 55, 25)];
     [peoNumLable setBackgroundColor:[UIColor clearColor]];
@@ -250,7 +234,6 @@
     [peoNumLable setFont:[UIFont fontWithName:kFangZhengFont size:12]];
     [peoNumLable setText:@"目前人数:"];
     [_groupDesView addSubview:peoNumLable];
-    [peoNumLable release];
     
     UILabel *peoNumValeLable = [[UILabel alloc]initWithFrame:CGRectMake(10+55+5+40+10+55+5, 1.5, 40, 25)];
     [peoNumValeLable setTag:kCurrentPassengerLableTag];
@@ -260,7 +243,6 @@
     [peoNumValeLable setText:@""];
 //        [peoNumValeLable setText:[NSString stringWithFormat:@"%d人",4]];
     [_groupDesView addSubview:peoNumValeLable];
-    [peoNumValeLable release];
     
     UILabel *nullSeatLable = [[UILabel alloc]initWithFrame:CGRectMake(10+55+5+40+10+55+5+40+10, 1.5, 55, 25)];
     [nullSeatLable setBackgroundColor:[UIColor clearColor]];
@@ -268,7 +250,6 @@
     [nullSeatLable setFont:[UIFont fontWithName:kFangZhengFont size:12]];
     [nullSeatLable setText:@"剩余空位:"];
     [_groupDesView addSubview:nullSeatLable];
-    [nullSeatLable release];
     
     UILabel *nullSeatValeLable = [[UILabel alloc]initWithFrame:CGRectMake(10+55+5+40+10+55+5+40+10+55+5, 1.5, 40, 25)];
     [nullSeatValeLable setTag:kLeftNullSeatTag];
@@ -277,7 +258,6 @@
     [nullSeatValeLable setFont:[UIFont fontWithName:kFangZhengFont size:12]];
 //    [nullSeatValeLable setText:[NSString stringWithFormat:@"%d个",0]];
     [_groupDesView addSubview:nullSeatValeLable];
-    [nullSeatValeLable release];
     //----end-- 欢迎条下方房间状态视图
 
     //聊天视图
@@ -287,7 +267,6 @@
     [_bubbleTableView setBubbleTableViewDelegate:self];
     [_bubbleTableView setTableHeaderView:_groupDesView];
     [mainView insertSubview:_bubbleTableView belowSubview:navBar];
-    [_bubbleTableView release];
     
     //测试数据
     //    NSBubbleData *bubbleData = [NSBubbleData dataWithText:@"hellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohello" date:[NSDate date] type:BubbleTypeMine contentType:BubbleContentText];
@@ -475,6 +454,7 @@
     UILabel *currentPassengerLable = (UILabel *)[self.view viewWithTag:kCurrentPassengerLableTag];
     UILabel *leftNullLable = (UILabel *)[self.view viewWithTag:kLeftNullSeatTag];
     
+    /*
     //刷新房间信息
     [NetWorkManager networkGetRoomInfoWithRoomID:self.roomID success:^(BOOL flag, NSDictionary *roomInfo, NSString *msg) {
         
@@ -541,7 +521,7 @@
         
     } failure:^(NSError *error) {
         
-    }];
+    }];*/
 }
 
 - (void)showInfoView
@@ -622,7 +602,7 @@
     NSBubbleData *bubbleData = [NSBubbleData dataWithText:inputText date:[NSDate date] type:BubbleTypeMine contentType:BubbleContentText];
     bubbleData.avatar = [PeopleManager getPeopleWithFriendID:[User shareInstance].userId].headpic;
     
-    BaseTextMessage *baseTextMessage = [[[BaseTextMessage alloc]init]autorelease];
+    BaseTextMessage *baseTextMessage = [[BaseTextMessage alloc]init];
     baseTextMessage.uid = [User shareInstance].userId;   //自己id
     baseTextMessage.fid = [User shareInstance].userId;   //用户id
     baseTextMessage.roomid = self.roomID; //房间id
@@ -733,7 +713,7 @@
     [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade]; //隐藏工具栏
     [self dismissViewControllerAnimated:YES completion:^{}];
 
-    UIImage *image = [[info objectForKey:UIImagePickerControllerOriginalImage] retain];
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     if(picker.sourceType == UIImagePickerControllerSourceTypeCamera){
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
     }
@@ -741,7 +721,7 @@
     if (image) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     
-            ImageMessage * imageMessage = [[[ImageMessage alloc]init]autorelease];
+            ImageMessage * imageMessage = [[ImageMessage alloc]init];
             imageMessage.image = image;
             imageMessage.uid = [User shareInstance].userId;   //自己id
             imageMessage.fid = [User shareInstance].userId;   //用户id
@@ -781,6 +761,7 @@
     
     if (buttonIndex == 1) {
         if (alertView.tag == kEnsurePingcheTag) {
+            /*
             [NetWorkManager networkRoomMasterEnsureuid:[User shareInstance].userId roomid:self.roomID success:^(BOOL flag, NSString *msg) {
                 if (flag) {
 
@@ -812,11 +793,11 @@
                 [self refreshRoomInfo];
             } failure:^(NSError *error) {
                 
-            }];
+            }];*/
 
         }
         if (alertView.tag == kJojinPingcheTag) {
-            
+            /*
                 [NetWorkManager networkJoinRoomWithID:[User shareInstance].userId roomID:self.roomID success:^(BOOL flag, NSString *msg) {
                     if (flag) {
                         UIView * ensureView = [(UIView *)self.view viewWithTag:kEnsureViewTag];
@@ -850,10 +831,11 @@
                 } failure:^(NSError *error) {
                     
                 }];
+             */
             }
 
         if (alertView.tag == kExitPingcheTag) {
-            
+            /*
             [NetWorkManager networkExitRoomWithID:[User shareInstance].userId roomID:self.roomID success:^(BOOL flag, NSString *msg) {
                 if (flag) {
                     self.userState = 1;
@@ -885,6 +867,7 @@
             } failure:^(NSError *error) {
                 
             }];
+             */
         }
         /*
         Room *room = [[Room alloc]initWithDic:[self.roomInfo valueForKey:@"room"]];
@@ -953,7 +936,6 @@
 //        profileVC.state = 2;
 //    }
     [self.navigationController pushViewController:profileVC animated:YES];
-    [profileVC release];
 }
 
 -(void)cellTouchAction:(NSBubbleData *)data
@@ -986,7 +968,6 @@
             photo.image = image; // 图片路径
             photo.srcImageView = (UIImageView *)bubbleData.view; // 来源于哪个UIImageView
             [photos addObject:photo];
-            [photo release];
         }
         else
         {
@@ -995,7 +976,7 @@
     }
     
     //2.显示相册
-    MJPhotoBrowser *browser = [[[MJPhotoBrowser alloc] init]autorelease];
+    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
     browser.currentPhotoIndex = currentImage; //弹出相册时显示的第一张图片是？
     browser.photos = photos; // 设置所有的图片
     browser.photoDics = self.currentImageArray;
@@ -1040,7 +1021,6 @@
     groupRoomSettingVC.delegate = self;
     groupRoomSettingVC.groupVC = self;
     [self.navigationController pushViewController:groupRoomSettingVC animated:YES];
-    [groupRoomSettingVC release];
 }
 
 -(void)groupRoomSettingVC:(GroupRoomSettingViewController *)groupRoomSettingVC sanderMessageEvent:(kPListEvent)event
@@ -1049,7 +1029,6 @@
     [self refreshRoomInfo];
     //发送系统信息
     if (event == kPListEventOpened) {
-    
         NSBubbleData *bubbleData = [NSBubbleData dataWithText:[NSString stringWithFormat:@"开启了一个座位"] date:[NSDate date] type:BubbleTypeSystem contentType:BubbleContentText];
         bubbleData.avatar = [PeopleManager getPeopleWithFriendID:[User shareInstance].userId].headpic;
         
@@ -1125,7 +1104,7 @@
     else
         if (scrollView.contentOffset.y < 0)
         {
-            [_bubbleTableView setTableHeaderView:[[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 28)]autorelease]];
+            [_bubbleTableView setTableHeaderView:[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 28)]];
             [_groupDesView setFrame:CGRectMake(0, 64+44, 320, 28)];
             [mainView insertSubview:_groupDesView belowSubview:welcomeImgView];
 //            [_bubbleTableView setFrame:CGRectMake(0, 64+44+28, 320, SCREEN_HEIGHT-64-44-28-44)];

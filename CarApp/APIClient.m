@@ -85,6 +85,10 @@
 
 +(void)networkEditUserInfo:(NSMutableDictionary *)userInfoDic success:(void (^)(Respone *))success failure:(void (^)(NSError *))failure
 {
+    if ([[userInfoDic allKeys]count]==0) {
+        DLog(@"没有更改")
+        return;
+    }
     [NetTool httpPostRequest:API_POST_EditUserInfo WithFormdata:userInfoDic WithSuccess:^(Respone *resultDic) {
         success(resultDic);
     } failure:^(NSError *error) {
@@ -94,7 +98,7 @@
 
 + (void)networkAddCarWithid:(int)car_id license:(NSString *)license cars_1:(NSString *)cars_1 cars_2:(NSString *)cars_2 success:(void (^)(Respone *))success failure:(void (^)(NSError *))failure
 {
-    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:license,@"license",cars_1,@"cars[]",cars_2,@"cars[]",nil];
+    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:car_id],@"car_id",license,@"license",cars_1,@"cars[]",cars_2,@"cars[]",nil];
     [NetTool httpPostRequest:API_POST_UserAddCar WithFormdata:formData WithSuccess:^(Respone *resultDic) {
         success(resultDic);
     } failure:^(NSError *error) {
@@ -102,10 +106,11 @@
     }];
 }
 
-+ (id)networkUserGetCarsWithcar_id:(int)car_id success:(void (^)(Respone *))success failure:(void (^)(NSError *))failure
++ (void)networkUserGetCarsWithcar_id:(int)car_id success:(void (^)(Respone *))success failure:(void (^)(NSError *))failure
 {
     //car_id 为可选参数
     NSMutableDictionary *formData = [NSMutableDictionary dictionary];
+    //car_id < 0 不填参数
     if (car_id >= 0) {
          [formData setObject:[NSNumber numberWithInt:car_id] forKey:@"car_id"];
     }
@@ -120,6 +125,18 @@
 {
     NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:id_cars_1,@"id_cards[]",id_cars_2,@"id_cards[]",nil];
     [NetTool httpPostRequest:API_POST_UserRealnameRequest WithFormdata:formData WithSuccess:^(Respone *resultDic) {
+        success(resultDic);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+#pragma mark - 车辆
+//根据别名获取车辆型号列表
++ (void)networkGetCarListWithAliasname:(NSString *)aliasname success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure
+{
+    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:aliasname,@"aliasname",nil];
+    [NetTool httpPostRequest:API_POST_GetCatList WithFormdata:formData WithSuccess:^(Respone *resultDic) {
         success(resultDic);
     } failure:^(NSError *error) {
         failure(error);

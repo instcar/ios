@@ -13,7 +13,6 @@
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
-    [super dealloc];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -30,13 +29,11 @@
         _backGtextImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
         [_backGtextImgView  setImage:txfBackImg];
         [self addSubview:_backGtextImgView];
-        [_backGtextImgView release];
         
         _arrowImgView = [[UIImageView alloc]initWithFrame:CGRectMake(self.bounds.size.width - 24, self.bounds.size.height/2.0-8, 16, 16)];
         [_arrowImgView setImage:[UIImage imageNamed:@"ic_agree_no"]];
         [_arrowImgView setHidden:NO];
         [self addSubview:_arrowImgView];
-        [_arrowImgView release];
         
         UIView *toolBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 39)];
         [toolBar setBackgroundColor:[UIColor clearColor]];
@@ -62,10 +59,8 @@
         [_textfield setPlaceholder:@""];
          _textfield.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         [_textfield setInputAccessoryView:toolBar];
-        [toolBar release];
         
         [self addSubview:_textfield];
-        [_textfield release];
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textFieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 

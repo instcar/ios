@@ -57,7 +57,6 @@
     [headerImgView setBackgroundColor:[UIColor clearColor]];
     [headerImgView setImage:[UIImage imageNamed:@"logo_start"]];
     [self.view addSubview:headerImgView];
-    [headerImgView release];
     
     //输入框
     _inputView = [[GDInputView alloc]initWithFrame:CGRectMake(45, 44 + 50 , 230, 36)];
@@ -66,7 +65,6 @@
     [_inputView.textfield setTag:110];
     [_inputView.textfield setPlaceholder:@"请输入您的手机号"];
     [self.view addSubview:_inputView];
-    [_inputView release];
     
     //获取验证码
     _authBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -87,7 +85,6 @@
     [_authInputView.textfield setTag:111];
     [_authInputView.textfield setPlaceholder:@"请输入6位短信验证"];
     [self.view addSubview:_authInputView];
-    [_authInputView release];
     
     //输入框
     _passInputView = [[GDInputView alloc]initWithFrame:CGRectMake(45,222+10, 230, 36)];
@@ -96,7 +93,6 @@
     [_passInputView.textfield setTag:112];
     [_passInputView.textfield setPlaceholder:@"请输入6-12位密码"];
     [self.view addSubview:_passInputView];
-    [_passInputView release];
     
     //发送验证码
     _confirmBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -156,7 +152,6 @@
     else{
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入正确的手机号以便接收验证码" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alert show];
-        [alert release];
     }
 }
 
@@ -250,7 +245,6 @@
             user.isSavePwd = YES;
             
             UINavigationController * navi = [[UINavigationController alloc]initWithRootViewController:[AppDelegate shareDelegate].mainVC];
-            [navi setNavigationBarHidden:YES];
             [AppDelegate shareDelegate].mainVC.firstEnter = YES;
             [[AppDelegate shareDelegate].mainVC enterView];
             [navi setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];

@@ -21,7 +21,7 @@ typedef enum
 @interface MapViewController : UIViewController<BMKMapViewDelegate,BMKSearchDelegate>
 
 @property (assign, nonatomic) id<MapVCDelegate> delegate;
-@property (retain, nonatomic) Line *line;
+@property (strong, nonatomic) Line *line;
 @property (assign, nonatomic) kMapViewMode mode;
 
 @end

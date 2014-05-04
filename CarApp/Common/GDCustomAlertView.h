@@ -11,15 +11,15 @@
 @protocol GDCustomAlertDelegate;
 
 @interface GDCustomAlertView : UIAlertView{
-    id  _GDdelegate;
+    __unsafe_unretained id  _GDdelegate;
     UIImage *_backgroundImage;
     UIImage *_contentImage;
     NSMutableArray *_buttonArrays;
     
 }
 
-@property(readwrite, retain) UIImage *backgroundImage;
-@property(readwrite, retain) UIImage *contentImage;
+@property(readwrite, strong) UIImage *backgroundImage;
+@property(readwrite, strong) UIImage *contentImage;
 @property(nonatomic, assign) id<GDCustomAlertDelegate> GDdelegate;
 
 - (id)initWithImage:(UIImage *)image frame:(CGRect)frame contentImage:(UIImage *)content;

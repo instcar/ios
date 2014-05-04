@@ -12,10 +12,7 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_activityIndicatorView];
-    [SafetyRelease release:_stateLable];
     [[NSNotificationCenter defaultCenter]removeObserver:self];
-    [super dealloc];
 }
 
 - (id)initWithFrame:(CGRect)frame

@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "People.h"
+#import "CommonViewController.h"
 
-@interface CommonRoutesViewController : UIViewController
+@interface CommonRoutesViewController : CommonViewController
 {
     int _routepage;
     BOOL _routeCanLoadMore;
 }
 
-@property (retain, nonatomic) People *myInfo;
+@property (strong, nonatomic) People *userInfo;
 
 @end

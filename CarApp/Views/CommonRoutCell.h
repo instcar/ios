@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Line.h"
 @interface CommonLable:UIView
 
 @property (copy, nonatomic) NSString *startStr;
@@ -17,7 +18,7 @@
 
 @interface CommonRoutCell : UITableViewCell
 
-@property (retain, nonatomic) Line *data;
-@property (retain, nonatomic) UIViewController *mainVC;
+@property (strong, nonatomic) Line *data;
+@property (strong, nonatomic) UIViewController *mainVC;
 
 @end

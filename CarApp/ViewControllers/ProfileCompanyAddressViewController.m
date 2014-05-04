@@ -31,7 +31,6 @@
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor colorWithRed:(float)243/255 green:(float)243/255 blue:(float)243/255 alpha:1.0f]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -39,13 +38,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     else
     {
@@ -67,7 +64,6 @@
     [titleLabel setTextColor:[UIColor appNavTitleColor]];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
     
     UIButton * saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveBtn setFrame:CGRectMake(320-70, 20, 70, 44)];
@@ -83,7 +79,6 @@
     UIImageView * welcomeImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, 49)];
     [welcomeImgView setImage:welcomeImage];
     [mainView addSubview:welcomeImgView];
-    [welcomeImgView release];
     
     UILabel * welcomeLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 310, 44)];
     [welcomeLabel setBackgroundColor:[UIColor clearColor]];
@@ -92,7 +87,6 @@
     [welcomeLabel setTextColor:[UIColor whiteColor]];
     [welcomeLabel setFont:[UIFont appGreenWarnFont]];
     [welcomeImgView addSubview:welcomeLabel];
-    [welcomeLabel release];
     
     UIImage * txfBackImg = [UIImage imageNamed:@"input_white_normal"];
     txfBackImg = [txfBackImg stretchableImageWithLeftCapWidth:5 topCapHeight:5];
@@ -106,7 +100,6 @@
     UIImageView *backGtextImgView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 64+49+15, 300, 250)];
     [backGtextImgView  setImage:txfBackImg];
     [mainView addSubview:backGtextImgView];
-    [backGtextImgView release];
     
     UITextView *textView = [[UITextView alloc]initWithFrame:CGRectMake(25, 64+49+25, 270, 230)];
     textView.tag = 91001;
@@ -116,7 +109,6 @@
     [textView  setFont:[UIFont fontWithName:kFangZhengFont size:16]];
     
     [mainView addSubview:textView];
-    [textView release];
 }
 
 
@@ -159,8 +151,7 @@
 
 -(void)dealloc
 {
-//    [self.companyAddress release];
-    [super dealloc];
+
 }
 
 - (void)didReceiveMemoryWarning

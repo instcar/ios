@@ -38,7 +38,6 @@
     mainView.userInteractionEnabled = YES;
     [mainView setBackgroundColor:[UIColor appBackgroundColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -46,13 +45,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     else
     {
@@ -70,7 +67,6 @@
     [headerImgView setBackgroundColor:[UIColor clearColor]];
     [headerImgView setImage:[UIImage imageNamed:@"logo_start"]];
     [navBar addSubview:headerImgView];
-    [headerImgView release];
     
     UILabel * codeLabel = [[UILabel alloc]initWithFrame:CGRectMake(54,64+40, 200, 20)];
     [codeLabel setBackgroundColor:[UIColor clearColor]];
@@ -79,7 +75,7 @@
     [codeLabel setTextColor:[UIColor appBlackColor]];
     [codeLabel setFont:[UIFont fontWithName:kFangZhengFont size:12]];
     [navBar addSubview:codeLabel];
-    [codeLabel release];
+
     
     //输入框
     GDInputView *inputView = [[GDInputView alloc]initWithFrame:CGRectMake(54, 122 , 212, 36)];
@@ -90,7 +86,6 @@
     [inputView.textfield setTag:kGDInputTextFieldTag];
     [inputView.textfield setSecureTextEntry:YES];
     [mainView addSubview:inputView];
-    [inputView release];
     
     //输入框
     GDInputView *reInputView = [[GDInputView alloc]initWithFrame:CGRectMake(54, 158+8, 212, 36)];
@@ -101,7 +96,7 @@
     [reInputView.textfield setTag:kGDReInputTextFieldTag];
     [reInputView.textfield setSecureTextEntry:YES];
     [mainView addSubview:reInputView];
-    [reInputView release];
+
     
     UIButton * confirmBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [confirmBtn setTag:80003];
@@ -136,7 +131,6 @@
         if (passWord.length < 6 || passWord.length > 12 ) {
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入6-12位密码" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
             [alert show];
-            [alert release];
         }
         else{
             //修改密码
@@ -147,12 +141,12 @@
     else{
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"两次输入的密码不一致" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alert show];
-        [alert release];
     }
 }
 
 -(void)editpassword:(NSString *)password withuid:(int)uid
 {
+    /*
     [NetWorkManager networkResetpasswordeWithphone:self.phoneNum password:password success:^(BOOL flag) {
         if (flag) {
             
@@ -163,7 +157,7 @@
         }
     } failure:^(NSError *error) {
         
-    }];
+    }];*/
 }
 
 
@@ -262,7 +256,7 @@
 
 -(void)dealloc
 {
-    [super dealloc];
+
 }
 
 - (void)didReceiveMemoryWarning

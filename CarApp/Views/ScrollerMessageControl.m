@@ -21,19 +21,11 @@
 
 -(void)dealloc
 {
-    [_scrollView release];
     [self setScrollView:nil];
-    
-    [_contentLable release];
     [self setContentLable:nil];
-    
-    [_contentExtendLable release];
     [self setContentExtendLable:nil];
-    
-    [_timer release];
     [self setTimer:nil];
     
-    [super dealloc];
 }
 
 - (id)initWithFrame:(CGRect)frame delegate:(id)delegate
@@ -56,7 +48,6 @@
     UIScrollView * scroller = [[UIScrollView alloc]initWithFrame:self.bounds];
     [scroller setBackgroundColor:[UIColor clearColor]];
     [self addSubview:scroller];
-    [scroller release];
     self.scrollView = scroller;
     
     UILabel * contextlable = [[UILabel alloc]init];
@@ -69,7 +60,6 @@
     [contextlable setBackgroundColor:[UIColor clearColor]];
     [contextlable setFont:[UIFont systemFontOfSize:14.0]];
     [scroller addSubview:contextlable];
-    [contextlable release];
     self.contentLable = contextlable;
     
     UILabel * contentExtendLable = [[UILabel alloc]init];
@@ -82,7 +72,6 @@
     [contentExtendLable setBackgroundColor:[UIColor clearColor]];
     [contentExtendLable setFont:[UIFont systemFontOfSize:14.0]];
     [scroller addSubview:contentExtendLable];
-    [contentExtendLable release];
     self.contentExtendLable = contentExtendLable;
 
 }

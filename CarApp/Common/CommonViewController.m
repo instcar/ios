@@ -10,164 +10,190 @@
 
 @interface CommonViewController ()
 
+
 @end
 
 @implementation CommonViewController
 -(void)dealloc
 {
-    [super dealloc];
+
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
+
     }
     return self;
 }
+
+//- (id)init
+//{
+//    self = [super init];
+//    if (self) {
+//        self.enableMessage = YES;
+//        self.editing = NO;
+//    }
+//    return self;
+//}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    self.enableMessage = YES;
+    self.enableEditing = NO;
+    self.enableBackButton = NO;
     
-    UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
-    naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
-    
-    float navWidth = (kDeviceVersion >= 7.0?64.0:44.0);
-    
-    _navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, navWidth)];
-    [_navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
-    [self.view addSubview:_navBar];
-    [_navBar release];
-    
-    if (kDeviceVersion < 7.0) {
-        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, _navBar.frame.size.height, _navBar.frame.size.width, 1)];
-        [lineView setBackgroundColor:[UIColor lightGrayColor]];
-        [_navBar addSubview:lineView];
-        [lineView release];
-    }
-    else
-    {
-        self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
-    }
-    
-    _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 27, 200, 30)];
+    //标题
+    _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 30)];
     [_titleLabel setBackgroundColor:[UIColor clearColor]];
     [_titleLabel setTextAlignment:NSTextAlignmentCenter];
     [_titleLabel setTextColor:[UIColor appNavTitleColor]];
     [_titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
-    [_navBar addSubview:_titleLabel];
-    [_titleLabel release];
+//    [self.navigationController.navigationItem setTitleView:_titleLabel];
     
-    _headerImgView = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH - 110,BarButtonoffsetY+2, 110, 25)];
+    //logo
+    _headerImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, 110, 25)];
     [_headerImgView setBackgroundColor:[UIColor clearColor]];
     [_headerImgView setImage:[UIImage imageNamed:@"logo_start"]];
-    [_navBar addSubview:_headerImgView];
-    [_headerImgView setHidden:YES];
-    [_headerImgView release];
+    [self.navigationItem setTitleView:_headerImgView];
     
-    float messageOffsetY = (kDeviceVersion >= 7.0?64:44);
-    
-    UIImage * welcomeImage = [UIImage imageNamed:@"nav_hint@2x"];
-    //    welcomeImage = [welcomeImage stretchableImageWithLeftCapWidth:8 topCapHeight:10];
-    //导航栏下方的欢迎条
-    _messageBgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, messageOffsetY, 320, 49)];
-    [_messageBgView setImage:welcomeImage];
-    [self.view addSubview:_messageBgView ];
-    [_messageBgView release];
-    
-    _desLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 300, 44)];
-    [_desLable setTag:5876];
-    [_desLable setBackgroundColor:[UIColor clearColor]];
-    [_desLable setTextAlignment:NSTextAlignmentLeft];
-    [_desLable setTextColor:[UIColor whiteColor]];
-    [_desLable setFont:[UIFont appGreenWarnFont]];
-    [_messageBgView insertSubview:_desLable belowSubview:_navBar];
-    [_desLable release];
-    
-    UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    [backButton setFrame:CGRectMake(BarButtonoffsetX, BarButtonoffsetY, 40, 30)];
-    [backButton setBackgroundColor:[UIColor clearColor]];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_normal@2x"] forState:UIControlStateNormal];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_pressed@2x"] forState:UIControlStateHighlighted];
-    [backButton addTarget:self action:@selector(backToMain) forControlEvents:UIControlEventTouchUpInside];
-    [_navBar addSubview:backButton];
-}
-
--(void)setCtitle:(NSString *)ctitle
-{
-    if (ctitle) {
-        [_ctitle release];
-        _ctitle = ctitle;
-    }
-    if ([ctitle isEqualToString:@"logo"]) {
-        [_titleLabel setHidden:YES];
-        [_headerImgView setHidden:NO];
+    if(self!=[self.navigationController.viewControllers objectAtIndex:0]){
+        // Put Back button in navigation bar
+        [self setEnableBackButton:YES];
     }
     else
     {
-        [_titleLabel setHidden:NO];
-        [_headerImgView setHidden:YES];
+        [self setEnableBackButton:NO];
     }
 
-    [_titleLabel setText:ctitle];
 }
 
-- (void)setDesText:(NSString *)desText
+//设置标题和logo
+- (void)setTitle:(NSString *)title
 {
-    if (desText) {
-        
-        [_desText release];
-        _desText = desText;
-        
-        if ([desText isEqualToString:@"null"]) {
-            [_messageBgView setHidden:YES];
-        }
-        else
-        {
-            [_messageBgView setHidden:NO];
-            [_desLable setText:desText];
-        }
+    //设置标题 else 显示logo
+    if (title) {
+        [_titleLabel setText:title];
+        [self.navigationItem setTitleView:_titleLabel];
     }
-    else
-    {
-        [_desLable setText:@"主人比较懒，都没有写心情偶"];
+}
+
+- (void)setMessageText:(NSString *)messageText
+{
+    if (messageText && _enableMessage) {
+        _messageText = messageText;
+        [_desLable setText:_messageText];
     }
-    
 }
 
 - (void)setMessageView:(UIView *)messageView
 {
-    
+    if (_enableMessage && messageView) {
+        [_desLable setHidden:YES];
+        _messageView = messageView;
+        [_messageBgView setUserInteractionEnabled:YES];
+        [_messageBgView addSubview:_messageView];
+    }
 }
 
 - (void)setLeftBtn:(UIButton *)leftBtn
 {
     if (leftBtn) {
-        [_leftBtn release];
         _leftBtn = leftBtn;
+        _leftButtonItem = [[UIBarButtonItem alloc]initWithCustomView:_leftBtn];
+        self.navigationItem.leftBarButtonItem = _leftButtonItem;
     }
-    [_leftBtn setFrame:CGRectMake(BarButtonoffsetX, BarButtonoffsetY, 40, 30)];
-    [_navBar addSubview:_leftBtn];
 }
 
 - (void)setRightBtn:(UIButton *)rightBtn
 {
     if (rightBtn) {
-        [_rightBtn release];
         _rightBtn = rightBtn;
+        _rightButtonItem = [[UIBarButtonItem alloc]initWithCustomView:_rightBtn];
+        self.navigationItem.rightBarButtonItem = _rightButtonItem;
     }
-    [_rightBtn setFrame:CGRectMake(SCREEN_WIDTH - 40 - BarButtonoffsetX, BarButtonoffsetY, 40, 30)];
-    [_navBar addSubview:_rightBtn];
-    
 }
 
-- (void)backToMain
+- (void)setEnableBackButton:(BOOL)enableBackButton
 {
+    if (enableBackButton) {
+        _enableBackButton = enableBackButton;
+        //返回按钮默认按钮
+        UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        [backButton setFrame:CGRectMake(0, 0, 40, 30)];
+        [backButton setBackgroundColor:[UIColor clearColor]];
+        [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_normal@2x"] forState:UIControlStateNormal];
+        [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_pressed@2x"] forState:UIControlStateHighlighted];
+        [backButton addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
+        _backButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
+        self.navigationItem.leftBarButtonItem = _backButtonItem;
+    }
+    else
+    {
+        self.navigationItem.leftBarButtonItem = nil;
+    }
+}
+
+//启动编辑按钮
+-(void)setEnableEditing:(BOOL)enableEditing
+{
+    if (enableEditing) {
+        _enableEditing = enableEditing;
+        //编辑按钮
+        UIButton * editButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        [editButton setFrame:CGRectMake(0, 0, 40, 30)];
+        [editButton setBackgroundColor:[UIColor clearColor]];
+        [editButton setBackgroundImage:[UIImage imageNamed:@"btn_edit_normal@2x"] forState:UIControlStateNormal];
+        [editButton setBackgroundImage:[UIImage imageNamed:@"btn_edit_pressed@2x"] forState:UIControlStateHighlighted];
+        [editButton setBackgroundImage:[UIImage imageNamed:@"btn_save_normal@2x"] forState:UIControlStateSelected];
+        [editButton addTarget:self action:@selector(editBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+        _leftBtn = editButton;
+        _editBtnItem = [[UIBarButtonItem alloc]initWithCustomView:editButton];
+        self.navigationItem.rightBarButtonItem = _editBtnItem;
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+}
+
+//启动messageView
+- (void)setEnableMessage:(BOOL)enableMessage
+{
+    if (enableMessage) {
+        _enableMessage = enableMessage;
+        //导航栏下方的欢迎条
+        UIImage * welcomeImage = [UIImage imageNamed:@"nav_hint@2x"];
+        _messageBgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 49)];
+        [_messageBgView setImage:welcomeImage];
+        [self.view addSubview:_messageBgView ];
+        
+        //文本信息
+        _desLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 300, 44)];
+        [_desLable setBackgroundColor:[UIColor clearColor]];
+        [_desLable setTextAlignment:NSTextAlignmentLeft];
+        [_desLable setTextColor:[UIColor whiteColor]];
+        [_desLable setFont:[UIFont appGreenWarnFont]];
+        [_messageBgView addSubview:_desLable];
+    }
+    else
+    {
+        [_messageBgView removeFromSuperview];
+    }
+}
+
+- (void)backAction:(UIButton *)sender
+{
+    //返回按钮 可重写
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)editBtnAction:(UIButton *)sender
+{
+    //返回按钮 可重写
 }
 
 - (void)didReceiveMemoryWarning

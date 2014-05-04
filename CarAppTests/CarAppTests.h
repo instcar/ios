@@ -6,8 +6,8 @@
 //  Copyright (c) 2013年 Leno. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface CarAppTests : SenTestCase
+@interface CarAppTests : XCTestCase
 
 @end

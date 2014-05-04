@@ -11,13 +11,13 @@
 
 @interface PassengerRoomCell : UITableViewCell
 
-@property (retain, nonatomic) UIButton *imagerView;
-@property (retain, nonatomic) UILabel *nameLable;
-//@property (retain, nonatomic) UILabel *dayLable;
-@property (retain, nonatomic) UILabel *timeLable;
-@property (retain, nonatomic) UITextView *desLable;
-@property (retain, nonatomic) UILabel *pubTimeLable;
-@property (retain, nonatomic) UILabel *lastSeatLable;
+@property (strong, nonatomic) UIButton *imagerView;
+@property (strong, nonatomic) UILabel *nameLable;
+//@property (strong, nonatomic) UILabel *dayLable;
+@property (strong, nonatomic) UILabel *timeLable;
+@property (strong, nonatomic) UITextView *desLable;
+@property (strong, nonatomic) UILabel *pubTimeLable;
+@property (strong, nonatomic) UILabel *lastSeatLable;
 
 
 

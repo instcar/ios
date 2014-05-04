@@ -7,7 +7,8 @@
 //
 
 #import "CommonViewController.h"
-
+#import "CarType.h"
+#import "CarD.h"
 @interface EditCarInfoViewController : CommonViewController<UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     UIScrollView *_scrollView;
@@ -25,4 +26,7 @@
     UIImageView *_carSliderImageView;
     UIButton *_confirmBtn;
 }
+
+@property (strong, nonatomic)CarType *carType;   //汽车类型
+
 @end

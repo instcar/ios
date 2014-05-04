@@ -34,12 +34,11 @@
 
 +(NSArray *)arrayWithArrayDic:(NSArray *)array
 {
-    NSMutableArray * mutableArray = [[[NSMutableArray alloc]init]autorelease];
+    NSMutableArray * mutableArray = [[NSMutableArray alloc]init];
     [mutableArray removeAllObjects];
     for (NSDictionary * dic in array) {
         Line *line = [[Line alloc]initWithDic:dic];
         [mutableArray addObject:line];
-        [line release];
     }
     return mutableArray;
 }

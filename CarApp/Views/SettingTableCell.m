@@ -15,10 +15,7 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_titleLabel];
-    [SafetyRelease release:_switchhh];
-    [SafetyRelease release:_detailLable];
-    [super dealloc];
+
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -30,7 +27,6 @@
         UIView *backgroundView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
         [backgroundView setBackgroundColor:[UIColor whiteColor]];
         [self setBackgroundView:backgroundView];
-        [backgroundView release];
         
 //        self.cellBackGroundView = [[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)]autorelease];
 //        self.cellBackGroundView.userInteractionEnabled = YES;
@@ -48,7 +44,6 @@
         
         UILabel *titleLable= [[UILabel alloc]initWithFrame:CGRectMake(20, 12, 200, 20)];
         self.titleLabel = titleLable;
-        [titleLable release];
         [self.titleLabel setBackgroundColor:[UIColor clearColor]];
         [self.titleLabel setTextAlignment:NSTextAlignmentLeft];
         [self.titleLabel setTextColor:[UIColor textGrayColor]];
@@ -57,11 +52,11 @@
         [self.contentView addSubview:self.titleLabel];
     
         if (kDeviceVersion >= 7.0) {
-            self.switchhh = [[[UISwitch alloc]initWithFrame:CGRectMake(250, 7, 40, 30)]autorelease];
+            self.switchhh = [[UISwitch alloc]initWithFrame:CGRectMake(250, 7, 40, 30)];
         }
         else
         {
-            self.switchhh = [[[UISwitch alloc]initWithFrame:CGRectMake(220, 7, 70, 30)]autorelease];
+            self.switchhh = [[UISwitch alloc]initWithFrame:CGRectMake(220, 7, 70, 30)];
         }
         if(kDeviceVersion >= 6.0)
         {
@@ -70,7 +65,7 @@
         [self.switchhh setOpaque:YES];
         [self.contentView addSubview:self.switchhh];
         
-        self.detailLable = [[[UILabel alloc]initWithFrame:CGRectMake(320 - 240, 12, 200, 20)] autorelease];
+        self.detailLable = [[UILabel alloc]initWithFrame:CGRectMake(320 - 240, 12, 200, 20)];
         [self.detailLable setBackgroundColor:[UIColor clearColor]];
         [self.detailLable setTextAlignment:NSTextAlignmentRight];
         [self.detailLable setTextColor:[UIColor textGrayColor]];

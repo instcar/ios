@@ -55,13 +55,11 @@
 
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imageTapAction:)];
     [imageView addGestureRecognizer:tap];
-    [tap release];
     
     self.frame = imageView.frame;
     self.imageView = imageView;
     [self addSubview:imageView];
 //    [self addSubview:imageBtn];
-    [imageView release];
 }
 
 -(void)imageTapAction:(id)sender

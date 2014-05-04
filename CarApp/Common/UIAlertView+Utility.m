@@ -14,13 +14,11 @@
     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:title message:nil delegate:delegate cancelButtonTitle:btnTitle otherButtonTitles:ensureTitle,nil];
     alertView.tag = tag;
     [alertView show];
-    [alertView release];
 }
 
 +(void)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)btnTitle
 {
     UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:title message:message delegate:nil cancelButtonTitle:btnTitle otherButtonTitles:nil];
     [alertView show];
-    [alertView release];
 }
 @end

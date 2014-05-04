@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Car.h"
+@protocol CarInfoTableViewCellDelegate;
 
 @interface CarInfoTableViewCell : UITableViewCell
 {
@@ -19,8 +21,17 @@
     UIImageView *_checkState; //检测状态标识
     UILabel *_checkLable; //检测状态
     UIView *_modifyView; //修改视图
+    
+    int type;//检测转台
 }
 
-@property (retain, nonatomic) NSDictionary *data;
+@property (strong, nonatomic) Car *carData;
+@property (assign, nonatomic) id<CarInfoTableViewCellDelegate>delegate;
+@end
+
+@protocol CarInfoTableViewCellDelegate <NSObject>
+
+- (void)reConfirmBtnAction:(CarInfoTableViewCell *)sender;
+- (void)cancleConfirmBtnAction:(CarInfoTableViewCell *)sender;
 
 @end

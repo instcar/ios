@@ -115,7 +115,9 @@
      */
     #define API_POST_UserRealnameRequest [NSString stringWithFormat:@"%@server/user/realnamerequest",PHPHOST]
 
+#pragma mark - 车辆相关
 
+#define API_POST_GetCatList [NSString stringWithFormat:@"%@server/car/list",PHPHOST]
 
 #pragma mark - 管理员/用户自主管理线路<暂未使用>
     /**

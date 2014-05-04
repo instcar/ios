@@ -13,7 +13,8 @@
 +(void)safeRelease:(id)object
 {
     if (object) {
-        [object release];object = nil;
+//        [object release];
+        object = nil;
     }
 }
 

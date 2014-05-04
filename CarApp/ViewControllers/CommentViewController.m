@@ -13,8 +13,8 @@
 
 @interface CommentViewController ()<UIAlertViewDelegate>
 
-@property (retain, nonatomic) WarnView *warnView;
-@property (retain, nonatomic) NSMutableArray *userArray;
+@property (strong, nonatomic) WarnView *warnView;
+@property (strong, nonatomic) NSMutableArray *userArray;
 @property (assign, nonatomic) long currentCommentuid;
 
 @end
@@ -23,15 +23,9 @@
 
 -(void)dealloc
 {
-    //    [self.homeAddress release];
-    [SafetyRelease release:_warnView];
-    [SafetyRelease release:_userArray];
-    [SafetyRelease release:_room];
-    [SafetyRelease release:_tableView];
     [_tableView setDelegate:nil];
     [_tableView setDataSource:nil];
     [_tableView setPullingDelegate:nil];
-    [super dealloc];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -55,7 +49,6 @@
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor appBackgroundColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -63,13 +56,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     else
     {
@@ -91,7 +82,6 @@
     [titleLabel setTextColor:[UIColor appNavTitleColor]];
     [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
     
     //当非房主登入后，编辑按钮不出现，只有房主才能编辑
 //    UIButton * editButton = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -109,7 +99,6 @@
     UIImageView * welcomeImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, 49)];
     [welcomeImgView setImage:welcomeImage];
     [mainView addSubview:welcomeImgView];
-    [welcomeImgView release];
     
     UILabel * timerLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 300, 44)];
     [timerLabel setTag:22222];
@@ -119,7 +108,6 @@
     [timerLabel setTextColor:[UIColor whiteColor]];
     [timerLabel setFont:[UIFont appGreenWarnFont]];
     [welcomeImgView addSubview:timerLabel];
-    [timerLabel release];
 
     UILabel * pnumLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 300, 44)];
     [pnumLabel setTag:33333];
@@ -129,9 +117,8 @@
     [pnumLabel setTextColor:[UIColor whiteColor]];
     [pnumLabel setFont:[UIFont appGreenWarnFont]];
     [welcomeImgView addSubview:pnumLabel];
-    [pnumLabel release];
     
-    self.tableView = [[[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 64+44, 320, SCREEN_HEIGHT -64-44) pullingDelegate:self]autorelease];
+    self.tableView = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 64+44, 320, SCREEN_HEIGHT -64-44) pullingDelegate:self];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.tableView setBackgroundView:nil];
@@ -144,7 +131,6 @@
     
     UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 60)];
     [self.tableView setTableFooterView:footerView];
-    [footerView release];
     
 //    UIImageView *footerBackgroundView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
 //    [footerBackgroundView setImage:[UIImage imageNamed:@"bg_function_normal@2x"]];
@@ -168,7 +154,7 @@
     NSString *startDate = [AppUtility strFromDate:self.room.startingtime withFormate:@"yyyy年MM月dd HH:mm"];
     
     [timerLable setText:[NSString stringWithFormat:@"时间:%@",startDate]];
-    
+    /*
     [NetWorkManager networkGetRoomCommentWithuid:[User shareInstance].userId roomid:self.room.ID success:^(BOOL flag, NSArray *userArray, NSDictionary *room, NSString *msg) {
         if (flag) {
             for(int i = 0; i < [userArray count]; i++)
@@ -197,6 +183,7 @@
         [self.warnView show:kenumWarnViewTypeServeError];
         [_tableView tableViewDidFinishedLoading];
     }];
+     */
 }
 
 //- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -258,7 +245,7 @@
     
     CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[CommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[CommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
     }
 
@@ -303,7 +290,7 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView* myView = [[[UIView alloc] init] autorelease];
+    UIView* myView = [[UIView alloc] init];
    
     return myView;
 }
@@ -323,7 +310,6 @@
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"他已经上车",@"他没有来",@"我有事没去接", nil];
     [alertView setTag:30001];
     [alertView show];
-    [alertView release];
     
 //    //评价某人
 //    CommentDetailViewController *commentDetailVC = [[CommentDetailViewController alloc]init];
@@ -347,13 +333,13 @@
             commentDetailVC.room = self.room;
             commentDetailVC.userid = self.currentCommentuid;
             [self.navigationController pushViewController:commentDetailVC animated:YES];
-            [commentDetailVC release];
         }
         if (buttonIndex == 2) {
             //他没来 乘客失约+1
             if (!self.currentCommentuid) {
                 return;
             }
+            /*
             [NetWorkManager networkCommemtWithRoomID:self.room.ID uid:[User shareInstance].userId touid:self.currentCommentuid content:@"" commentLever:1 userstatus:2 yeyxstar:0 jzwmstar:0 rxttstar:0 ownertatus:0 success:^(BOOL flag, NSString *msg) {
                 if (flag) {
                     [SVProgressHUD showSuccessWithStatus:@"评论成功"];
@@ -363,6 +349,7 @@
             } failure:^(NSError *error) {
                 
             }];
+             */
             
         }
         if (buttonIndex == 3) {
@@ -370,6 +357,7 @@
             if (!self.currentCommentuid) {
                 return;
             }
+            /*
             [NetWorkManager networkCommemtWithRoomID:self.room.ID uid:[User shareInstance].userId touid:self.currentCommentuid content:@"" commentLever:1 userstatus:0 yeyxstar:0 jzwmstar:0 rxttstar:0 ownertatus:3 success:^(BOOL flag, NSString *msg) {
                 if (flag) {
                     [SVProgressHUD showSuccessWithStatus:@"评论成功"];
@@ -379,6 +367,7 @@
             } failure:^(NSError *error) {
                 
             }];
+             */
             [alertView dismissWithClickedButtonIndex:0 animated:YES];
             
         }

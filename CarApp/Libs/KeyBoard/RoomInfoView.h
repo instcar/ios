@@ -11,14 +11,14 @@
 
 @interface RoomInfoView : UIView
 
-@property (retain, nonatomic) UIButton *headImgView;
-@property (retain, nonatomic) UILabel *nameLable;
-@property (retain, nonatomic) UILabel *masterLable;
-@property (retain, nonatomic) PListSettingView *pListSettingView;
-@property (retain, nonatomic) UIButton *ensureBtn;
+@property (strong, nonatomic) UIButton *headImgView;
+@property (strong, nonatomic) UILabel *nameLable;
+@property (strong, nonatomic) UILabel *masterLable;
+@property (strong, nonatomic) PListSettingView *pListSettingView;
+@property (strong, nonatomic) UIButton *ensureBtn;
 @property (assign, nonatomic) BOOL enableTouchBg;
-@property (retain, nonatomic) NSDictionary *data;
-@property (retain, nonatomic) UIViewController *groupVC;
+@property (strong, nonatomic) NSDictionary *data;
+@property (strong, nonatomic) UIViewController *groupVC;
 
 -(void)show;
 

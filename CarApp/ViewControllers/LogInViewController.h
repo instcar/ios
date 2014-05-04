@@ -6,10 +6,10 @@
 //  Copyright (c) 2013年 Leno. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 #import "GDInputView.h"
 
-@interface LogInViewController : UIViewController<UITextFieldDelegate,GDInputDelegate>
+@interface LogInViewController : BaseViewController<UITextFieldDelegate,GDInputDelegate>
 {
     UIImageView *_bottomView;
     UIView *_inputView;

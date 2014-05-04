@@ -16,10 +16,10 @@
     NSString *_sex;                                     //选中的性别
 }
 
-@property(retain,nonatomic)AMBlurView * pickerBackView;
-@property(retain,nonatomic)UIPickerView * pickerView;
-@property(retain,nonatomic)NSMutableArray * ageArray;
+@property(strong, nonatomic)AMBlurView * pickerBackView;
+@property(strong, nonatomic)UIPickerView * pickerView;
+@property(strong, nonatomic)NSMutableArray * ageArray;
 
-@property (retain, nonatomic) NSMutableDictionary *registerDic;//保存流程传递的数据
+@property(strong, nonatomic) NSMutableDictionary *registerDic;//保存流程传递的数据
 
 @end

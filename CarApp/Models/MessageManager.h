@@ -14,7 +14,7 @@
 
 @interface MessageManager : NSObject<UIAlertViewDelegate>
 
-@property (retain, nonatomic)CommonMessage * message;//信息
+@property (strong, nonatomic)CommonMessage * message;//信息
 //公共聊天记录
 +(id)checkKindOfMessage:(CommonMessage *)message; //检测message的类型
 

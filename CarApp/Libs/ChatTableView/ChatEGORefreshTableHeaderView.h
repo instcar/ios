@@ -37,7 +37,7 @@ typedef enum{
 @protocol ChatEGORefreshTableHeaderDelegate;
 @interface ChatEGORefreshTableHeaderView : UIView {
 	
-	id _delegate;
+	__unsafe_unretained id _delegate;
 	ChatEGOPullRefreshState _state;
     
 	UILabel *_statusLabel;

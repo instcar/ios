@@ -21,19 +21,19 @@
     //判断是否为图片请求
     if ([message.content hasPrefix:kImageRequest])
     {
-        ImageMessage * imessage = [[[ImageMessage alloc]init]autorelease];
+        ImageMessage * imessage = [[ImageMessage alloc]init];
         return [imessage confromFromMessage:message];
     }
     
     //判断是否为基本文本请求
     if ([message.content hasPrefix:kTextRequest]) {
-        BaseTextMessage * btMessage = [[[BaseTextMessage alloc]init]autorelease];
+        BaseTextMessage * btMessage = [[BaseTextMessage alloc]init];
         return [btMessage confromFromMessage:message];
     }
     
     //系统消息
     if ([message.content hasPrefix:kSystemRequest]) {
-        SystemTextMessage  * btMessage = [[[SystemTextMessage alloc]init]autorelease];
+        SystemTextMessage  * btMessage = [[SystemTextMessage alloc]init];
         return [btMessage confromFromMessage:message];
     }
 //    //判断是否位基本位置请求

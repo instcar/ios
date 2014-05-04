@@ -11,11 +11,11 @@
 @interface XHBKCell : UITableViewCell
 
 
-@property (retain, nonatomic) UIButton * backButton;
-@property (retain, nonatomic) UILabel * contentTextLable;
-@property (retain, nonatomic) UIImageView * contentImageView;
+@property (strong, nonatomic) UIButton * backButton;
+@property (strong, nonatomic) UILabel * contentTextLable;
+@property (strong, nonatomic) UIImageView * contentImageView;
 
 
-@property (retain, nonatomic) NSDictionary * celldata;
+@property (strong, nonatomic) NSDictionary * celldata;
 
 @end

@@ -29,10 +29,8 @@
 
 - (void)dealloc
 {
-    [_bubbleSection release];
 	_bubbleSection = nil;
 	_bubbleDataSource = nil;
-    [super dealloc];
 }
 
 #pragma mark - Initializators
@@ -67,8 +65,6 @@
         
         _refreshHeaderView = view1;
         
-        [view1 release];
-        
     }
     
     
@@ -97,11 +93,11 @@
     // Loading new data
     int count = 0;
     
-    self.bubbleSection = [[[NSMutableArray alloc] init] autorelease];
+    self.bubbleSection = [[NSMutableArray alloc] init];
     
     if (self.bubbleDataSource && (count = [self.bubbleDataSource rowsForBubbleTable:self]) > 0)
     {
-        NSMutableArray *bubbleData = [[[NSMutableArray alloc] initWithCapacity:count] autorelease];
+        NSMutableArray *bubbleData = [[NSMutableArray alloc] initWithCapacity:count];
         
         for (int i = 0; i < count; i++)
         {
@@ -119,7 +115,7 @@
             
             if ( fabs([data.date timeIntervalSinceDate:last]) > self.snapInterval || data.type == BubbleTypeSystem)
             {
-                currentSection = [[[NSMutableArray alloc] init] autorelease];
+                currentSection = [[NSMutableArray alloc] init];
                 [self.bubbleSection addObject:currentSection];
             }
             
@@ -185,7 +181,7 @@
         
         if (cell == nil)
         {
-           cell = [[[UIBubbleTypingTableViewCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil]autorelease];
+           cell = [[UIBubbleTypingTableViewCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         }
 
         cell.type = self.typingBubble;
@@ -203,7 +199,7 @@
         
         if (cell == nil)
         {
-            cell = [[[UIBubbleHeaderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil]autorelease];
+            cell = [[UIBubbleHeaderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         }
         cell.date = data.date;
         
@@ -226,9 +222,9 @@
     
     if (cell == nil)
     {
-        cell = [[[UIBubbleTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil]autorelease];
+        cell = [[UIBubbleTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     }
-    
+
     cell.delegate = self.bubbleTableViewDelegate;
     cell.data = data;
     cell.showAvatar = self.showAvatars;

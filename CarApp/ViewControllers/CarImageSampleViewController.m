@@ -27,15 +27,14 @@
 {
     [super viewDidLoad];
     
-    [self setCtitle:@"照片样例"];
-    [self setDesText:@"请按照以下示例拍摄上传照片"];
+    [self setTitle:@"照片样例"];
+    [self setMessageText:@"请按照以下示例拍摄上传照片"];
     
-    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, KOFFSETY, SCREEN_WIDTH, SCREEN_HEIGHT - KOFFSETY)];
+    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, KOFFSETY, APPLICATION_WIDTH, APPLICATION_HEGHT - KOFFSETY)];
     [_scrollView setBackgroundColor:[UIColor clearColor]];
     [_scrollView setScrollEnabled:YES];
     [_scrollView setAlwaysBounceVertical:YES];
     [self.view addSubview:_scrollView];
-    [_scrollView release];
     
     CGRect bound = _scrollView.bounds;
     
@@ -46,7 +45,6 @@
     [_carBookImageView.layer setMasksToBounds:YES];
     [_carBookImageView setContentMode:UIViewContentModeScaleAspectFill];
     [_scrollView addSubview:_carBookImageView];
-    [_carBookImageView release];
     
     UILabel *carbookLable = [[UILabel alloc]initWithFrame:CGRectMake(0, 200-40, _carBookImageView.bounds.size.width, 40)];
     [carbookLable setText:@"拍摄机动车行驶证第一页即可"];
@@ -54,7 +52,6 @@
     [carbookLable setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.6]];
     [carbookLable setTextAlignment:NSTextAlignmentCenter];
     [_carBookImageView addSubview:carbookLable];
-    [carbookLable release];
     
     _carFrontImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 210+10, 290/2.0, 190/2.0)];
     [_carFrontImageView.layer setCornerRadius:2.0];
@@ -64,7 +61,6 @@
     [_carFrontImageView setContentMode:UIViewContentModeScaleAspectFill];
     [_carFrontImageView setImage:[UIImage imageNamed:@"car1"]];
     [_scrollView addSubview:_carFrontImageView];
-    [_carFrontImageView release];
     
     UILabel *carfrontLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 220+_carFrontImageView.bounds.size.height, _carFrontImageView.bounds.size.width, 40)];
     [carfrontLable setText:@"注意车牌清晰"];
@@ -72,7 +68,6 @@
     [carfrontLable setTextColor:[UIColor blackColor]];
     [carfrontLable setTextAlignment:NSTextAlignmentCenter];
     [_scrollView addSubview:carfrontLable];
-    [carfrontLable release];
     
     _carSliderImageView = [[UIImageView alloc]initWithFrame:CGRectMake(20+290.0/2.0, 210+10, 290/2.0, 190.0/2.0)];
     [_carSliderImageView.layer setCornerRadius:2.0];
@@ -82,7 +77,6 @@
     [_carSliderImageView.layer setMasksToBounds:YES];
     [_carSliderImageView setContentMode:UIViewContentModeScaleAspectFill];
     [_scrollView addSubview:_carSliderImageView];
-    [_carSliderImageView release];
     
     UILabel *carsliderLable = [[UILabel alloc]initWithFrame:CGRectMake(20+290.0/2.0, 220+_carSliderImageView.bounds.size.height, _carSliderImageView.bounds.size.width, 40)];
     [carsliderLable setText:@"车身正侧面或斜面"];
@@ -90,12 +84,11 @@
     [carsliderLable setTextColor:[UIColor blackColor]];
     [carsliderLable setTextAlignment:NSTextAlignmentCenter];
     [_scrollView addSubview:carsliderLable];
-    [carsliderLable release];
     
     [_scrollView setContentSize:CGSizeMake(self.view.bounds.size.width, 220+95+40+50)];
     
     _confirmBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_confirmBtn setFrame:CGRectMake(10, _scrollView.bounds.size.height - 50, 300, 44)];
+    [_confirmBtn setFrame:CGRectMake(10, 295+ 10 + 95, 300, 44)];
     [_confirmBtn setTitle:@"继续上传图片" forState:UIControlStateNormal];
     [_confirmBtn.titleLabel setFont:AppFont(12)];
     [_confirmBtn setBackgroundImage:[UIImage imageNamed:@"btn_submit_empty"] forState:UIControlStateDisabled];

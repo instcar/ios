@@ -31,7 +31,7 @@
     NSString * jsonStr = [requestDic JSONString];
     content = [NSString stringWithFormat:@"%@%@",kSystemRequest,jsonStr];
     
-    CommonMessage * message = [[[CommonMessage alloc]init]autorelease];
+    CommonMessage * message = [[CommonMessage alloc]init];
     message.uid = self.uid;
     message.fid = self.fid;
     message.roomid = self.roomid;
@@ -48,7 +48,7 @@
 
 -(SystemTextMessage *)confromFromMessage:(CommonMessage *)message
 {
-    SystemTextMessage * tbmessage = [[[SystemTextMessage alloc]init]autorelease];
+    SystemTextMessage * tbmessage = [[SystemTextMessage alloc]init];
     
     if([message.content hasPrefix:kSystemRequest])
     {

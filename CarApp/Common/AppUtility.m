@@ -179,7 +179,7 @@ static NSDateFormatter *dateFormate=nil;
 +(NSString *)strFromDate:(NSDate *)date withFormate:(NSString *)formate
 {
     NSDateFormatter *dateFormatter = [AppUtility shareDateFormate];
-    [dateFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] autorelease]];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
     [dateFormatter setDateFormat:formate];
     NSString *dateStr=[dateFormatter stringFromDate:date];   //需要转化的字符串
     return dateStr;
@@ -255,14 +255,12 @@ static NSDateFormatter *dateFormate=nil;
     UIView *view =[ [UIView alloc]init];
     view.backgroundColor = [UIColor clearColor];
     [tableView setTableFooterView:view];
-    [view release];
-
 }
 
 +(NSString *)LantitudeLongitudeDist:(double)lon1 other_Lat:(double)lat1 self_Lon:(double)lon2 self_Lat:(double)lat2
 {
-    CLLocation* orig=[[[CLLocation alloc] initWithLatitude:lat1  longitude:lon1] autorelease];
-    CLLocation* dist=[[[CLLocation alloc] initWithLatitude:lat2 longitude:lon2 ] autorelease];
+    CLLocation* orig=[[CLLocation alloc] initWithLatitude:lat1  longitude:lon1];
+    CLLocation* dist=[[CLLocation alloc] initWithLatitude:lat2 longitude:lon2];
     
     CLLocationDistance meters=[orig distanceFromLocation:dist];
     if (meters < 1000) {

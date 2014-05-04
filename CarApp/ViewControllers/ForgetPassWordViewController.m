@@ -30,9 +30,7 @@
     
     _inputCode= NO;
     
-    
-    [self setCtitle:@"logo"];
-    [self setDesText:@"null"];
+    [self setEnableMessage:NO];
     
     //输入框
     _inputView = [[GDInputView alloc]initWithFrame:CGRectMake(45, 64+50 , 230, 36)];
@@ -41,7 +39,6 @@
     [_inputView.textfield setPlaceholder:@"请输入您注册时的手机号"];
     [_inputView.textfield setTag:110];
     [self.view addSubview:_inputView];
-    [_inputView release];
     
     //获取验证码
     _authBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -123,7 +120,6 @@
     }else{
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入正确的手机号以便接收验证码" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alert show];
-        [alert release];
     }
 }
 
@@ -164,7 +160,6 @@
             changePassWordViewController * changeVC = [[changePassWordViewController alloc]init];
             changeVC.phoneNum = _phoneNum;
             [self.navigationController pushViewController:changeVC animated:YES];
-            [changeVC release];
         }
         else
         {
@@ -176,7 +171,6 @@
         [_authInputView setResult:kGDInputViewStatusError];
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"请输入6位验证码" message:@"如未收到请稍等" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alert show];
-        [alert release];
     }
 }
 
@@ -238,6 +232,7 @@
 -(void)checkPhone:(NSString *)phone success:(void (^)(void))success failure:(void (^)(NSString *message))failure
 {
 //    GDInputView * phoneInputView = (GDInputView *)[self.view viewWithTag:kGDInputViewTag];
+    /*
     [NetWorkManager networkCheckPhone:phone success:^(int status, NSObject *data, NSString *msg) {
         if (status == 200) {
             [SVProgressHUD showWithStatus:@"此号码还没有注册"];
@@ -257,7 +252,7 @@
         }
     } failure:^(NSError *error) {
         
-    }];
+    }];*/
 }
 
 - (BOOL)checkAuthCode:(NSString *)inputAuthCode
@@ -268,7 +263,6 @@
 -(void)dealloc
 {
     [_countTimer invalidate];
-    [super dealloc];
 }
 
 -(void)didReceiveMemoryWarning

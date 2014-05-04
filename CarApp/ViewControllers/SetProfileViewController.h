@@ -14,8 +14,8 @@
 {
     int _ageIndex;
 }
-@property(retain, nonatomic)UITableView *setProfileTable;
-@property(retain, nonatomic)NSString *phoneNumberString;
-@property(retain, nonatomic)NSMutableArray *ageArray;
+@property(strong, nonatomic)UITableView *setProfileTable;
+@property(strong, nonatomic)NSString *phoneNumberString;
+@property(strong, nonatomic)NSMutableArray *ageArray;
 
 @end

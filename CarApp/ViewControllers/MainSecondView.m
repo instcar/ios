@@ -18,11 +18,11 @@
 
 @interface MainSecondView()
 
-@property (retain, nonatomic) NSMutableArray *myAllArray;
-@property (retain, nonatomic) NSMutableArray *MyRoomArray;
-@property (retain, nonatomic) NSMutableArray *MyJoinRoomArray;
-@property (retain, nonatomic) Room *currentCommentRoom;//当前评论房间
-@property (retain, nonatomic) WarnView *warnView;
+@property (strong, nonatomic) NSMutableArray *myAllArray;
+@property (strong, nonatomic) NSMutableArray *MyRoomArray;
+@property (strong, nonatomic) NSMutableArray *MyJoinRoomArray;
+@property (strong, nonatomic) Room *currentCommentRoom;//当前评论房间
+@property (strong, nonatomic) WarnView *warnView;
 
 @end
 
@@ -32,15 +32,7 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_tableView];
-    [SafetyRelease release:_mainVC];
-    [SafetyRelease release:_myAllArray];
-    [SafetyRelease release:_MyRoomArray];
-    [SafetyRelease release:_MyJoinRoomArray];
-    [SafetyRelease release:_currentCommentRoom];
-    [SafetyRelease release:_warnView];
-    
-    [super dealloc];
+
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -49,7 +41,7 @@
     if (self) {
         _editBtnState = NO;
         
-        PullingRefreshTableView *tableView = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 52, 320, SCREEN_HEIGHT - 96 -80) pullingDelegate:self];
+        PullingRefreshTableView *tableView = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(10, 0, frame.size.width-20, frame.size.height) pullingDelegate:self];
         [tableView setDelegate:self];
         [tableView setDataSource:self];
         [tableView setBackgroundView:nil];
@@ -61,7 +53,6 @@
         [tableView setEditing:NO animated:NO];
         [self addSubview:tableView];
         [self setTableView:tableView];
-        [tableView release];
 
         _MyRoomArray = [[NSMutableArray alloc]init];
         _MyJoinRoomArray = [[NSMutableArray alloc]init];
@@ -127,7 +118,7 @@
     
     [self.tableView reloadData];
 }
-
+/*
 //数据交互
 -(void)requestSecondTableDataFromServer:(kRequestMode)mode
 {
@@ -155,7 +146,7 @@
         [self.tableView setReachedTheEnd:YES];
     }];
 }
-
+*/
 #pragma mark - Refresh and load more methods
 
 - (void)autoRefreshTable
@@ -172,7 +163,7 @@
 {
     //对tableModel进行判断
     _myroompage = 1;
-    [self requestSecondTableDataFromServer:kRequestModeRefresh];
+//    [self requestSecondTableDataFromServer:kRequestModeRefresh];
     
 }
 
@@ -181,7 +172,7 @@
     //对tableModel进行判断
     if (_myroomCanLoadMore) {
         _myroompage ++;
-        [self requestSecondTableDataFromServer:kRequestModeLoadmore];
+//        [self requestSecondTableDataFromServer:kRequestModeLoadmore];
     }
 }
 
@@ -214,7 +205,6 @@
     gVC.isRoomMaster = room.userid == user.userId?YES:NO;
     gVC.userState = 2;
     [self.mainVC.navigationController pushViewController:gVC animated:YES];
-    [gVC release];
 }
 
 -(void)secondTableCommemtAction:(Room *)room
@@ -235,7 +225,6 @@
         UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"我已经上车",@"车主没来",@"我有事没去", nil];
         [alertView setTag:30001];
         [alertView show];
-        [alertView release];
     }
 }
 
@@ -252,34 +241,35 @@
     //    [self.myroomArray removeObjectAtIndex:index];
     if (room.userid != [User shareInstance].userId) {
         _myroompage = 1;
-        [NetWorkManager networkExitRoomWithID:[User shareInstance].userId roomID:room.ID success:^(BOOL flag, NSString *msg) {
-            if (flag) {
-                
-            }
-            else
-            {
-                [UIAlertView showAlertViewWithTitle:@"错误" message:@"退出拼车失败" cancelTitle:@"确定"];
-            }
-//            [self mainSecondViewreflushData];
-        } failure:^(NSError *error) {
-            
-        }];
+//        
+//        [NetWorkManager networkExitRoomWithID:[User shareInstance].userId roomID:room.ID success:^(BOOL flag, NSString *msg) {
+//            if (flag) {
+//                
+//            }
+//            else
+//            {
+//                [UIAlertView showAlertViewWithTitle:@"错误" message:@"退出拼车失败" cancelTitle:@"确定"];
+//            }
+////            [self mainSecondViewreflushData];
+//        } failure:^(NSError *error) {
+//            
+//        }];
     }
     else
     {
         _myroompage = 1;
-        [NetWorkManager networkCloseRoomWithID:[User shareInstance].userId roomID:room.ID success:^(BOOL flag, NSString *msg) {
-            if (flag) {
-                //                [[XmppManager sharedInstance] destoryRoom];
-            }
-            else
-            {
-                [UIAlertView showAlertViewWithTitle:@"错误" message:@"删除房间失败" cancelTitle:@"确定"];
-            }
-//            [self mainSecondViewreflushData];
-        } failure:^(NSError *error) {
-            
-        }];
+//        [NetWorkManager networkCloseRoomWithID:[User shareInstance].userId roomID:room.ID success:^(BOOL flag, NSString *msg) {
+//            if (flag) {
+//                //                [[XmppManager sharedInstance] destoryRoom];
+//            }
+//            else
+//            {
+//                [UIAlertView showAlertViewWithTitle:@"错误" message:@"删除房间失败" cancelTitle:@"确定"];
+//            }
+////            [self mainSecondViewreflushData];
+//        } failure:^(NSError *error) {
+//            
+//        }];
     }
 }
 
@@ -322,7 +312,7 @@
     
     MainRouteTableCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[MainRouteTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[MainRouteTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
 
@@ -420,7 +410,7 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 10)]autorelease];
+    return [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 10)];
 }
 
 //-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -617,23 +607,22 @@
             commentDetailVC.room = self.currentCommentRoom;
             commentDetailVC.userid = self.currentCommentRoom.userid;
             [self.mainVC.navigationController pushViewController:commentDetailVC animated:YES];
-            [commentDetailVC release];
         }
         if (buttonIndex == 2) {
             //车主没来 房主失约+1
             if (!self.currentCommentRoom) {
                 return;
             }
-            [NetWorkManager networkCommemtWithRoomID:self.currentCommentRoom.ID uid:[User shareInstance].userId touid:self.currentCommentRoom.userid content:@"" commentLever:1 userstatus:0 yeyxstar:0 jzwmstar:0 rxttstar:0 ownertatus:2 success:^(BOOL flag, NSString *msg) {
-                if (flag) {
-                    [SVProgressHUD showSuccessWithStatus:@"评论成功"];
-                    [alertView dismissWithClickedButtonIndex:0 animated:YES];
-                }
-                //更新表单
-                [self refreshTable];
-            } failure:^(NSError *error) {
-                
-            }];
+//            [NetWorkManager networkCommemtWithRoomID:self.currentCommentRoom.ID uid:[User shareInstance].userId touid:self.currentCommentRoom.userid content:@"" commentLever:1 userstatus:0 yeyxstar:0 jzwmstar:0 rxttstar:0 ownertatus:2 success:^(BOOL flag, NSString *msg) {
+//                if (flag) {
+//                    [SVProgressHUD showSuccessWithStatus:@"评论成功"];
+//                    [alertView dismissWithClickedButtonIndex:0 animated:YES];
+//                }
+//                //更新表单
+//                [self refreshTable];
+//            } failure:^(NSError *error) {
+//                
+//            }];
             
         }
         if (buttonIndex == 3) {
@@ -641,16 +630,16 @@
             if (!self.currentCommentRoom) {
                 return;
             }
-            [NetWorkManager networkCommemtWithRoomID:self.currentCommentRoom.ID uid:[User shareInstance].userId touid:self.currentCommentRoom.userid content:@"" commentLever:1 userstatus:0 yeyxstar:0 jzwmstar:0 rxttstar:0 ownertatus:3 success:^(BOOL flag, NSString *msg) {
-                if (flag) {
-                    [SVProgressHUD showSuccessWithStatus:@"评论成功"];
-                    [alertView dismissWithClickedButtonIndex:0 animated:YES];
-                }
-                //更新表单
-                [self refreshTable];
-            } failure:^(NSError *error) {
-                
-            }];
+//            [NetWorkManager networkCommemtWithRoomID:self.currentCommentRoom.ID uid:[User shareInstance].userId touid:self.currentCommentRoom.userid content:@"" commentLever:1 userstatus:0 yeyxstar:0 jzwmstar:0 rxttstar:0 ownertatus:3 success:^(BOOL flag, NSString *msg) {
+//                if (flag) {
+//                    [SVProgressHUD showSuccessWithStatus:@"评论成功"];
+//                    [alertView dismissWithClickedButtonIndex:0 animated:YES];
+//                }
+//                //更新表单
+//                [self refreshTable];
+//            } failure:^(NSError *error) {
+//                
+//            }];
             [alertView dismissWithClickedButtonIndex:0 animated:YES];
             
         }

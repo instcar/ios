@@ -31,7 +31,6 @@
 			UIImageView *image = [[UIImageView alloc]initWithFrame:CGRectMake(0.0, 0.0, 40, 40)];
 			image.image		= [logoImage isEqual:@""] ?[UIImage imageNamed:@"hint_none"] :[UIImage imageNamed:logoImage];
 			[self addSubview:image];
-            [image release];
 		}
 
 		UILabel *lable = [[UILabel alloc]init];
@@ -94,7 +93,7 @@
 	warnView.tag	= 10111;
 	warnView.hidden = YES;
 	[view addSubview:warnView];
-	return [warnView autorelease];
+	return warnView;
 }
 
 - (void)show:(kenumWarnViewType)type

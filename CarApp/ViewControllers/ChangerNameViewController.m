@@ -32,7 +32,6 @@
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor appBackgroundColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -40,13 +39,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     else
     {
@@ -67,7 +64,6 @@
     [titleLabel setTextColor:[UIColor appNavTitleColor]];
     [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
     
     UIButton * saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveBtn setFrame:CGRectMake(320-70, 20, 70, 44)];
@@ -83,7 +79,6 @@
     UIImageView * welcomeImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, 49)];
     [welcomeImgView setImage:welcomeImage];
     [mainView addSubview:welcomeImgView];
-    [welcomeImgView release];
     
     UILabel * welcomeLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 310, 44)];
     [welcomeLabel setBackgroundColor:[UIColor clearColor]];
@@ -92,7 +87,6 @@
     [welcomeLabel setTextColor:[UIColor whiteColor]];
     [welcomeLabel setFont:[UIFont appGreenWarnFont]];
     [welcomeImgView addSubview:welcomeLabel];
-    [welcomeLabel release];
     
 //    UILabel * nameLable = [[UILabel alloc]initWithFrame:CGRectMake(5, 4, 310, 40)];
 //    [nameLable setBackgroundColor:[UIColor clearColor]];
@@ -106,7 +100,6 @@
     UIImageView *bgImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 65 + 60, 320, 45)];
     [bgImgView setImage:[UIImage imageNamed:@"bg_rss_pressed@2x"]];
     [mainView addSubview:bgImgView];
-    [bgImgView release];
     
     //输入框
     GDInputView *inputView = [[GDInputView alloc]initWithFrame:CGRectMake(45, 65 + 64, 230, 36)];
@@ -114,7 +107,6 @@
     [inputView.textfield setPlaceholder:@"请输入新的昵称"];
     [inputView setTag:kGDInputViewTag];
     [mainView addSubview:inputView];
-    [inputView release];
 }
 
 -(void)saveAtion:(UIButton *)button
@@ -128,6 +120,7 @@
         return;
     }
     if ([self validateNickName:inputView.textfield.text]) {
+        /*
         [NetWorkManager networkCheckUserName:inputView.textfield.text success:^(int status, NSObject *data, NSString *msg) {
             if (status == 200) {
                     [inputView setResult:kGDInputViewStatusTure];
@@ -144,7 +137,7 @@
             }
         } failure:^(NSError *error) {
             
-        }];
+        }];*/
     }
     else
     {

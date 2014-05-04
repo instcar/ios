@@ -11,7 +11,6 @@
 #import "Harpy.h"
 #import "ADWebViewController.h"
 #import "SDImageCache.h"
-#import "NetWorkManager.h"
 
 #define kSettingTableTag 2000
 #define kClearCachaTag 3000
@@ -19,7 +18,7 @@
 
 @interface SettingViewController ()<UIAlertViewDelegate>
 
-@property (retain, nonatomic) NSMutableArray *adsArray;
+@property (strong, nonatomic) NSMutableArray *adsArray;
 @property (copy, nonatomic) NSString *version;
 @property (assign, nonatomic) long long cacheSize;
 
@@ -29,9 +28,7 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_adsArray];
-    [SafetyRelease release:_version];
-    [super dealloc];
+
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -46,55 +43,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setTitle:@"系统设置"];
+    [self setMessageText:@"您可以按照自己的规律设置常用线路及个人隐私"];
     
-    UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
-    [mainView setBackgroundColor:[UIColor appBackgroundColor]];
-    [self.view addSubview:mainView];
-    [mainView release];
-    
-    if (kDeviceVersion >= 7.0) {
-        self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
-        [self setAutomaticallyAdjustsScrollViewInsets:NO];
-    }
-    
-    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(backToMain)];
-    [swipeGesture setDirection:UISwipeGestureRecognizerDirectionRight];
-    [self.view addGestureRecognizer:swipeGesture];
-    [swipeGesture release];
-    
-    UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
-    naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
-    
-    UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
-    [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
-    [mainView addSubview:navBar];
-    [navBar release];
-    
-    if (kDeviceVersion < 7.0) {
-        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
-        [lineView setBackgroundColor:[UIColor lightGrayColor]];
-        [navBar addSubview:lineView];
-        [lineView release];
-    }
-    
-    UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    [backButton setFrame:CGRectMake(0, 20, 70, 44)];
-    [backButton setBackgroundColor:[UIColor clearColor]];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_normal@2x"] forState:UIControlStateNormal];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_pressed@2x"] forState:UIControlStateHighlighted];
-    [backButton addTarget:self action:@selector(backToMain) forControlEvents:UIControlEventTouchUpInside];
-    [navBar addSubview:backButton];
-    
-    UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(100, 27, 120, 30)];
-    [titleLabel setBackgroundColor:[UIColor clearColor]];
-    [titleLabel setText:@"系统设置"];
-    [titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [titleLabel setTextColor:[UIColor appNavTitleColor]];
-    [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
-    [navBar addSubview:titleLabel];
-    [titleLabel release];
-    
-    UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 44 + 64,320, 140)];
+    UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 45,320, 140)];
     [scrollView setTag:kAdScrollerViewTag];
     [scrollView setDelegate:self];
     [scrollView setContentSize:CGSizeMake(320, 120)];
@@ -103,20 +55,17 @@
     [scrollView setShowsHorizontalScrollIndicator:NO];
     [scrollView setShowsVerticalScrollIndicator:NO];
     [scrollView setBounces:NO];
-    [mainView addSubview:scrollView];
-    [scrollView release];
+    [self.view insertSubview:scrollView aboveSubview:_messageBgView];
     
     UITapGestureRecognizer *tapAction = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(adTapAction:)];
     [scrollView addGestureRecognizer:tapAction];
-    [tapAction release];
     
     UIImageView * brImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 140)];
     [brImgView setBackgroundColor:[UIColor placeHoldColor]];
     [brImgView setImage:[UIImage imageNamed:@"delt_pic_b"]];
     [scrollView addSubview:brImgView];
-    [brImgView release];
     
-    UIPageControl * pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(110, 140 +90, 100, 10)];
+    UIPageControl * pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(110, 140 + 35, 100, 10)];
     [pageControl setTag:159];
     [pageControl setNumberOfPages:1];
     [pageControl setCurrentPage:0];
@@ -126,25 +75,9 @@
      [pageControl setPageIndicatorTintColor:[UIColor lightGrayColor]];
     }
     
-    [mainView addSubview:pageControl];
-    [pageControl release];
-    
-    UIImage * welcomeImage = [UIImage imageNamed:@"nav_hint@2x"];
-    UIImageView * welcomeImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, 49)];
-    [welcomeImgView setImage:welcomeImage];
-    [mainView addSubview:welcomeImgView];
-    [welcomeImgView release];
-    
-    UILabel * welcomeLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 310, 44)];
-    [welcomeLabel setBackgroundColor:[UIColor clearColor]];
-    [welcomeLabel setText:@"您可以按照自己的规律设置常用线路及个人隐私"];
-    [welcomeLabel setTextAlignment:NSTextAlignmentCenter];
-    [welcomeLabel setTextColor:[UIColor whiteColor]];
-    [welcomeLabel setFont:[UIFont appGreenWarnFont]];
-    [welcomeImgView addSubview:welcomeLabel];
-    [welcomeLabel release];
+    [self.view addSubview:pageControl];
 
-    UITableView * settingTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 118 + 140, 320, SCREEN_HEIGHT -118 -140) style:UITableViewStylePlain];
+    UITableView * settingTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 45 + 140, 320, APPLICATION_HEGHT - 44 - 45 -140) style:UITableViewStylePlain];
     [settingTable setTag:kSettingTableTag];
     [settingTable setBackgroundColor:[UIColor clearColor]];
     [settingTable setBackgroundView:nil];
@@ -152,15 +85,13 @@
     [settingTable setDataSource:self];
     [settingTable setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     [settingTable setTableFooterView:[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 20)]];
-    [mainView addSubview:settingTable];
-    [settingTable release];
+    [self.view addSubview:settingTable];
     
     [self performSelector:@selector(getServerData) withObject:nil afterDelay:0.1];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [self.navigationController setNavigationBarHidden:YES];
     //获取缓存大小
     self.cacheSize = [[SDImageCache sharedImageCache] getSize];
 }
@@ -168,6 +99,7 @@
 #pragma mark - 获取广告接口
 - (void)getServerData
 {
+    /*
     [NetWorkManager networkGetADListWithPage:1 rows:20 success:^(BOOL flag, NSArray *adsArray, NSString *msg) {
         if (flag) {
             self.adsArray = nil;
@@ -177,6 +109,7 @@
     } failure:^(NSError *error) {
         
     }];
+     */
 }
 
 //转载广告视图
@@ -196,7 +129,6 @@
         UIImageView * brImgView = [[UIImageView alloc]initWithFrame:CGRectMake(320 * i, 0, 320, 140)];
         [brImgView setBackgroundColor:[UIColor placeHoldColor]];
         [scrollView addSubview:brImgView];
-        [brImgView release];
         NSDictionary *dic = (NSDictionary *)[self.adsArray objectAtIndex:i];
         NSURL *url = [NSURL URLWithString:[dic valueForKey:@"img"]];
         [brImgView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"delt_pic_b"]];
@@ -218,7 +150,6 @@
     ADWebViewController *adwebVC = [[ADWebViewController alloc]init];
     [adwebVC setUrl:url];
     [self.navigationController pushViewController:adwebVC animated:YES];
-    [adwebVC release];
 }
 
 -(void)backToMain
@@ -275,7 +206,7 @@
     static NSString *CellIdentifier = @"ResultsTable";
     SettingTableCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[SettingTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[SettingTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     [cell setBackgroundColor:[UIColor whiteColor]];
 
@@ -404,14 +335,12 @@
     if (indexPath.row == 0 && [[UIApplication sharedApplication] enabledRemoteNotificationTypes] == UIRemoteNotificationTypeNone) {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请在iPhone的”设置“-”通知“中进行设置" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
         [alert show];
-        [alert release];
     }
     
     if (indexPath.row == 1) {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:[NSString stringWithFormat:@"清除全部缓存 %.2lfM",self.cacheSize/1024.0/1024.0] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         [alert setTag:kClearCachaTag];
         [alert show];
-        [alert release];
     }
     
     if (indexPath.row == 2) {

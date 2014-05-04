@@ -22,11 +22,7 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_tableView];
-    [SafetyRelease release:_warnView];
-    [SafetyRelease release:_tableData];
-    
-    [super dealloc];
+
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -41,72 +37,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setTitle:@"常用路线"];
+    [self setMessageText:[NSString stringWithFormat:@"%@的常用路线列表",self.userInfo.name]];
     _routepage = 1;
     _routeCanLoadMore = YES;
-    self.tableData = [[[NSMutableArray alloc]init]autorelease];
+    self.tableData = [[NSMutableArray alloc]init];
     
-    UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
-    [mainView setBackgroundColor:[UIColor appBackgroundColor]];
-    [mainView setTag:10000];
-    [self.view addSubview:mainView];
-    [mainView release];
-    
-    UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
-    naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
-    
-    UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
-    [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
-    [mainView addSubview:navBar];
-    [navBar release];
-    
-    if (kDeviceVersion < 7.0) {
-        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
-        [lineView setBackgroundColor:[UIColor lightGrayColor]];
-        [navBar addSubview:lineView];
-        [lineView release];
-    }
-    else
-    {
-        self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
-    }
-    
-    UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    [backButton setFrame:CGRectMake(0, 20, 70, 44)];
-    [backButton setBackgroundColor:[UIColor clearColor]];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_normal@2x"] forState:UIControlStateNormal];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_pressed@2x"] forState:UIControlStateHighlighted];
-    [backButton addTarget:self action:@selector(backToMain) forControlEvents:UIControlEventTouchUpInside];
-    [navBar addSubview:backButton];
-    
-    UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 27, 200, 30)];
-    [titleLabel setBackgroundColor:[UIColor clearColor]];
-    [titleLabel setText:self.myInfo.name];
-    [titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [titleLabel setTextColor:[UIColor appNavTitleColor]];
-    [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
-    [navBar addSubview:titleLabel];
-    [titleLabel release];
-    
-    UIImage * welcomeImage = [UIImage imageNamed:@"nav_hint@2x"];
-    //    welcomeImage = [welcomeImage stretchableImageWithLeftCapWidth:8 topCapHeight:10];
-    //导航栏下方的欢迎条
-    UIImageView * welcomeImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, 49)];
-    [welcomeImgView setImage:welcomeImage];
-    [mainView addSubview:welcomeImgView];
-    [welcomeImgView release];
-    
-    UILabel * welcomeLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 310, 44)];
-    [welcomeLabel setBackgroundColor:[UIColor clearColor]];
-    [welcomeLabel setText:@"常用路线"];
-    [welcomeLabel setTextAlignment:NSTextAlignmentLeft];
-    [welcomeLabel setTextColor:[UIColor whiteColor]];
-    [welcomeLabel setFont:[UIFont appGreenWarnFont]];
-    [welcomeImgView addSubview:welcomeLabel];
-    [welcomeLabel release];
-    
-    
-    
-    self.tableView = [[[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 64+44, 320, SCREEN_HEIGHT - 64 - 50) pullingDelegate:self]autorelease];
+    self.tableView = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 44, 320, APPLICATION_HEGHT - 44 - 45) pullingDelegate:self];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.tableView setBackgroundView:nil];
@@ -118,13 +55,13 @@
     [self.tableView setEditing:NO animated:NO];
     UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 2)];
     [self.tableView setTableFooterView:footerView];
-    [mainView insertSubview:self.tableView belowSubview:welcomeImgView];
+    [self.view insertSubview:self.tableView belowSubview:_messageBgView];
     
     self.warnView = [WarnView initWarnViewWithText:@"非常抱歉,暂无数据..." withView:_tableView height:120 withDelegate:nil];
     
-    [self performSelector:@selector(requestTableDataFromServer:) withObject:[NSNumber numberWithInt:0] afterDelay:0.1];
+//    [self performSelector:@selector(requestTableDataFromServer:) withObject:[NSNumber numberWithInt:0] afterDelay:0.1];
 }
-
+/*
 //数据交互
 -(void)requestTableDataFromServer:(kRequestMode)mode
 {
@@ -157,7 +94,7 @@
         } failure:^(NSError *error) {
             
         }];
-}
+}*/
 
 #pragma mark - tableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -176,7 +113,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
     [cell setBackgroundColor:[UIColor whiteColor]];
@@ -206,7 +143,6 @@
     mapVC.mode = kMapViewModeLine;
     [mapVC setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
     [self.navigationController pushViewController:mapVC animated:YES];
-    [mapVC release];
 }
 
 #pragma mark - Refresh and load more methods
@@ -215,7 +151,7 @@
 {
     //对tableModel进行判断
     _routepage = 1;
-    [self requestTableDataFromServer:kRequestModeRefresh];
+//    [self requestTableDataFromServer:kRequestModeRefresh];
 }
 
 - (void) loadMoreDataToTable
@@ -223,7 +159,7 @@
     //对tableModel进行判断
     if (_routeCanLoadMore) {
         _routepage ++;
-        [self requestTableDataFromServer:kRequestModeLoadmore];
+//        [self requestTableDataFromServer:kRequestModeLoadmore];
     }
 }
 

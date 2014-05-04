@@ -21,7 +21,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        _timerlable = [[[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.bounds.size.width, [UIBubbleHeaderTableViewCell height])]autorelease];
+        _timerlable = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.bounds.size.width, [UIBubbleHeaderTableViewCell height])];
         [_timerlable setFont:[UIFont fontWithName:kFangZhengFont size:12]];
         [_timerlable setBackgroundColor:[UIColor clearColor]];
         [_timerlable setTextColor:[UIColor lightGrayColor]];
@@ -48,7 +48,6 @@
     [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm "];
 //    DLog(@"date count:%d",_date.retainCount);
     NSString *dateStr = [dateFormatter stringFromDate:_date];
-    [dateFormatter release];
     [self.timerlable setText:dateStr];
 }
 

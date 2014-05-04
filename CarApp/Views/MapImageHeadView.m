@@ -13,7 +13,7 @@
 
 -(void)dealloc
 {
-    [super dealloc];
+
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -48,12 +48,10 @@
     [photoImgView setClipsToBounds:YES];
     [photoImgView addTarget:self action:@selector(photoImgView:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:photoImgView];
-    [photoImgView release];
     
     UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 149.5, 320, 0.5)];
     [lineView setBackgroundColor:[UIColor appLineDarkGrayColor]];
     [photoImgView addSubview:lineView];
-    [lineView release];
     
     BMKMapView *mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(12, 13+2, 106,106)];
     BMKCoordinateRegion adjustedRegion = [mapView regionThatFits:BMKCoordinateRegionMake(mapView.userLocation.coordinate, BMKCoordinateSpanMake(0.02, 0.02))];
@@ -68,7 +66,6 @@
     //    [self performSelector:@selector(setMapAnonation) withObject:nil afterDelay:0.2];
     [self addSubview:mapView];
     _mapView = mapView;
-    [mapView release];
     
     UIButton *mapViewMask = [UIButton buttonWithType:UIButtonTypeCustom];
     [mapViewMask setTag:10003];
@@ -86,7 +83,6 @@
     [addPoint setTitle:address];
     [addPoint setCoordinate:locate];
     [_mapView addAnnotation:addPoint];
-    [addPoint release];
 }
 
 -(void)setImageWithURL:(NSURL *)imageUrl placeholderImage:(UIImage *)placeHolderImage
@@ -139,7 +135,7 @@
 		BMKAnnotationView* view = nil;
         view = [mapView dequeueReusableAnnotationViewWithIdentifier:@"start_nodeAddress"];
         if (view == nil) {
-            view = [[[BMKAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:@"start_nodeAddress"] autorelease];
+            view = [[BMKAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:@"start_nodeAddress"];
             view.image = [UIImage imageNamed:@"tag_map@2x"];
             view.centerOffset = CGPointMake(0, -(view.frame.size.height * 0.0));
             view.canShowCallout = TRUE;

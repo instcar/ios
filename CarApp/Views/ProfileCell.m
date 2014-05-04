@@ -12,13 +12,7 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_titleLabel];
-    
-    [SafetyRelease release:_infoLabel];
-    
-    [SafetyRelease release:_checkLable];
-    
-    [super dealloc];
+
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -41,7 +35,6 @@
     [titleLabel setTextAlignment:NSTextAlignmentLeft];
     [self.contentView addSubview:titleLabel];
     [self setTitleLabel:titleLabel];
-    [titleLabel release];
     
     UILabel *infoLabel = [[UILabel alloc]initWithFrame:CGRectMake(75,(self.contentView.frame.size.height-20)/2.0, 150, 20)];
     [infoLabel setTextColor:[UIColor appBlackColor]];
@@ -49,17 +42,20 @@
     [infoLabel setTextAlignment:NSTextAlignmentLeft];
     [self.contentView addSubview:infoLabel];
     [self setInfoLabel:infoLabel];
-    [infoLabel release];
     
     CheckLable *checkLable = [[CheckLable alloc]initWithFrame:CGRectMake(320-60, (44-12)/2, 60, 12)];
     [self.contentView addSubview:checkLable];
     [self setCheckLable:checkLable];
-    [checkLable release];
+    
+    _lineView = [[UIView alloc]initWithFrame:CGRectMake(20, 0, 300, 0.5)];
+    [_lineView setBackgroundColor:[UIColor lightGrayColor]];
+    [self.contentView addSubview:_lineView];
 }
 
 -(void)layoutSubviews
 {
     [super layoutSubviews];
+    [_lineView setFrame:CGRectMake(20, self.bounds.size.height - 0.5, 300, 0.5)];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

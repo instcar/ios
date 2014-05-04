@@ -17,16 +17,15 @@
 #import "PeopleManager.h"
 #import "SetProfileHeadTableCell.h"
 #import "ChangerNameViewController.h"
-#import "NetWorkManager.h"
 
 @interface SetProfileViewController ()<CompanyAddressDelegate,HomeAddressDelegate,GDCustomAlertDelegate,ChangerPhoneViewControllerDelegate,ChangerNameDelegate>
 
-@property (retain, nonatomic) NSMutableArray *networkRequestArray;
-@property (retain, nonatomic) People *userInfo;
+@property (strong, nonatomic) NSMutableArray *networkRequestArray;
+@property (strong, nonatomic) People *userInfo;
 @property (assign, nonatomic) BOOL canEdit;
-@property (retain, nonatomic) UIImage *headImage;
-@property (retain, nonatomic) UIPickerView * pickerView;
-@property (retain, nonatomic) UIView *pickerConstionView;
+@property (strong, nonatomic) UIImage *headImage;
+@property (strong, nonatomic) UIPickerView * pickerView;
+@property (strong, nonatomic) UIView *pickerConstionView;
 @end
 
 @implementation SetProfileViewController
@@ -37,16 +36,7 @@
 
 -(void)dealloc
 {
-    [SafetyRelease release:_setProfileTable];
-    [SafetyRelease release:_phoneNumberString];
-    [SafetyRelease release:_ageArray];
-    [SafetyRelease release:_networkRequestArray];
-    [SafetyRelease release:_userInfo];
-    [SafetyRelease release:_headImage];
-    [SafetyRelease release:_pickerView];
-    [SafetyRelease release:_pickerConstionView];
-    
-    [super dealloc];
+
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -69,7 +59,6 @@
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor appBackgroundColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -77,13 +66,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     else
     {
@@ -105,7 +92,6 @@
     [titleLabel setTextColor:[UIColor appNavTitleColor]];
     [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
     
     UIButton * saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveBtn setFrame:CGRectMake(320-70, 20, 70, 44)];
@@ -122,13 +108,12 @@
     [setProfileTable setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     [mainView addSubview:setProfileTable];
     [self setSetProfileTable:setProfileTable];
-    [setProfileTable release];
     
     UIView * tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 10)];
     [tableHeaderView setBackgroundColor:[UIColor clearColor]];
     [self.setProfileTable setTableHeaderView:tableHeaderView];
     [self.setProfileTable setTableFooterView:tableHeaderView];
-    [tableHeaderView release];
+
     
     UIImage * welcomeImage = [UIImage imageNamed:@"nav_hint@2x"];
     //    welcomeImage = [welcomeImage stretchableImageWithLeftCapWidth:8 topCapHeight:10];
@@ -136,7 +121,7 @@
     UIImageView * welcomeImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, 49)];
     [welcomeImgView setImage:welcomeImage];
     [mainView addSubview:welcomeImgView];
-    [welcomeImgView release];
+
     
     UILabel * welcomeLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 310, 44)];
     [welcomeLabel setBackgroundColor:[UIColor clearColor]];
@@ -145,7 +130,7 @@
     [welcomeLabel setTextColor:[UIColor whiteColor]];
     [welcomeLabel setFont:[UIFont appGreenWarnFont]];
     [welcomeImgView addSubview:welcomeLabel];
-    [welcomeLabel release];
+
     
     UIButton * confirmAgeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [confirmAgeBtn setTag:50006];
@@ -161,11 +146,11 @@
     [pickerView setBackgroundColor:[UIColor whiteColor]];
     [pickerView setShowsSelectionIndicator:YES];
     [self setPickerView:pickerView];
-    [pickerView release];
+
 
     UIView *pickerConstionView = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, 320, 255)];
     [self setPickerConstionView:pickerConstionView];
-    [pickerConstionView release];
+
     [self.pickerConstionView setUserInteractionEnabled:YES];
     [self.pickerConstionView setBackgroundColor:[UIColor clearColor]];
     [self.pickerConstionView addSubview:confirmAgeBtn];
@@ -173,7 +158,7 @@
     
     [mainView addSubview:self.pickerConstionView];
     
-    self.ageArray = [[[NSMutableArray alloc]init]autorelease];
+    self.ageArray = [[NSMutableArray alloc]init];
     for (int i = 0; i < 43; i++) {
         NSString * age = [NSString stringWithFormat:@"%d",18+i];
         [self.ageArray addObject:age];
@@ -189,7 +174,7 @@
 
 -(void)getUserInfo
 {
-
+    /*
     //保存用户信息
     [NetWorkManager networkGetUserInfoWithuid:[User shareInstance].userId success:^(BOOL flag, NSDictionary *userInfo, NSString *msg) {
         
@@ -210,7 +195,7 @@
         
     } failure:^(NSError *error) {
         
-    }];
+    }];*/
 }
 
 #pragma mark - tableViewDelegate/tableviewDataSource
@@ -219,7 +204,7 @@
     static NSString *CellIdentifier = @"SetProfileTableCell";
     SetProfileTableCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[SetProfileTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[SetProfileTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
     }
     
@@ -232,7 +217,7 @@
     
     if (indexPath.section == 0) {
       static NSString *headCellIdentifier = @"SetProfileHeadCell";
-      SetProfileHeadTableCell *headCell = [[[SetProfileHeadTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headCellIdentifier] autorelease];
+      SetProfileHeadTableCell *headCell = [[SetProfileHeadTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headCellIdentifier];
         [headCell setUserInteractionEnabled:self.canEdit];
         [headCell setTag:77007];
         [headCell setAccessoryType:UITableViewCellAccessoryNone];
@@ -561,7 +546,7 @@
     [picker dismissViewControllerAnimated:YES completion:^{
         [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     }];
-    UIImage *image = [[info objectForKey:UIImagePickerControllerEditedImage] retain];
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     [self performSelector:@selector(saveImage:)
                withObject:image
                afterDelay:0.5];
@@ -657,7 +642,6 @@
     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"选择上传头像方式" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"拍照",@"从相册选择",nil];
     [alert setTag:50008];
     [alert show];
-    [alert release];
 
 }
 
@@ -683,6 +667,7 @@
     [cell.photoImgView setImage:image];
     self.headImage  = image;
     User * user = [User shareInstance];
+    /*
     //保存请求
     ASIFormDataRequest * editPhotoRequest =  [NetWorkManager networkEditHeadpic:image uid:user.userId mode:kNetworkrequestModeQueue success:^(BOOL flag, NSString *newHeadPicUrl, NSString *msg) {
 //        if (flag) {
@@ -696,25 +681,25 @@
     [self.networkRequestArray addObject:editPhotoRequest];
 //    [editPhotoRequest release];
     [_setProfileTable reloadData];
-    
+    */
 }
 -(void)changeNickName
 {
     ChangerNameViewController *changeNickNameVC = [[ChangerNameViewController alloc]init];
     changeNickNameVC.delegate = self;
     [self.navigationController pushViewController:changeNickNameVC animated:YES];
-    [changeNickNameVC release];
 }
 
 -(void)saveNickName:(NSString *)name
 {
-    [self.userInfo setUserName:name];
-    
+//    [self.userInfo setUserName:name];
+    /*
     //保存请求
     ASIFormDataRequest * saveNickName = [NetWorkManager networkEditUserNameWithuid:[User shareInstance].userId username:name mode:kNetworkrequestModeQueue success:^(BOOL flag) {} failure:^(NSError *error) {}];
     [self.networkRequestArray addObject:saveNickName];
     
     [_setProfileTable reloadData];
+     */
 
 }
 
@@ -724,7 +709,6 @@
     ChangerPhoneViewController *changePhoneNumVC = [[ChangerPhoneViewController alloc]init];
     changePhoneNumVC.delegate = self;
     [self.navigationController pushViewController:changePhoneNumVC animated:YES];
-    [changePhoneNumVC release];
 }
 
 -(void)savePhoneNum:(NSString *)phonenum
@@ -752,7 +736,7 @@
 //修改公司地址
 -(void)changeCompanyAddrress
 {
-    ProfileCompanyAddressViewController * companyVC = [[[ProfileCompanyAddressViewController alloc]init]autorelease];
+    ProfileCompanyAddressViewController * companyVC = [[ProfileCompanyAddressViewController alloc]init];
     companyVC.delegate =self;
     [self.navigationController pushViewController:companyVC animated:YES];
 //    [companyVC release];
@@ -761,7 +745,7 @@
 //修改家庭地址
 -(void)changeHomeAddress
 {
-    ProfileHomeAddressViewController * homeVC = [[[ProfileHomeAddressViewController alloc]init]autorelease];
+    ProfileHomeAddressViewController * homeVC = [[ProfileHomeAddressViewController alloc]init];
     homeVC.delegate =self;
     [self.navigationController pushViewController:homeVC animated:YES];
 //    [homeVC release];
@@ -769,7 +753,8 @@
 
 -(void)saveCompanyAddrress:(NSString *)address
 {
-    [self.userInfo setCompanyaddress:address];
+//    [self.userInfo setCompanyaddress:address];
+    /*
     //保存请求
     ASIFormDataRequest * saveCompanyAddress = [NetWorkManager networkEditcompanyaddressWithuid:[User shareInstance].userId companyaddress:address mode:kNetworkrequestModeQueue success:^(BOOL flag) {
 
@@ -778,12 +763,13 @@
     }];
     [self.networkRequestArray addObject:saveCompanyAddress];
     [_setProfileTable reloadData];
-    
+    */
 }
 
 -(void)saveHomeAddress:(NSString *)address
 {
-    [self.userInfo setHomeaddress:address];
+//    [self.userInfo setHomeaddress:address];
+    /*
     //保存请求
     ASIFormDataRequest * savehomeAddress = [NetWorkManager networkEdithomeaddressWithuid:[User shareInstance].userId homeaddress:address mode:kNetworkrequestModeQueue success:^(BOOL flag) {
         
@@ -792,11 +778,12 @@
     }];
     [self.networkRequestArray addObject:savehomeAddress];
     [_setProfileTable reloadData];
+     */
 }
 
 -(void)showWeiboAccess
 {
-    WeiBoAccessViewController * weiboVC = [[[WeiBoAccessViewController alloc]init]autorelease];
+    WeiBoAccessViewController * weiboVC = [[WeiBoAccessViewController alloc]init];
     [self presentViewController:weiboVC animated:YES completion:nil];
 }
 
@@ -808,14 +795,15 @@
 
 -(void)saveSex:(NSString *)sex
 {
+    /*
     //保存请求
     ASIFormDataRequest * saveSex= [NetWorkManager networkEditSexWithuid:[User shareInstance].userId sex:sex mode:kNetworkrequestModeQueue success:^(BOOL flag) {
         
     } failure:^(NSError *error) {
         
     }];
-    
-    [self.networkRequestArray addObject:saveSex];
+    */
+//    [self.networkRequestArray addObject:saveSex];
     [self.userInfo setSex:sex];
     [_setProfileTable reloadData];
 }
@@ -836,7 +824,7 @@
     [UIView setAnimationDuration:0.4];//动画时间长度，单位秒，浮点数
     self.pickerConstionView.frame = CGRectMake(0.0, SCREEN_HEIGHT, 320.0, 255.0);
     [UIView commitAnimations];
-    
+    /*
     //保存请求
     ASIFormDataRequest * saveAge = [NetWorkManager networkEditAgeWithuid:[User shareInstance].userId age:[[self.ageArray objectAtIndex:_ageIndex] intValue] mode:kNetworkrequestModeQueue success:^(BOOL flag) {
         
@@ -847,6 +835,7 @@
     
     [self.userInfo setAge:[[self.ageArray objectAtIndex:_ageIndex] intValue]];
     [_setProfileTable reloadData];
+     */
 }
 
 -(void)backToMain
@@ -879,7 +868,9 @@
     [SVProgressHUD show];
     if([self.networkRequestArray count]>0)
     {
+        /*
         [NetWorkManager networkQueueWork:self.networkRequestArray withDelegate:self asiHttpSuccess:@selector(requestDidSuccess:) asiHttpFailure:@selector(requestDidFailed:) queueSuccess:@selector(queueDidFinish:)];
+         */
     }
     else
     {
@@ -897,13 +888,13 @@
     [SVProgressHUD showErrorWithStatus:@"更新失败"];
 }
 
--(void)queueDidFinish:(ASINetworkQueue *)queue
-{
-    [SVProgressHUD showSuccessWithStatus:@"更新成功"];
-    [self performSelector:@selector(getUserInfo) withObject:nil afterDelay:0.3];
-    [queue reset];
-    [self.networkRequestArray removeAllObjects];
-}
+//-(void)queueDidFinish:(ASINetworkQueue *)queue
+//{
+//    [SVProgressHUD showSuccessWithStatus:@"更新成功"];
+//    [self performSelector:@selector(getUserInfo) withObject:nil afterDelay:0.3];
+////    [queue reset];
+//    [self.networkRequestArray removeAllObjects];
+//}
 
 - (void)didReceiveMemoryWarning
 {

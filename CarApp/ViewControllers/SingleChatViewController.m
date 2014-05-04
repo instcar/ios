@@ -44,7 +44,7 @@
 
 -(void)dealloc
 {
-    [super dealloc];
+
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -75,8 +75,8 @@
 {
     [super viewDidLoad];
     
-    self.bubbleArray = [[[NSMutableArray alloc]init]autorelease];
-    self.currentImageArray = [[[NSMutableArray alloc]init]autorelease];
+    self.bubbleArray = [[NSMutableArray alloc]init];
+    self.currentImageArray = [[NSMutableArray alloc]init];
     self.loadMoreNum = 0;
     self.canLoadMore = 1;
     
@@ -86,7 +86,6 @@
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor flatWhiteColor]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -94,13 +93,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     
     UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -127,7 +124,6 @@
     [titleLabel setTextColor:[UIColor appNavTitleColor]];
     [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
     
 //    //导航栏下方的欢迎条
 //    UIImage * welcomeImage = [UIImage imageNamed:@"nav_hint@2x"];
@@ -157,7 +153,6 @@
     [_bubbleTableView setBubbleDataSource:self];
     [_bubbleTableView setBubbleTableViewDelegate:self];
     [mainView insertSubview:_bubbleTableView belowSubview:navBar];
-    [_bubbleTableView release];
     
     //聊天输入框/键盘
     _faceToolBar =[[FaceToolBar alloc]initWithFrame:CGRectMake(0.0f,SCREEN_HEIGHT - toolBarHeight-100,self.view.frame.size.width,toolBarHeight) superView:mainView];
@@ -337,7 +332,7 @@
     
     NSBubbleData *bubbleData = [NSBubbleData dataWithText:inputText date:[NSDate date] type:BubbleTypeMine contentType:BubbleContentText];
     bubbleData.avatar = [PeopleManager getPeopleWithFriendID:[User shareInstance].userId].headpic;
-    BaseTextMessage *baseTextMessage = [[[BaseTextMessage alloc]init]autorelease];
+    BaseTextMessage *baseTextMessage = [[BaseTextMessage alloc]init];
     baseTextMessage.uid = [User shareInstance].userId;   //自己id
     baseTextMessage.fid = [User shareInstance].userId;   //用户id
     baseTextMessage.roomid = -1; //房间id
@@ -447,7 +442,7 @@
     [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade]; //隐藏工具栏
     [self dismissViewControllerAnimated:YES completion:^{}];
     
-    UIImage *image = [[info objectForKey:UIImagePickerControllerOriginalImage] retain];
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     if(picker.sourceType == UIImagePickerControllerSourceTypeCamera){
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
     }
@@ -455,7 +450,7 @@
     if (image) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
-            ImageMessage * imageMessage = [[[ImageMessage alloc]init]autorelease];
+            ImageMessage * imageMessage = [[ImageMessage alloc]init];
             imageMessage.image = image;
             imageMessage.uid = [User shareInstance].userId;   //自己id
             imageMessage.fid = [User shareInstance].userId;   //用户id
@@ -505,7 +500,6 @@
     profileVC.uid = userid;
     profileVC.state = 1;
     [self.navigationController pushViewController:profileVC animated:YES];
-    [profileVC release];
 }
 
 -(void)cellTouchAction:(NSBubbleData *)data

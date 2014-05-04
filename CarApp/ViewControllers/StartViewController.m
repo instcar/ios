@@ -19,7 +19,7 @@
 
 -(void)dealloc
 {
-    [super dealloc];
+
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -62,7 +62,6 @@
     [_mainScrollView setBounces:NO];
     [_mainScrollView setContentSize:CGSizeMake(320 *4, SCREEN_HEIGHT - 48)];
     [self.view addSubview:_mainScrollView];
-    [_mainScrollView release];
     
     for (int i = 0 ; i < 4; i++) {
         for (int i = 0 ; i < 4; i++) {
@@ -77,7 +76,6 @@
             }
             [infoImgView setImage:[UIImage imageNamed:str]];
             [_mainScrollView addSubview:infoImgView];
-            [infoImgView release];
         }
     }
     
@@ -94,7 +92,6 @@
     [_bottomView setImage:[UIImage imageNamed:@"tab_bar"]];
     [_bottomView setUserInteractionEnabled:YES];
     [self.view addSubview:_bottomView];
-    [_bottomView release];
     
     _registerBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_registerBtn setBackgroundColor:[UIColor clearColor]];
@@ -124,7 +121,6 @@
     DLog(@"忘记密码");
     ForgetPassWordViewController * forgetVC = [[ForgetPassWordViewController alloc]init];
     [self.navigationController pushViewController:forgetVC animated:YES];
-    [forgetVC release];
 }
 
 //登入
@@ -136,8 +132,7 @@
     [nav setNavigationBarHidden:YES animated:NO];
     [nav setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
     [self presentViewController:nav animated:YES completion:nil];
-    [logInVC release];
-    [nav release];
+
 }
 
 //注册
@@ -146,7 +141,6 @@
     DLog(@"注册");
     RegisterViewController * registerVC = [[RegisterViewController alloc]init];
     [self.navigationController pushViewController:registerVC animated:YES];
-    [registerVC release];
 }
 
 #pragma mark - scrollerViewDelegate

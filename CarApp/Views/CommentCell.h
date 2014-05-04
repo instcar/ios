@@ -10,9 +10,9 @@
 
 @interface CommentCell : UITableViewCell
 
-@property (retain, nonatomic) UIImageView *imagerView;
-@property (retain, nonatomic) UILabel *nameLable;
-@property (retain, nonatomic) UILabel *typeLable;
-@property (retain, nonatomic) UILabel *desLable;
+@property (strong, nonatomic) UIImageView *imagerView;
+@property (strong, nonatomic) UILabel *nameLable;
+@property (strong, nonatomic) UILabel *typeLable;
+@property (strong, nonatomic) UILabel *desLable;
 
 @end

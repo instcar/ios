@@ -42,14 +42,12 @@
     imageView.userInteractionEnabled = YES;
     [imageView setContentMode:UIViewContentModeScaleAspectFit];
     [self addSubview:imageView];
-    [imageView release];
     
     // Add gesture,double tap zoom imageView.
     UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                 action:@selector(handleDoubleTap:)];
     [doubleTapGesture setNumberOfTapsRequired:2];
     [imageView addGestureRecognizer:doubleTapGesture];
-    [doubleTapGesture release];
     
     float minimumScale = self.frame.size.width / imageView.frame.size.width;
     [self setMinimumZoomScale:minimumScale];
@@ -92,7 +90,7 @@
 #pragma mark - View cycle
 - (void)dealloc
 {
-    [super dealloc];
+
 }
 
 @end

@@ -16,7 +16,7 @@
 }
 
 
-@property (retain, nonatomic) NSArray *data;
+@property (strong, nonatomic) NSArray *data;
 @property (assign, nonatomic) id<HZscrollerViewDelegate> delegate;
 @property (assign, nonatomic) int initSelectIndex;
 

@@ -24,7 +24,7 @@ static FMDatabase * db = nil;
 
 +(void)creatDatabase
 {
-    db = [[FMDatabase databaseWithPath:[self databaseFilePath]] retain];
+    db = [FMDatabase databaseWithPath:[self databaseFilePath]];
 }
 
 +(FMDatabase *)getDataBase

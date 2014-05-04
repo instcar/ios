@@ -88,8 +88,6 @@
                                                   cancelButtonTitle:kHarpyUpdateButtonTitle
                                                   otherButtonTitles:nil, nil];
         [alertView show];
-        [alertView release];
-
         
     } else { // Allow user option to update next time user launches your app
         
@@ -102,7 +100,6 @@
         
         
         [alertView show];
-        [alertView release];
     }
 }
 

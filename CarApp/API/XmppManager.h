@@ -34,15 +34,15 @@
 }
 
 //---------------------------------------------------------------------
-@property (retain, nonatomic) XMPPStream *xmppStream;
-@property (retain, nonatomic) XMPPRosterCoreDataStorage *xmppRosterStorage;
-@property (retain, nonatomic) XMPPRoster *xmppRoster;
-@property (retain, nonatomic) XMPPReconnect *xmppReconnect;
-@property (retain, nonatomic) XMPPMessageArchivingCoreDataStorage *xmppMessageArchivingCoreDataStorage;
-@property (retain, nonatomic) XMPPMessageArchiving *xmppMessageArchivingModule;
-@property (retain, nonatomic) NSXMLElement * roomConfiguration;//房间配置
+@property (strong, nonatomic) XMPPStream *xmppStream;
+@property (strong, nonatomic) XMPPRosterCoreDataStorage *xmppRosterStorage;
+@property (strong, nonatomic) XMPPRoster *xmppRoster;
+@property (strong, nonatomic) XMPPReconnect *xmppReconnect;
+@property (strong, nonatomic) XMPPMessageArchivingCoreDataStorage *xmppMessageArchivingCoreDataStorage;
+@property (strong, nonatomic) XMPPMessageArchiving *xmppMessageArchivingModule;
+@property (strong, nonatomic) NSXMLElement * roomConfiguration;//房间配置
 @property (copy, nonatomic) NSString * roomName;
-@property (retain, nonatomic) XMPPRoom * xmppRoom;
+@property (strong, nonatomic) XMPPRoom * xmppRoom;
 @property (assign, nonatomic) id<ChatDelegate> chatDelegate;
 
 +(XmppManager *)sharedInstance;

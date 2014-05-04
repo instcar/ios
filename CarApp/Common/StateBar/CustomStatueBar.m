@@ -57,7 +57,6 @@
         
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(messageAction:)];
         [self addGestureRecognizer:tapGestureRecognizer];
-        [tapGestureRecognizer release];
         
     }
     return self;
@@ -117,7 +116,6 @@
 }
 
 - (void)dealloc{
-    [defaultLabel release];
-    [super dealloc];
+
 }
 @end

@@ -9,8 +9,18 @@
 #import "EditCarInfoViewController.h"
 #import "PhotoSelectManager.h"
 #import "CarImageSampleViewController.h"
+#import "UIImage+Compress.h"
 
 @interface EditCarInfoViewController ()
+
+@property (copy, nonatomic) NSString *imageUrl1;         //上传取到的图片路径
+@property (copy, nonatomic)NSString *imagePath1;         //上传的图片路径
+@property (copy, nonatomic) NSString *imageUrl2;         //上传取到的图片路径
+@property (copy, nonatomic)NSString *imagePath2;         //上传的图片路径
+@property (copy, nonatomic) NSString *imageUrl3;         //上传取到的图片路径
+@property (copy, nonatomic)NSString *imagePath3;         //上传的图片路径
+
+@property (assign, nonatomic) int status; //0:没有操作  1：上传驾照 2:上传正面照片 3：上传侧面照
 
 @end
 
@@ -29,15 +39,15 @@
 {
     [super viewDidLoad];
     
-    [self setCtitle:@"编辑车辆信息"];
-    [self setDesText:@"请拍摄行驶本和汽车照片完成认证"];
+    [self setTitle:@"编辑车辆信息"];
+    [self setMessageText:@"请拍摄行驶本和汽车照片完成认证"];
+    [self setStatus:0];
     
-    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, KOFFSETY, SCREEN_WIDTH, SCREEN_HEIGHT - KOFFSETY)];
+    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, KOFFSETY, APPLICATION_WIDTH, APPLICATION_HEGHT - KOFFSETY)];
     [_scrollView setBackgroundColor:[UIColor clearColor]];
     [_scrollView setScrollEnabled:YES];
     [_scrollView setAlwaysBounceVertical:YES];
     [self.view addSubview:_scrollView];
-    [_scrollView release];
     
     CGRect bound = _scrollView.bounds;
     
@@ -47,52 +57,47 @@
     [_bg.layer setBorderColor:[UIColor lightGrayColor].CGColor];
     [_bg.layer setBorderWidth:0.5];
     [_scrollView addSubview:_bg];
-    [_bg release];
     
     _carLogoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, (_bg.bounds.size.height-50)/2.0, 50.0, 50.0)]; //车辆标志
     [_carLogoImageView setBackgroundColor:[UIColor lightGrayColor]];
     [_carLogoImageView setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin];
+    [_carLogoImageView setImageWithURL:[NSURL URLWithString:self.carType.picture] placeholderImage:[UIImage imageNamed:@"delt_pic_s"]];
     [_bg addSubview:_carLogoImageView];
-    [_carLogoImageView release];
     
     _carName = [[UILabel alloc]initWithFrame:CGRectMake(70, 12.5, 100, 20)]; //车辆名字
     [_carName setBackgroundColor:[UIColor clearColor]];
     [_carName setTextColor:[UIColor darkGrayColor]];
-    [_carName setText:@"宝马"];
+    [_carName setText:self.carType.brand]; //品牌
     [_carName setFont:AppFont(13)];
     [_bg addSubview:_carName];
-    [_carName release];
     
     _carModel = [[UILabel alloc]initWithFrame:CGRectMake(70, 32.5, 100, 20)]; //车辆型号
     [_carModel setBackgroundColor:[UIColor clearColor]];
     [_carModel setTextColor:[UIColor blackColor]];
-    [_carModel setText:@"320Li"];
+    [_carModel setText:self.carType.name];       //型号
     [_carModel setFont:AppFont(13)];
     [_bg addSubview:_carModel];
-    [_carModel release];
     
     _carBookbg = [[UIView alloc]initWithFrame:CGRectMake(10, 85, bound.size.width-20, 200)];
     [_carBookbg.layer setCornerRadius:2.0];
     [_carBookbg.layer setBorderColor:[UIColor lightGrayColor].CGColor];
     [_carBookbg.layer setBorderWidth:0.5];
     [_scrollView addSubview:_carBookbg];
-    [_carBookbg release];
     
-    _carBookImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 85, bound.size.width-20, 200)];
+    _carBookImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, bound.size.width-20, 200)];
     [_carBookImageView.layer setCornerRadius:2.0];
     [_carBookImageView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
     [_carBookImageView.layer setBorderWidth:0.5];
     [_carBookImageView.layer setMasksToBounds:YES];
+    [_carBookImageView setBackgroundColor:[UIColor whiteColor]];
     [_carBookImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [_scrollView addSubview:_carBookImageView];
+    [_carBookbg addSubview:_carBookImageView];
     [_carBookImageView setHidden:YES];
-    [_carBookImageView release];
     
     UIImageView *carbookImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 213.0/2.0, 134.0/2.0)];
     [carbookImage setCenter:CGPointMake(_carBookbg.bounds.size.width/2, _carBookbg.bounds.size.height/2 - 25)];
     [carbookImage setImage:[UIImage imageNamed:@"ic_paperwork"]];
     [_carBookbg addSubview:carbookImage];
-    [carbookImage release];
     
     UIButton *addcarbookBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [addcarbookBtn setFrame:CGRectMake(0, 0, 220, 40)];
@@ -105,7 +110,7 @@
     [_carBookbg addSubview:addcarbookBtn];
     
     _addcarFrontBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_addcarFrontBtn setBackgroundColor:[UIColor whiteColor]];
+    [_addcarFrontBtn setBackgroundColor:[UIColor clearColor]];
     [_addcarFrontBtn setFrame:CGRectMake(10, 295.0, 290/2.0, 190/2.0)];
     [_addcarFrontBtn.layer setCornerRadius:2.0];
     [_addcarFrontBtn.layer setBorderColor:[UIColor lightGrayColor].CGColor];
@@ -125,13 +130,13 @@
     [_carFrontImageView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
     [_carFrontImageView.layer setBorderWidth:0.5];
     [_carFrontImageView.layer setMasksToBounds:YES];
+    [_carFrontImageView setBackgroundColor:[UIColor whiteColor]];
     [_carFrontImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [_scrollView addSubview:_carFrontImageView];
+    [_scrollView insertSubview:_carFrontImageView belowSubview:_addcarFrontBtn];
     [_carFrontImageView setHidden:YES];
-    [_carFrontImageView release];
     
     _addcarSliderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_addcarSliderBtn setBackgroundColor:[UIColor whiteColor]];
+    [_addcarSliderBtn setBackgroundColor:[UIColor clearColor]];
     [_addcarSliderBtn setFrame:CGRectMake(20+290.0/2.0, 295, 290/2.0, 190.0/2.0)];
     [_addcarSliderBtn.layer setCornerRadius:2.0];
     [_addcarSliderBtn.layer setBorderColor:[UIColor lightGrayColor].CGColor];
@@ -151,10 +156,10 @@
     [_carSliderImageView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
     [_carSliderImageView.layer setBorderWidth:0.5];
     [_carSliderImageView.layer setMasksToBounds:YES];
+    [_carSliderImageView setBackgroundColor:[UIColor whiteColor]];
     [_carSliderImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [_scrollView addSubview:_carSliderImageView];
+    [_scrollView insertSubview:_carSliderImageView belowSubview:_addcarSliderBtn];
     [_carSliderImageView setHidden:YES];
-    [_carSliderImageView release];
     
     _confirmBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_confirmBtn setFrame:CGRectMake(10, 295+ 10 + 95, 300, 44)];
@@ -175,7 +180,6 @@
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"查看照片样例",@"拍摄照片",@"从相册中选择照片", nil];
     [alertView setTag:110];
     [alertView show];
-    [alertView release];
 }
 
 - (void)addcarFrontBtn:(UIButton *)sender
@@ -183,7 +187,6 @@
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"查看照片样例",@"拍摄照片",@"从相册中选择照片", nil];
     [alertView setTag:111];
     [alertView show];
-    [alertView release];
 }
 
 - (void)addcarSliderBtn:(UIButton *)sender
@@ -191,12 +194,42 @@
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"查看照片样例",@"拍摄照片",@"从相册中选择照片", nil];
     [alertView setTag:112];
     [alertView show];
-    [alertView release];
 }
-
+//提交
 - (void)confirmBtnAction:(UIButton *)sender
 {
-    DLog(@"提交")
+    DLog(@"提交");
+     MBProgressHUD *hubView = [MBProgressHUD showMessag:@"正在上传" toView:self.view];
+    [APIClient networkUpLoadImageFileByType:1 user_id:[User shareInstance].userId dataFile:[NSArray arrayWithObjects:self.imagePath1,self.imagePath2,self.imagePath3,nil] success:^(Respone *respone) {
+        DLog(@"%@",[respone description]);
+        if (respone.status == kEnumServerStateSuccess) {
+            [hubView setLabelText:@"上传成功"];
+            self.imageUrl1 = [respone.data valueForKey:@"file_0"];
+            self.imageUrl2 = [respone.data valueForKey:@"file_1"];
+            self.imageUrl3 = [respone.data valueForKey:@"file_2"];
+            //获取增加车辆
+            [APIClient networkAddCarWithid:self.carType.ID license:self.imageUrl1 cars_1:self.imageUrl2 cars_2:self.imageUrl3 success:^(Respone *respone)
+            {
+                if (respone.status == kEnumServerStateSuccess) {
+                    [self popToProfileViewController];
+                }
+                [hubView setLabelText:respone.msg];
+                [hubView hide:YES afterDelay:1.0];
+            } failure:^(NSError *error) {
+                [hubView setLabelText:respone.msg];
+                [hubView hide:YES afterDelay:1.0];
+            }];
+        }
+        else
+        {
+            [hubView setLabelText:respone.msg];
+            [hubView hide:YES afterDelay:1.0];
+        }
+        
+    } failure:^(NSError *error) {
+        [hubView setLabelText:error.description];
+        [hubView hide:YES afterDelay:1.0];
+    }];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -207,7 +240,6 @@
             DLog(@"查看照片样例");
             CarImageSampleViewController *carImageSampleVC = [[CarImageSampleViewController alloc]init];
             [self.navigationController pushViewController:carImageSampleVC animated:YES];
-            [carImageSampleVC release];
         }
             break;
         case 2:
@@ -227,22 +259,50 @@
     }
 }
 
+- (void)updateView:(NSData *)imageData
+{
+    //更新显示
+    if (self.status == 1) {
+        [_carBookImageView setImage:[UIImage imageWithData:imageData]];
+        [_carBookImageView setHidden:NO];
+    }
+    if (self.status == 2) {
+       [_carFrontImageView setImage:[UIImage imageWithData:imageData]];
+        [_carFrontImageView setHidden:NO];
+    }
+    if (self.status == 3) {
+        [_carSliderImageView setImage:[UIImage imageWithData:imageData]];
+        [_carSliderImageView setHidden:NO];
+    }
+    if (self.imagePath1 && self.imagePath2 && self.imagePath3) {
+        [_confirmBtn setEnabled:YES];
+    }
+    else
+    {
+        [_confirmBtn setEnabled:NO];
+    }
+
+}
+
 - (void)uploadImage:(int)tag
 {
     switch (tag) {
         case 110:
         {
             DLog(@"上传驾照");
+            [self setStatus:1];
         }
             break;
         case 111:
         {
             DLog(@"上传正面车照");
+            [self setStatus:2];
         }
             break;
         case 112:
         {
             DLog(@"上传侧面车照");
+            [self setStatus:3];
         }
             break;
         default:
@@ -255,12 +315,12 @@
 {
     //选择拍照
     if (style == 0) {
-        [PhotoSelectManager selectPhotoFromCamreWithDelegate:self withVC:self withEdit:YES];
+        [PhotoSelectManager selectPhotoFromCamreWithDelegate:self withVC:self withEdit:NO];
     }
     
     //选择相册
     if (style == 1) {
-        [PhotoSelectManager selectPhotoFromPhotoWithDelegate:self withVC:self withEdit:YES];
+        [PhotoSelectManager selectPhotoFromPhotoWithDelegate:self withVC:self withEdit:NO];
     }
 }
 
@@ -270,10 +330,10 @@
     [picker dismissViewControllerAnimated:YES completion:^{
         [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     }];
-    UIImage *image = [[info objectForKey:UIImagePickerControllerEditedImage] retain];
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     [self performSelector:@selector(saveImage:)
                withObject:image
-               afterDelay:0.5];
+               afterDelay:0.0];
 }
 
 
@@ -299,40 +359,49 @@
 {
     DLog(@"已选择头像");
     
-    NSData* imageData = UIImagePNGRepresentation(image);
+    NSData  *imageData = [image compressedDataSize:2*1024];
+
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString* documentsDirectory = [paths objectAtIndex:0];
     // Now we get the full path to the file
-    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:@"img00.png"];
+    NSString* fullPathToFile = nil;
+    
+    switch (self.status) {
+        case 1:
+        {
+            fullPathToFile = [documentsDirectory stringByAppendingPathComponent:@"book01.png"];
+            self.imagePath1 = fullPathToFile;
+        }
+            break;
+        case 2:
+        {
+            fullPathToFile = [documentsDirectory stringByAppendingPathComponent:@"car02.png"];
+            self.imagePath2 = fullPathToFile;
+        }
+            break;
+        case 3:
+        {
+            fullPathToFile = [documentsDirectory stringByAppendingPathComponent:@"car03.png"];
+            self.imagePath3 = fullPathToFile;
+        }
+            break;
+        default:
+            break;
+    }
+    
     // and then we write it out
-    [imageData writeToFile:fullPathToFile atomically:NO];
-    [[User shareInstance]setUserId:1];
+    [imageData writeToFile:fullPathToFile atomically:YES];
     
-    [APIClient networkUpLoadImageFileByType:1 user_id:[User shareInstance].userId dataFile:[NSArray arrayWithObject:fullPathToFile] success:^(Respone *respone) {
-        DLog(@"%@",[respone description]);
-    } failure:^(NSError *error) {
-        
-    }];
-//
-//    
-//    SetProfileTableCell * cell = (SetProfileTableCell *)[self.view viewWithTag:77007];
-//    [cell.photoImgView setImage:image];
-//    self.headImage  = image;
-//    User * user = [User shareInstance];
-//    //保存请求
-//    ASIFormDataRequest * editPhotoRequest =  [NetWorkManager networkEditHeadpic:image uid:user.userId mode:kNetworkrequestModeQueue success:^(BOOL flag, NSString *newHeadPicUrl, NSString *msg) {
-//        //        if (flag) {
-//        //            [cell.photoImgView setImage:image];
-//        //        }
-//        //        else
-//        //        {
-//        //            [UIAlertView showAlertViewWithTitle:@"失败" message:msg cancelTitle:@"确定"];
-//        //        }
-//    } failure:^(NSError *error) {}];
-//    [self.networkRequestArray addObject:editPhotoRequest];
-//    //    [editPhotoRequest release];
-//    [_setProfileTable reloadData];
-    
+    [self updateView:imageData];
+}
+
+- (void)popToProfileViewController
+{
+    for (UIViewController *temp in self.navigationController.viewControllers) {
+        if ([temp isKindOfClass:NSClassFromString(@"ProfileViewController")]) {
+            [self.navigationController popToViewController:temp animated:YES];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning

@@ -32,10 +32,10 @@
 {
     [super viewDidLoad];
     
-    [self setCtitle:@"常用路线"];
-    [self setDesText:@"可增加删除常用路线"];
+    [self setTitle:@"常用路线"];
+    [self setMessageText:@"可增加删除常用路线"];
     
-    self.tableView = [[[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, KOFFSETY, SCREEN_WIDTH, SCREEN_HEIGHT - KOFFSETY) pullingDelegate:self]autorelease];
+    self.tableView = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, KOFFSETY, SCREEN_WIDTH, SCREEN_HEIGHT - KOFFSETY) pullingDelegate:self];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.tableView setBackgroundView:nil];
@@ -55,7 +55,7 @@
     self.warnView = [WarnView initWarnViewWithText:@"非常抱歉,暂无数据..." withView:_tableView height:120 withDelegate:nil];
     
 }
-
+/*
 -(void)requestTableDataFromServer:(kRequestMode)mode
 {
     User *user = [User shareInstance];
@@ -89,7 +89,7 @@
         [self.tableView setReachedTheEnd:YES];
     }];
 }
-
+*/
 #pragma mark - tableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -107,7 +107,7 @@
     
     CommonRoutCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[CommonRoutCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[CommonRoutCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     
@@ -170,7 +170,7 @@
 {
     //对tableModel进行判断
     _routepage = 1;
-    [self requestTableDataFromServer:kRequestModeRefresh];
+//    [self requestTableDataFromServer:kRequestModeRefresh];
 }
 
 - (void) loadMoreDataToTable
@@ -178,7 +178,7 @@
     //对tableModel进行判断
     if (_routeCanLoadMore) {
         _routepage ++;
-        [self requestTableDataFromServer:kRequestModeLoadmore];
+//        [self requestTableDataFromServer:kRequestModeLoadmore];
     }
 }
 

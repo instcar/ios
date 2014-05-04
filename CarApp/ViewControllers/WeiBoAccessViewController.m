@@ -31,7 +31,6 @@
     UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
     [mainView setBackgroundColor:[UIColor colorWithRed:(float)243/255 green:(float)243/255 blue:(float)243/255 alpha:1.0f]];
     [self.view addSubview:mainView];
-    [mainView release];
     
     UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
     naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
@@ -39,13 +38,11 @@
     UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
     [mainView addSubview:navBar];
-    [navBar release];
     
     if (kDeviceVersion < 7.0) {
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
         [lineView setBackgroundColor:[UIColor lightGrayColor]];
         [navBar addSubview:lineView];
-        [lineView release];
     }
     else
     {
@@ -67,7 +64,6 @@
     [titleLabel setTextColor:[UIColor flatGreenColor]];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
     [navBar addSubview:titleLabel];
-    [titleLabel release];
 
     _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0,64, 320, SCREEN_HEIGHT - 64)];
     _webView.delegate = self;
@@ -119,7 +115,7 @@
 
 -(void)dealloc
 {
-    [super dealloc];
+
 }
 
 - (void)didReceiveMemoryWarning

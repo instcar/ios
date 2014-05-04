@@ -16,4 +16,7 @@
     UIImageView *_peopleBookImageView;
     UIButton *_confirmBtn;
 }
+
+
+
 @end

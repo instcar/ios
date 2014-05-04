@@ -10,9 +10,11 @@
 #import "CheckLable.h"
 
 @interface ProfileCell : UITableViewCell
-
-@property(retain,nonatomic)UILabel * titleLabel;
-@property(retain,nonatomic)UILabel * infoLabel;
-@property(retain,nonatomic)CheckLable *checkLable;
+{
+    UIView *_lineView;
+}
+@property(strong,nonatomic)UILabel * titleLabel;
+@property(strong,nonatomic)UILabel * infoLabel;
+@property(strong,nonatomic)CheckLable *checkLable;
 
 @end

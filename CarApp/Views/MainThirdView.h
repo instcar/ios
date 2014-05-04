@@ -18,11 +18,11 @@
 
     NSArray *_thridTableData;
 }
-@property(retain, nonatomic)PullingRefreshTableView *tableView;
-@property(retain, nonatomic) NSArray *thridTableData;
+@property(strong, nonatomic)PullingRefreshTableView *tableView;
+@property(strong, nonatomic) NSArray *thridTableData;
 @property (nonatomic, assign) id<MainThirdViewDelegate> delegate;
-@property(retain, nonatomic) NSMutableArray *jokeArray;
-@property (retain, nonatomic) UIViewController *mainVC;
+@property(strong, nonatomic) NSMutableArray *jokeArray;
+@property (strong, nonatomic) UIViewController *mainVC;
 
 -(void)setTableData:(NSArray *)array;
 

@@ -54,10 +54,14 @@ show_comp_addr	int	in [0, 1]
 +(void)networkAddCarWithid:(int)car_id license:(NSString *)license cars_1:(NSString *)cars_1 cars_2:(NSString *)cars_2 success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
 
 //用户获取车辆列表
-+ networkUserGetCarsWithcar_id:(int)car_id success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
++ (void)networkUserGetCarsWithcar_id:(int)car_id success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
 
 //用户实名认证
 + (void)networkUserRealNameRequestWithid_cards_1:(NSString *)cars_1 id_cards_2:(NSString *)cars_2 success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
+#pragma mark - 车辆
+//根据别名获取车辆型号列表
++ (void)networkGetCarListWithAliasname:(NSString *)aliasname success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
+
 
 #pragma mark - 路线
 //根据聚点ID获取线路的分页数据
@@ -140,6 +144,7 @@ show_comp_addr	int	in [0, 1]
 
 #pragma mark - 上传图片
 //上传图片请求
+//parm type: 1 :车相关 2 :用户相关
 +(void)networkUpLoadImageFileByType:(int)type user_id:(long)user_id dataFile:(NSArray *)fileArray success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
 
 

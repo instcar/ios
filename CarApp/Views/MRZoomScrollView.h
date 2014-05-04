@@ -14,7 +14,7 @@
     UIImageView *imageView;
 }
 
-@property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, strong) UIImageView *imageView;
 
 
 @end

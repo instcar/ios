@@ -15,10 +15,7 @@
 
 -(void)dealloc
 {
-//    [SafetyRelease release:_selectTime];
-//    [SafetyRelease release:_selectDay];
-//    [SafetyRelease release:_date];
-    [super dealloc];
+
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -32,7 +29,6 @@
         [btn setBackgroundImage:[[UIImage imageNamed:@"btn_input_pressed"] resizableImageWithCapInsets:UIEdgeInsetsMake(5, 22, 5, 22)] forState:UIControlStateHighlighted];
         [btn addTarget:self action:@selector(dateBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:btn];
-        [btn release];
        
         //timeConstain
         UIView * timeConstain = [[UIView alloc]initWithFrame:CGRectMake(10, 0,self.frame.size.width-20, self.frame.size.height)];
@@ -40,7 +36,6 @@
         timeConstain.center = btn.center;
         timeConstain.userInteractionEnabled = NO;
         [self addSubview:timeConstain];
-        [timeConstain release];
         
 //        [self reloadView];
         
@@ -55,7 +50,6 @@
         [timeImageView setBackgroundColor:[UIColor clearColor]];
         [timeImageView setUserInteractionEnabled:NO];
         [timeConstain addSubview:timeImageView];
-        [timeImageView release];
         
         UILabel *dlable = [[UILabel alloc]init];
         [dlable setTag:kDlableTag];
@@ -79,7 +73,6 @@
         [dlable setBackgroundColor:[UIColor clearColor]];
         [dlable setUserInteractionEnabled:NO];
         [timeConstain addSubview:dlable];
-        [dlable release];
         
         UILabel *tlable = [[UILabel alloc]init];
         [tlable setTag:kTlableTag];
@@ -91,7 +84,6 @@
         [tlable setBackgroundColor:[UIColor clearColor]];
         [tlable setUserInteractionEnabled:NO];
         [timeConstain addSubview:tlable];
-        [tlable release];
 
         [self refreshView];
     }
@@ -134,7 +126,6 @@
             [wlable setFrame:CGRectMake(0, (timeConstain.frame.size.height-30)/2, width, 30)];
         }
         [timeConstain addSubview:wlable];
-        [wlable release];
         
         UILabel *tlable = [[UILabel alloc]init];
         [tlable setFrame:CGRectMake(wlable.frame.size.width, (timeConstain.frame.size.height-30)/2, timeConstain.frame.size.width-wlable.frame.size.width, 30)];
@@ -145,7 +136,6 @@
         [tlable setText:_selectTime];
         [tlable setUserInteractionEnabled:NO];
         [timeConstain addSubview:tlable];
-        [tlable release];
     }
     else
     {
@@ -158,7 +148,6 @@
         [timeImageView setBackgroundColor:[UIColor clearColor]];
         [timeImageView setUserInteractionEnabled:NO];
         [timeConstain addSubview:timeImageView];
-        [timeImageView release];
         
         UILabel *dlable = [[UILabel alloc]init];
         [dlable setFrame:CGRectMake(10, (timeConstain.frame.size.height-30)/2+5, timeConstain.frame.size.width/2.-30, 30)];
@@ -176,7 +165,6 @@
         [dlable setBackgroundColor:[UIColor clearColor]];
         [dlable setUserInteractionEnabled:NO];
         [timeConstain addSubview:dlable];
-        [dlable release];
         
         UILabel *tlable = [[UILabel alloc]init];
         [tlable setFrame:CGRectMake(dlable.frame.origin.x+dlable.frame.size.width, (self.frame.size.height-30)/2, timeConstain.frame.size.width/2., 30)];
@@ -187,7 +175,6 @@
         [tlable setBackgroundColor:[UIColor clearColor]];
         [tlable setUserInteractionEnabled:NO];
         [timeConstain addSubview:tlable];
-        [tlable release];
     }
 }
 
