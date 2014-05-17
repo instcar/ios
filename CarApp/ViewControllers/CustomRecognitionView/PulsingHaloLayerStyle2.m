@@ -60,7 +60,7 @@
     self.borderColor = [UIColor colorWithRed:119.0/255 green:187.0/255 blue:68.0/255 alpha:0.8].CGColor;
     self.borderWidth = 3.0;
     
-    self.transform = CATransform3DMakeScale(0.0, 0.0,1);
+    self.transform = CATransform3DMakeScale(0.2, 0.2,1);
 }
 
 -(void)setVoiceValue:(float)voiceValue
@@ -130,7 +130,7 @@
 
 - (void)setupAnimationGroup:(float)value {
     
-    if (value < 0.1) {
+    if (value < 0.2) {
         value = 0.2+(arc4random()%10)/100.0;
     }
     

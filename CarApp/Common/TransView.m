@@ -33,7 +33,7 @@
     UIView *hitView = [super hitTest:point withEvent:event];
     if (hitView == self)
     {
-        return nil;
+        return self;
     }
     else
     {

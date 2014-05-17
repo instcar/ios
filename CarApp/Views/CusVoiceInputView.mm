@@ -11,10 +11,15 @@
 #import "PulsingHaloLayerStyle2.h"
 #import "JSONKit.h"
 #import "UIColor+utils.h"
+#import "TransView.h"
 
 #define VOICE_LEVEL_INTERVAL 0.05 // 音量监听频率为1秒中10次
 #define API_KEY @"8MAxI5o7VjKSZOKeBzS4XtxO"
 #define SECRET_KEY @"Ge5GXVdGQpaxOmLzc8fOM8309ATCz9Ha"
+
+//
+//#define kUINormalRect CGRectMake(0, 0, bound.size.width, 160.0)
+//#define kUIRecognizerRect CGRectMake(0, 0, bound.size.width, 60.0)
 
 @interface CusVoiceInputView()
 
@@ -36,7 +41,10 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame];
+    CGRect rframe = frame;
+    rframe.size.width = APPLICATION_WIDTH;
+    rframe.size.height = APPLICATION_HEGHT - 44 - 44;
+    self = [super initWithFrame:rframe];
     if (self) {
         //设置百度语音识别
         [self setRecognizeConfig];
@@ -94,14 +102,24 @@
 
 - (void)setUpView
 {
-    self.backgroundColor = [UIColor whiteColor];
+    CGRect bound = self.bounds;
+    self.backgroundColor = [UIColor colorWithWhite:0.000 alpha:0.600];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(bgTapAction:)];
+    [self addGestureRecognizer:tapGesture];
+    
+    _type = kEnumVoiceStateNormal;
+    _inputView = [[TransView alloc]initWithFrame:CGRectMake(0, 0, bound.size.width, 160.0)];
+    [_inputView setBackgroundColor:[UIColor whiteColor]];
+    [self addSubview:_inputView];
+    
     //起点输入
     UILabel *startLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 40, 25)];
     [startLable setText:@"终点:"];
     [startLable setBackgroundColor:[UIColor clearColor]];
     [startLable setFont:AppFont(14)];
     [startLable setTextColor:[UIColor lightGrayColor]];
-    [self addSubview:startLable];
+    [_inputView addSubview:startLable];
     
     //定位显示坐标
     //        UILabel *startLocateLable = [[UILabel alloc]initWithFrame:CGRectMake(50, 10, 200, 25)];
@@ -127,17 +145,17 @@
     [toolBar addSubview:confirmKeyBtn];
     
     //手动输入label
-    UITextField *startInputView = [[UITextField alloc]initWithFrame:CGRectMake(50, 10, 200, 25)];
+    UITextField *startInputView = [[UITextField alloc]initWithFrame:CGRectMake(10, 35, 200, 25)];
     [startInputView setBorderStyle:UITextBorderStyleNone];
     [startInputView setBackgroundColor:[UIColor clearColor]];
     [startInputView setFont:AppFont(14)];
-    [startInputView setTextColor:[UIColor whiteColor]];
+    [startInputView setTextColor:[UIColor blackColor]];
     [startInputView setDelegate:self];
     [startInputView setLeftViewMode:UITextFieldViewModeUnlessEditing];
     [startInputView setAdjustsFontSizeToFitWidth:YES];
     _startInputView = startInputView;
     [_startInputView setInputAccessoryView:toolBar];
-    [self addSubview:startInputView];
+    [_inputView addSubview:startInputView];
     
     //定位按钮
     [self createInitView];
@@ -196,6 +214,23 @@
     [self inputModeChange:1];
 }
 
+- (void)bgTapAction:(UITapGestureRecognizer *)gesture
+{
+    DLog(@"bgTapAction");
+    CGRect frame = self.frame;
+    [UIView beginAnimations:@"voiceModeChange" context:nil];
+    [UIView setAnimationDuration:0.25];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [self setBackgroundColor:[UIColor clearColor]];
+    frame.size.height = 60.0;
+    [self setFrame:frame];
+    [_inputView setFrame:CGRectMake(0, 0, self.bounds.size.width, 60.0)];
+    [UIView commitAnimations];
+    
+    [self createErrorView:nil];
+}
+
 #pragma mark - keybord
 -(void)hideKeyBorad:(UITapGestureRecognizer *)tappp
 {
@@ -218,7 +253,13 @@
 - (void)cancel:(id)sender
 {
 	[[BDVoiceRecognitionClient sharedInstance] stopVoiceRecognition];
+    [self freeVoiceLevelMeterTimerTimer];
     [self removeAllView];
+}
+
+- (void)dealloc
+{
+    [self cancel:nil];
 }
 
 #pragma mark - AVfunction 声音播放
@@ -237,9 +278,8 @@
 
 -(void)removeAllView
 {
-//    if (self.view.superview)
-//    {
-//        [self.view removeFromSuperview];
+//    for (UIView *sub in [_btnView subviews]) {
+//        [sub removeFromSuperview];
 //    }
 }
 
@@ -334,23 +374,17 @@
         case EVoiceRecognitionClientWorkStatusEnd: // 用户说话完成，等待服务器返回识别结果
         {
 			[self createRunLogWithStatus:aStatus];
-            if (YES)
-            {
-                [self freeVoiceLevelMeterTimerTimer];
-            }
-			
+            [self freeVoiceLevelMeterTimerTimer];
+    
             [self createRecognitionView];
+            [self setLocateAddress:@"正在识别"];
             
             break;
         }
         case EVoiceRecognitionClientWorkStatusCancel:
         {
             [self playSound:@"record_cancel" type:@"caf"];
-            if (YES)
-            {
-                [self freeVoiceLevelMeterTimerTimer];
-            }
-            
+            [self freeVoiceLevelMeterTimerTimer];
 			[self createRunLogWithStatus:aStatus];
             
 //            if (self.view.superview)
@@ -361,16 +395,11 @@
         }
         case EVoiceRecognitionClientWorkStatusStartWorkIng: // 识别库开始识别工作，用户可以说话
         {
-            if (YES) // 如果播放了提示音，此时再给用户提示可以说话
-            {
-                [self createRecordView];
-            }
-            
-            if (YES)  // 开启语音音量监听
-            {
-                [self startVoiceLevelMeterTimer];
-            }
-            
+            // 如果播放了提示音，此时再给用户提示可以说话
+            [self createRecordView];
+            // 开启语音音量监听
+            [self startVoiceLevelMeterTimer];
+
 			[self createRunLogWithStatus:aStatus];
             
             break;
@@ -561,20 +590,20 @@
 - (void)createInitView
 {
     _btnView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
-    [_btnView setCenter:CGPointMake(self.bounds.size.width/2.0, self.bounds.size.height/2.0)];
-    [_btnView setBackgroundColor:[UIColor redColor]];
+    [_btnView setCenter:CGPointMake(_inputView.bounds.size.width/2.0, _inputView.bounds.size.height/2.0)];
+    [_btnView setBackgroundColor:[UIColor clearColor]];
     [_btnView setClipsToBounds:NO];
-    [self addSubview:_btnView];
+    [_inputView addSubview:_btnView];
     
     _voiceBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_voiceBtn setFrame:CGRectMake(0, 0, 100, 100)];
+    [_voiceBtn setFrame:CGRectMake(0, 0, 127, 127)];
     _voiceBtn.center = CGPointMake(_btnView.bounds.size.width/2.0, _btnView.bounds.size.height/2.0);
     _voiceBtn.backgroundColor = [UIColor clearColor];
-    _voiceBtn.titleLabel.font = AppFont(18);
+    _voiceBtn.titleLabel.font = AppFont(14);
     [_voiceBtn setBackgroundImage:[UIImage imageNamed:@"bg_circle"] forState:UIControlStateNormal];
-    [_voiceBtn setImageEdgeInsets:UIEdgeInsetsMake(-10, 0, 0, 0)];
+    [_voiceBtn setImageEdgeInsets:UIEdgeInsetsMake(-20, 18, 0, 0)];
     [_voiceBtn setImage:[UIImage imageNamed:@"pic_sound"] forState:UIControlStateNormal];
-    [_voiceBtn setTitleEdgeInsets:UIEdgeInsetsMake(80, 0, 0, 0)];
+    [_voiceBtn setTitleEdgeInsets:UIEdgeInsetsMake(60, -60, 0, 0)];
     [_voiceBtn setTitle:@"我要去" forState:UIControlStateNormal];
     [_voiceBtn setTitleColor:[UIColor colorWithHexStr:0x666666 alpha:1.0] forState:UIControlStateNormal];
     [_btnView addSubview:_voiceBtn];
@@ -584,15 +613,17 @@
 
 - (void)createRecordView
 {
+    [_haloView removeFromSuperview];
     [_voiceBtn removeFromSuperview];
     
-    UIView *haloView = [[UIImageView alloc]initWithFrame:self.bounds];
-    [haloView setCenter:CGPointMake(_btnView.bounds.size.width/2.0, _btnView.bounds.size.height/2.0)];
-    [_btnView addSubview:haloView];
-    [haloView setClipsToBounds:YES];
+    _haloView = [[UIImageView alloc]initWithFrame:_inputView.bounds];
+    [_haloView setAutoresizingMask:UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin];
+    [_haloView setCenter:CGPointMake(_btnView.bounds.size.width/2.0, _btnView.bounds.size.height/2.0)];
+    [_btnView addSubview:_haloView];
+    [_haloView setClipsToBounds:YES];
     
     _voiceBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_voiceBtn setFrame:CGRectMake(0, 0, 60, 60)];
+    [_voiceBtn setFrame:CGRectMake(0, 0, 52, 52)];
     _voiceBtn.center = CGPointMake(_btnView.bounds.size.width/2.0, _btnView.bounds.size.height/2.0);
     _voiceBtn.backgroundColor = [UIColor clearColor];
     [_voiceBtn setImage:[UIImage imageNamed:@"pic_sound"] forState:UIControlStateNormal];
@@ -602,20 +633,33 @@
     _voiceBtn.showsTouchWhenHighlighted = YES;
     
     PulsingHaloLayerStyle2 *halo2 = [PulsingHaloLayerStyle2 layer];
-    halo2.position = haloView.center;
+    halo2.position = CGPointMake(_haloView.bounds.size.width/2.0, _haloView.bounds.size.height/2.0);
     halo2.animationDuration = 0.3;
     [halo2 setRadius:150];
     
-    [haloView.layer addSublayer:halo2];
+    [_haloView.layer addSublayer:halo2];
     
+    CGPoint center = _btnView.center;
+    [UIView beginAnimations:@"voiceModeChange1" context:nil];
+    [UIView setAnimationDuration:0.25];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, APPLICATION_WIDTH, APPLICATION_HEGHT - 44 -44)];
+   [self setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.6]];
+    center.x = APPLICATION_WIDTH/2.0;
+    center.y = 160.0/2.0;
+    [_btnView setCenter:center];
+    [_inputView setFrame:CGRectMake(0, 0, self.bounds.size.width, 160)];
+    [UIView commitAnimations];
 }
 
 - (void)createRecognitionView
 {
+    [_haloView removeFromSuperview];
     [_voiceBtn removeFromSuperview];
     
     UIImageView *circle = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sound_loading@2x"]];
-    [circle setFrame:CGRectMake(0, 0, 68, 68)];
+    [circle setFrame:CGRectMake(0, 0, 60, 60)];
 	circle.center = CGPointMake(_btnView.bounds.size.width/2.0, _btnView.bounds.size.height/2.0);
 	[_btnView addSubview:circle];
     
@@ -655,22 +699,7 @@
     });
     
     _voiceBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_voiceBtn setFrame:CGRectMake(0, 0, 60, 60)];
-    _voiceBtn.center = CGPointMake(_btnView.bounds.size.width/2.0, _btnView.bounds.size.height/2.0);
-    _voiceBtn.backgroundColor = [UIColor clearColor];
-    [_voiceBtn setImage:[UIImage imageNamed:@"pic_sound"] forState:UIControlStateNormal];
-    [_voiceBtn setTitle:@"" forState:UIControlStateNormal];
-    [_btnView addSubview:_voiceBtn];
-    [_voiceBtn addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
-    _voiceBtn.showsTouchWhenHighlighted = YES;
-}
-
--(void)createErrorView:(NSString *)errorInfo
-{
-    [_voiceBtn removeFromSuperview];
-    
-    _voiceBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_voiceBtn setFrame:CGRectMake(0, 0, 60, 60)];
+    [_voiceBtn setFrame:CGRectMake(0, 0, 52, 52)];
     _voiceBtn.center = CGPointMake(_btnView.bounds.size.width/2.0, _btnView.bounds.size.height/2.0);
     _voiceBtn.backgroundColor = [UIColor clearColor];
     [_voiceBtn setImage:[UIImage imageNamed:@"pic_sound"] forState:UIControlStateNormal];
@@ -678,6 +707,49 @@
     [_btnView addSubview:_voiceBtn];
     [_voiceBtn addTarget:self action:@selector(restartRecogniton:) forControlEvents:UIControlEventTouchUpInside];
     _voiceBtn.showsTouchWhenHighlighted = YES;
+    
+    CGPoint center = _btnView.center;
+    [UIView beginAnimations:@"voiceModeChange1" context:nil];
+    [UIView setAnimationDuration:0.25];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, APPLICATION_WIDTH, APPLICATION_HEGHT - 44 -44)];
+    [self setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.6]];
+    center.x = APPLICATION_WIDTH - 40;
+    center.y = 30.0;
+    [_btnView setCenter:center];
+    [_inputView setFrame:CGRectMake(0, 0, self.bounds.size.width, 60.0)];
+    [UIView commitAnimations];
+    
+}
+
+-(void)createErrorView:(NSString *)errorInfo
+{
+    [_haloView removeFromSuperview];
+    [_voiceBtn removeFromSuperview];
+    
+    _voiceBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_voiceBtn setFrame:CGRectMake(0, 0, 52, 52)];
+    _voiceBtn.center = CGPointMake(_btnView.bounds.size.width/2.0, _btnView.bounds.size.height/2.0);
+    _voiceBtn.backgroundColor = [UIColor clearColor];
+    [_voiceBtn setImage:[UIImage imageNamed:@"pic_sound"] forState:UIControlStateNormal];
+    [_voiceBtn setTitle:@"" forState:UIControlStateNormal];
+    [_btnView addSubview:_voiceBtn];
+    [_voiceBtn addTarget:self action:@selector(restartRecogniton:) forControlEvents:UIControlEventTouchUpInside];
+    _voiceBtn.showsTouchWhenHighlighted = YES;
+    
+    CGPoint center = _btnView.center;
+    [UIView beginAnimations:@"voiceModeChange1" context:nil];
+    [UIView setAnimationDuration:0.25];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [self setBackgroundColor:[UIColor clearColor]];
+    [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, APPLICATION_WIDTH, 60.0)];
+    center.x = APPLICATION_WIDTH - 40;
+    center.y = 30.0;
+    [_btnView setCenter:center];
+    [_inputView setFrame:CGRectMake(0, 0, self.bounds.size.width, 60.0)];
+    [UIView commitAnimations];
 }
 
 

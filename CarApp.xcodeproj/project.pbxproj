@@ -490,6 +490,7 @@
 		08A5A85D18F5AA82002086CF /* CarInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A5A85C18F5AA82002086CF /* CarInfoTableViewCell.m */; };
 		08AB8A6F183907D100ACAA4F /* XHBKCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AB8A6E183907D100ACAA4F /* XHBKCell.m */; };
 		08AB8A7518392B3B00ACAA4F /* XHBKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AB8A7418392B3B00ACAA4F /* XHBKViewController.m */; };
+		08ACDDF219167D49001FAA9F /* View.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08ACDDF119167D49001FAA9F /* View.xib */; };
 		08B3A1DC18A5C0230010BD0D /* UIFont+AppFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B3A1DB18A5C0230010BD0D /* UIFont+AppFont.m */; };
 		08B3A1DF18A5C4EE0010BD0D /* bg_map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B3A1DD18A5C4EE0010BD0D /* bg_map@2x.png */; };
 		08B3A1E018A5C4EE0010BD0D /* tag_map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08B3A1DE18A5C4EE0010BD0D /* tag_map@2x.png */; };
@@ -1608,6 +1609,7 @@
 		08AB8A6E183907D100ACAA4F /* XHBKCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHBKCell.m; sourceTree = "<group>"; };
 		08AB8A7318392B3B00ACAA4F /* XHBKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHBKViewController.h; sourceTree = "<group>"; };
 		08AB8A7418392B3B00ACAA4F /* XHBKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHBKViewController.m; sourceTree = "<group>"; };
+		08ACDDF119167D49001FAA9F /* View.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = View.xib; sourceTree = "<group>"; };
 		08B3A1DA18A5C0230010BD0D /* UIFont+AppFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+AppFont.h"; sourceTree = "<group>"; };
 		08B3A1DB18A5C0230010BD0D /* UIFont+AppFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+AppFont.m"; sourceTree = "<group>"; };
 		08B3A1DD18A5C4EE0010BD0D /* bg_map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_map@2x.png"; sourceTree = "<group>"; };
@@ -2398,6 +2400,7 @@
 				08682CE01914A7BB002E0A3D /* RouteAnnotation.m */,
 				08682CE31914A851002E0A3D /* UIImage+InternalMethod.h */,
 				08682CE41914A851002E0A3D /* UIImage+InternalMethod.m */,
+				08ACDDF119167D49001FAA9F /* View.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4566,6 +4569,7 @@
 				08E0DF61183289BF00C632B5 /* ipt_message@2x.png in Resources */,
 				083309F11851D46500C11BEF /* btn_green_normal.png in Resources */,
 				08214BC319101A870056CD35 /* aerfaluomiou_i.jpg in Resources */,
+				08ACDDF219167D49001FAA9F /* View.xib in Resources */,
 				08E0DF60183289B300C632B5 /* FZY3JW.TTF in Resources */,
 				08A176B4188195500090F469 /* ic_up@2x.png in Resources */,
 				0826ED0D1903BAE700368288 /* btn_edit_pressed@2x.png in Resources */,

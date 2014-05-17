@@ -11,6 +11,14 @@
 #import "BDRecognizerViewParamsObject.h"
 #import <AVFoundation/AVFoundation.h>
 
+typedef enum
+{
+    kEnumVoiceStateNormal = 0,
+    kEnumVoiceStateRecord = 1,
+    kEnumVoiceStateRecognize = 2,
+    kEnumVoiceStateSuccess = 3
+}kEnumVoiceState;
+
 // 前向声明
 @class BDVRViewController;
 
@@ -18,6 +26,7 @@
 
 @interface CusVoiceInputView : UIView<UITextFieldDelegate,MVoiceRecognitionClientDelegate>
 {
+    UIView *_inputView;                   //语音输入视图
     UILabel *_startLocateLable;
     UITextField *_startInputView;
 
@@ -32,6 +41,9 @@
     
     NSTimer *_voiceLevelMeterTimer; // 获取语音音量界别定时器
     AVAudioPlayer *_audioPlayer;
+    
+    kEnumVoiceState voiceState;     //录音状态
+    
 }
 
 @property (assign, nonatomic) id<CusVoiceInputViewDelegate>delegate;

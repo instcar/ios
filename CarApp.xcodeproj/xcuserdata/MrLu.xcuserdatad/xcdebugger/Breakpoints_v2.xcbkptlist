@@ -419,7 +419,7 @@
                   symbolName = "__53-[RegisterViewController checkPhone:success:failure:]_block_invoke"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/ViewControllers/RegisterViewController.m"
-                  timestampString = "420829516.824973"
+                  timestampString = "420997243.952428"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "274"
@@ -433,7 +433,7 @@
                   symbolName = "__53-[RegisterViewController checkPhone:success:failure:]_block_invoke_2"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/ViewControllers/RegisterViewController.m"
-                  timestampString = "420829516.825159"
+                  timestampString = "420997243.952625"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "274"
@@ -689,7 +689,7 @@
                   symbolName = "__44-[ProfileViewController requestEditUserInfo]_block_invoke"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/ViewControllers/ProfileViewController.m"
-                  timestampString = "420829516.834791"
+                  timestampString = "420997243.961998"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "823"
@@ -703,7 +703,7 @@
                   symbolName = "__44-[ProfileViewController requestEditUserInfo]_block_invoke_2"
                   moduleName = "&#x6613;&#x884c;"
                   urlString = "file://localhost/Users/MrLu/Desktop/YX_Pro/iosPhp/CarApp/ViewControllers/ProfileViewController.m"
-                  timestampString = "420829516.834978"
+                  timestampString = "420997243.96221"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "823"
@@ -816,11 +816,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CarApp/Views/CusVoiceInputView.mm"
-            timestampString = "420829338.784156"
+            timestampString = "420997069.87436"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "585"
-            endingLineNumber = "585"
+            startingLineNumber = "614"
+            endingLineNumber = "614"
             landmarkName = "-createRecordView"
             landmarkType = "5">
          </BreakpointContent>
@@ -832,11 +832,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CarApp/Views/CusVoiceInputView.mm"
-            timestampString = "420829110.796165"
+            timestampString = "420997069.87436"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "561"
-            endingLineNumber = "561"
+            startingLineNumber = "590"
+            endingLineNumber = "590"
             landmarkName = "-createInitView"
             landmarkType = "5">
          </BreakpointContent>
@@ -848,11 +848,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CarApp/Views/CusVoiceInputView.mm"
-            timestampString = "420829458.517113"
+            timestampString = "420997069.87436"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "613"
-            endingLineNumber = "613"
+            startingLineNumber = "656"
+            endingLineNumber = "656"
             landmarkName = "-createRecognitionView"
             landmarkType = "5">
          </BreakpointContent>
@@ -864,11 +864,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CarApp/Views/CusVoiceInputView.mm"
-            timestampString = "420829458.517113"
+            timestampString = "420997069.87436"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "668"
-            endingLineNumber = "668"
+            startingLineNumber = "726"
+            endingLineNumber = "726"
             landmarkName = "-createErrorView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -880,12 +880,92 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CarApp/Views/CusVoiceInputView.mm"
-            timestampString = "420829110.796165"
+            timestampString = "420997069.87436"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "446"
-            endingLineNumber = "446"
+            startingLineNumber = "475"
+            endingLineNumber = "475"
             landmarkName = "-createErrorViewWithErrorType:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CarApp/Views/CusVoiceInputView.mm"
+            timestampString = "420997069.87436"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "756"
+            endingLineNumber = "756"
+            landmarkName = "-restartRecogniton:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CarApp/ViewControllers/CustomRecognitionView/BDVRCustomRecognitonViewController.mm"
+            timestampString = "420905375.048067"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "852"
+            endingLineNumber = "852"
+            landmarkName = "-timerFired:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CarApp/Views/CusVoiceInputView.mm"
+            timestampString = "420997069.87436"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
+            landmarkName = "-dealloc"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CarApp/Common/TransView.m"
+            timestampString = "420997243.549816"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
+            landmarkName = "-hitTest:withEvent:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CarApp/Common/TransView.m"
+            timestampString = "420997263.970833"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "-hitTest:withEvent:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

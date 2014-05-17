@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8B48734817E159DF0021AC0A"
-               BuildableName = "CarAppTests.octest"
+               BuildableName = "CarAppTests.xctest"
                BlueprintName = "CarAppTests"
                ReferencedContainer = "container:CarApp.xcodeproj">
             </BuildableReference>
