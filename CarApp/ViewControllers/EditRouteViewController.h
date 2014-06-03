@@ -8,11 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "Line.h"
-
-@interface EditRouteViewController : UIViewController<BMKMapViewDelegate>
+#import "MGConferenceDatePicker.h"
+#import "SelectPassengerNumPicker.h"
+@interface EditRouteViewController : CommonViewController<BMKMapViewDelegate>
 {
     int _currentPeople;
     BOOL _boolll;
+    MGConferenceDatePicker *_datePicker;
+    SelectPassengerNumPicker *_peoplePicker;
 
 }
 

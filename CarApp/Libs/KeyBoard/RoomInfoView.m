@@ -11,6 +11,7 @@
 #import "UIButton+WebCache.h"
 #import "ProfileViewController.h"
 #import "Room.h"
+#import "GroupChatViewController.h"
 #define kEnsurePingcheTag 97777
 #define kJojinPingcheTag 97776
 #define kExitPingcheTag 97775
@@ -59,7 +60,7 @@
         self.nameLable = [[UILabel alloc]initWithFrame:CGRectMake(60, 10, 200, 20)];
         [self.nameLable setBackgroundColor:[UIColor clearColor]];
         [self.nameLable setTextAlignment:NSTextAlignmentLeft];
-        [self.nameLable setText:@"房主"];
+        [self.nameLable setText:@"冯源"];
         [self.nameLable setFont:[UIFont fontWithName:kFangZhengFont size:14]];
         [self.nameLable setTextColor:[UIColor blackColor]];
         [self.infoView addSubview:self.nameLable];
@@ -78,10 +79,11 @@
         self.pListSettingView.canEdit = YES;
         [self.infoView addSubview:self.pListSettingView];
         
-        self.ensureBtn = [[UIButton alloc]initWithFrame:CGRectMake((320-235)/2.0, 135, 235, 40)];
+        self.ensureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.ensureBtn setFrame:CGRectMake((320-235)/2.0, 135, 235, 40)];
         [self.ensureBtn setAutoresizingMask:UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin];
-        [self.ensureBtn setImage:[UIImage imageNamed:@"btn_ready_normal@2x"] forState:UIControlStateNormal];
-        [self.ensureBtn setImage:[UIImage imageNamed:@"btn_ready_pressed@2x"] forState:UIControlStateHighlighted];
+//        [self.ensureBtn setImage:[UIImage imageNamed:@"btn_ready_normal@2x"] forState:UIControlStateNormal];
+//        [self.ensureBtn setImage:[UIImage imageNamed:@"btn_ready_pressed@2x"] forState:UIControlStateHighlighted];
 //        [self.ensureBtn setImage:[UIImage imageNamed:@"btn_ready_normal@2x"] forState:UIControlStateNormal];
         [self.ensureBtn addTarget:self action:@selector(ensureAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.infoView addSubview:self.ensureBtn];
@@ -121,30 +123,32 @@
     return self;
 }
 
--(void)setData:(NSDictionary *)data
+-(void)setRoomInfo:(Room *)room AndUserInfo:(NSArray *)users
 {
-    if (data) {
-//        [_data release];
-        _data = [data copy];
-    }
-    NSMutableArray *users = [NSMutableArray arrayWithArray:[data valueForKey:@"users"]];
-    int seats = [[[data valueForKey:@"room"]valueForKey:@"seatnum"]intValue];
-    NSDictionary *owner = (NSDictionary *)[((NSArray *)[data objectForKey:@"owener"]) objectAtIndex:0];
+    _room = room;
+    _users = users;
+    int seats = room.max_seat_num-room.booked_seat_num;
+    NSPredicate *predicate;
+    predicate = [NSPredicate predicateWithFormat: @"ID == %d",room.user_id];
+    NSArray *array = [users filteredArrayUsingPredicate:predicate];
+    People *owner = [array objectAtIndex:0];
+    
+    NSMutableArray *passenger = [NSMutableArray arrayWithArray:users];
+    [passenger removeObject:owner];
     
     PListSettingView *plistview = (PListSettingView *)self.pListSettingView;
-    Room *room = [[Room alloc]initWithDic:[data valueForKey:@"room"]];
     
-    BOOL isRoomMaster = room.userid == [User shareInstance].userId?YES:NO;
+    BOOL isRoomMaster = room.user_id == [User shareInstance].userId?YES:NO;
     self.isRoomMaster = isRoomMaster;
-    if (isRoomMaster) {
-        [plistview setPersonArray:users RoomMaster:owner Seats:seats];
-        [self.ensureBtn setImage:[UIImage imageNamed:@"btn_confirmation_normal@2x"] forState:UIControlStateNormal];
-        [self.ensureBtn setImage:[UIImage imageNamed:@"btn_confirmation_pressed@2x"] forState:UIControlStateHighlighted];
+    if (isRoomMaster)
+    {
+        [plistview setPersonArray:passenger RoomMaster:owner Seats:seats];
+        [self setEnsureBtnName:@"编辑座位" AndBackgroundImage:@"bg_red"];
         self.ensureBtnState = 0;
     }
     else
     {
-        [plistview setPersonArray:users RoomMaster:owner Seats:seats];
+        [plistview setPersonArray:passenger RoomMaster:owner Seats:seats];
         //乘客
         double userId = [User shareInstance].userId;
         BOOL isReady = NO;
@@ -156,32 +160,29 @@
             }
         }
         
-        if (isReady) {
-            [self.ensureBtn setImage:[UIImage imageNamed:@"btn_unready_normal@2x"] forState:UIControlStateNormal];
-            [self.ensureBtn setImage:[UIImage imageNamed:@"btn_unready_pressed@2x"] forState:UIControlStateHighlighted];
+        if (isReady)
+        {
+            [self setEnsureBtnName:@"取消预定" AndBackgroundImage:@"bg_red"];
             self.ensureBtnState = 2;
         }
         else
         {
-            [self.ensureBtn setImage:[UIImage imageNamed:@"btn_ready_normal@2x"] forState:UIControlStateNormal];
-            [self.ensureBtn setImage:[UIImage imageNamed:@"btn_ready_pressed@2x"] forState:UIControlStateHighlighted];
+            [self setEnsureBtnName:@"立即抢座" AndBackgroundImage:@"bg_blue"];
             self.ensureBtnState = 1;
         }
     }
     
-    NSDictionary *owener = (NSDictionary *)[((NSArray *)[data objectForKey:@"owener"]) objectAtIndex:0];
+    People *owener = [users objectAtIndex:0];
     
-    [self.nameLable setText:[owener valueForKey:@"username"]];
-    [self.headImgView setBackgroundImageWithURL:[NSURL URLWithString:[owener valueForKey:@"headpic"]]  forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"delt_user_s"]];
+    [self.nameLable setText:owener.name];
+    [self.headImgView setBackgroundImageWithURL:[NSURL URLWithString:owener.headpic]  forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"delt_user_s"]];
     CGRect frame = self.nameLable.frame;
-    frame.size.width = [self widthForRect:CGRectMake(0, 0, frame.size.width, frame.size.height) WithText:[owener valueForKey:@"username"] font:self.nameLable.font];
+    frame.size.width = [self widthForRect:CGRectMake(0, 0, frame.size.width, frame.size.height) WithText:owener.name font:self.nameLable.font];
     [self.nameLable setFrame:frame];
     
     CGRect mframe = self.masterLable.frame;
     mframe.origin.x = self.nameLable.frame.origin.x + self.nameLable.frame.size.width;
     [self.masterLable setFrame:mframe];
-    
-
 }
 
 -(float)widthForRect:(CGRect)rect WithText:(NSString *)strText font:(UIFont *)font
@@ -260,35 +261,90 @@
     }
     [[NSNotificationCenter defaultCenter]postNotificationName:@"infoViewHide" object:[NSNumber numberWithBool:YES]];
 }
+#pragma mark - Reponse
+- (void)setMaxSeatNum:(int) num
+{
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"同步中" toView:self.groupVC.view];
+    __block typeof(self) bSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [APIClient networkChangemaxseatnumWithroom_id:_room.ID max_seat_num:num success:^(Respone *respone) {
+            if (respone.status == kEnumServerStateSuccess)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [hud hide:YES afterDelay:0.1];
+                    //重新请求房间数据，刷新
+                    [bSelf.groupVC refreshRoomInfo];
+                });
+            }
+            else
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [hud hide:YES];
+                    [MBProgressHUD showError:respone.msg toView:bSelf.groupVC.view];
+                });
+            }
+        } failure:^(NSError *error) {
+            
+        }];
+    });
+}
+#pragma mark - Other
+- (void) setEnsureBtnName:(NSString *) name AndBackgroundImage:(NSString *) imgName
+{
+    [self.ensureBtn setBackgroundImage:[[UIImage imageNamed:[NSString stringWithFormat:@"%@_normal@2x.png",imgName]] stretchableImageWithLeftCapWidth:20 topCapHeight:20] forState:UIControlStateNormal];
+    [self.ensureBtn setBackgroundImage:[[UIImage imageNamed:[NSString stringWithFormat:@"%@_pressed@2x.png",imgName]] stretchableImageWithLeftCapWidth:20 topCapHeight:20] forState:UIControlStateHighlighted];
+    [self.ensureBtn setTitle:name forState:UIControlStateNormal];
+    [self.ensureBtn setTitle:name forState:UIControlStateHighlighted];
 
+}
 #pragma mark - 确认/我准备好了
 - (void)ensureAction:(UIButton *)sender
 {
     DLog(@"我准备好了");
     
-    NSArray *users = (NSArray *)[self.data valueForKey:@"users"];
+   // NSArray *users = (NSArray *)[self.data valueForKey:@"users"];
     
-    if (self.isRoomMaster) {
-        //确认拼车人员
-        DLog(@"确认拼车人员");
-        if ([users count] == 0) {
-            [UIAlertView showAlertViewWithTitle:@"当前没有准备的乘客,无法确认拼车" tag:kEnsurePingcheTag cancelTitle:@"取消" ensureTitle:@"确定" delegate:nil];
-            return;
+    if (self.isRoomMaster)
+    {
+        if ([sender.currentTitle isEqualToString:@"编辑座位"])
+        {
+            [self.pListSettingView enterEditSeatMode];
+            [self setEnsureBtnName:@"确定" AndBackgroundImage:@"bg_green"];
+        }
+        else
+        {
+           
+            if (self.pListSettingView.seatNum != 0)
+            {
+                [self.pListSettingView reloadView];
+                [self setEnsureBtnName:@"编辑座位" AndBackgroundImage:@"bg_red"];
+                /*
+                 * 子线程调用司机修改最大座位数目
+                 * server/room/changemaxseatnum
+                 */
+                [self setMaxSeatNum:self.pListSettingView.seatNum];
+            }
+            else
+            {
+                [MBProgressHUD showError:@"座位数不能为零" toView:self.groupVC.view];
+            }
+          
         }
         
-        [UIAlertView showAlertViewWithTitle:@"是否确认拼车" tag:kEnsurePingcheTag cancelTitle:@"取消" ensureTitle:@"确定" delegate:(id)self.groupVC];
+      
     }
     else
     {
         //我准备好了
         if(self.ensureBtnState == 1)
         {
-            [UIAlertView showAlertViewWithTitle:@"是否加入拼车" tag:kJojinPingcheTag cancelTitle:@"取消" ensureTitle:@"确定" delegate:(id)self.groupVC];
+            //取消预订
         }
         
-        if (self.ensureBtnState == 2) {
-            
-            [UIAlertView showAlertViewWithTitle:@"是否退出拼车" tag:kExitPingcheTag cancelTitle:@"取消" ensureTitle:@"确定" delegate:(id)self.groupVC];
+        if (self.ensureBtnState == 2)
+        {
+            //立即抢座
+           
         }
     }
 }
@@ -296,25 +352,27 @@
 -(void)PListSettingViewDelegate:(PListSettingView *)plistSettingView index:(int)index event:(kPListEvent)event
 {
     if (self.groupVC) {
+        /*
         DLog(@"头像点击");
         NSMutableArray *users = [NSMutableArray arrayWithArray:[self.data valueForKey:@"users"]];
         NSDictionary *user = (NSDictionary *)[users objectAtIndex:index];
         ProfileViewController * profileVC = [[ProfileViewController alloc]init];
         profileVC.uid = [[user valueForKey:@"id"] doubleValue];
         profileVC.state = 1;
-        [self.groupVC.navigationController pushViewController:profileVC animated:YES];
+        [self.groupVC.navigationController pushViewController:profileVC animated:YES];*/
     }
 }
 
 - (void)masterHeadImageTap:(UIButton *)sender
 {
     if (self.groupVC) {
+        /*
         DLog(@"头像点击");
         NSDictionary *owner = (NSDictionary *)[((NSArray *)[self.data objectForKey:@"owener"]) objectAtIndex:0];
         ProfileViewController * profileVC = [[ProfileViewController alloc]init];
         profileVC.uid = [[owner valueForKey:@"id"] doubleValue];
         profileVC.state = 1;
-        [self.groupVC.navigationController pushViewController:profileVC animated:YES];
+        [self.groupVC.navigationController pushViewController:profileVC animated:YES];*/
     }
 }
 

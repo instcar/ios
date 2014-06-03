@@ -110,7 +110,7 @@ show_comp_addr	int	in [0, 1]
 
 #pragma mark - 房间接口
 //创建
-+ (void)networkCreatRoomWithUser_phone:(NSString *)user_phone line_id:(int)line_id price:(int)price description:(NSString *)description start_time:(NSString *)start_time max_seat_num:(int)max_seat_num success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
++ (void)networkCreatRoomWithUser_id:(int)user_id line_id:(int)line_id price:(int)price description:(NSString *)description start_time:(NSDate *)start_time max_seat_num:(int)max_seat_num success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
 
 //关闭房间
 + (void) networkCloseRoomWithroom_id:(int)room_id success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
@@ -132,7 +132,8 @@ show_comp_addr	int	in [0, 1]
 
 //乘客退出房间
 + (void) networkpassengerQuitroomWithroom_id:(int)room_id user_id:(int)user_id success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
-
+//查询某个房间信息
++ (void) networkGetroomsWithRoom_id:(int)room_id success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
 //查询某条路线的房间列表
 + (void) networkGetlineroomsWithline_id:(int)line_id success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure;
 

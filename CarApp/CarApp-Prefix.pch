@@ -30,6 +30,7 @@
     #import "UIImageView+WebCache.h"
     #import "User.h"
     #import "WarnView.h"
+    #import "UIView+Basic.h"
 
     #ifdef DEBUG
     #define DLog( s, ...) NSLog(@"<%@ :%d> %@",[[NSString stringWithUTF8String:__FILE__]lastPathComponent],__LINE__,[NSString stringWithFormat:(s),##__VA_ARGS__]);

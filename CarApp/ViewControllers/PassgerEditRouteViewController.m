@@ -303,7 +303,7 @@
 -(void)transformArray
 {
     for (Room *room in self.roomArray) {
-        NSString *dayStr = [AppUtility dayStrTimeDate:room.startingtime];
+        NSString *dayStr = [AppUtility dayStrTimeDate:room.start_time];
         
         if ([dayStr isEqualToString:@"今天"]) {
             [self.todayArray addObject:room];
@@ -514,13 +514,13 @@
     NSArray *array = (NSArray *)[[((NSDictionary *)[self.resultSortArray objectAtIndex:indexPath.section])allValues]objectAtIndex:0];
     Room *room = [array objectAtIndex:indexPath.row];
     
-    [cell.imagerView setImageWithURL:[NSURL URLWithString:room.headpic] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"delt_user_s"]];
+    //[cell.imagerView setImageWithURL:[NSURL URLWithString:room.headpic] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"delt_user_s"]];
     [cell.imagerView setTag:1000+indexPath.row];
     [cell.imagerView addTarget:self action:@selector(headImageTapAction:) forControlEvents:UIControlEventTouchDown];
     [cell setBackgroundColor:[UIColor whiteColor]];
-    [cell.nameLable setText:room.username];
+   // [cell.nameLable setText:room.username];
     
-    NSString *mmssTime = [AppUtility strFromDate:room.startingtime withFormate:@"HH:mm"];
+    NSString *mmssTime = [AppUtility strFromDate:room.start_time withFormate:@"HH:mm"];
 //    NSString *dayTime = [AppUtility dayStrTimeDate:room.startingtime];
 //    [cell.dayLable setText:dayTime];
     [cell.timeLable setText:mmssTime];
@@ -533,9 +533,9 @@
     }
     
     [cell.desLable setText:[room.description isEqualToString:@""]?@"暂无":room.description];
-    [cell.lastSeatLable setText:[NSString stringWithFormat:@"%d",room.leftseatnum]];
+    [cell.lastSeatLable setText:[NSString stringWithFormat:@"%d",room.max_seat_num-room.booked_seat_num]];
     
-     NSString * publishTime =  [AppUtility strTimeInterval:[[NSDate date] timeIntervalSinceDate:room.publishtime]];
+     NSString * publishTime =  [AppUtility strTimeInterval:[[NSDate date] timeIntervalSinceDate:room.start_time]];
     [cell.pubTimeLable setText:[NSString stringWithFormat:@"%@发布",publishTime]];
      
     
@@ -568,7 +568,7 @@
     int index = sender.tag - 1000;
     Room *room = (Room *)[self.roomArray objectAtIndex:index];
     ProfileViewController * profileVC = [[ProfileViewController alloc]init];
-    profileVC.uid = room.userid;
+    profileVC.uid = room.user_id;
     profileVC.state = 1;
     [self.navigationController pushViewController:profileVC animated:YES];
 }

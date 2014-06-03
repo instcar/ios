@@ -377,9 +377,13 @@
     [UIView setAnimationDuration:keyboardTransitionDuration];
     [UIView setAnimationCurve:keyboardTransitionAnimationCurve];
     [UIView setAnimationBeginsFromCurrentState:YES];
-//    NSLog(@"键盘即将出现：%@", NSStringFromCGRect(keyboardEndFrameWindow));
+    NSLog(@"键盘即将出现：%@", NSStringFromCGRect(keyboardEndFrameWindow));
     if (toolBar.frame.size.height>44) {
-        toolBar.frame = CGRectMake(0, keyboardEndFrameWindow.origin.y-toolBar.frame.size.height,  self.theSuperView.bounds.size.width,toolBar.frame.size.height);
+        /*
+         *  更改toolBar y轴坐标 = 父视图的高度-键盘的高度- toolBar的高度
+         */
+        toolBar.frame = CGRectMake(0, self.theSuperView.current_h-keyboardEndFrameWindow.size.height-toolBar.current_h,  self.theSuperView.bounds.size.width,toolBar.current_h);
+
         //处理表情视图和格外视图的影藏
         if (faceboardIsShow) {
             [UIView animateWithDuration:Time animations:^{

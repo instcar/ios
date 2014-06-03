@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Judian : NSObject
+@interface Judian : NSObject<NSCopying>
 ///*
 // "id": 1,//聚点ID
 // "cityregion": "厦门市思明区",//聚点城市区域
@@ -20,15 +20,25 @@
 // "img": null//聚点的图片
 // */
 @property (assign, nonatomic) int ID;
+@property (copy, nonatomic) NSString *name;
+@property (assign, nonatomic) double lat;
+@property (assign, nonatomic) double lng;
+@property (copy, nonatomic) NSString *geohash;
+@property (copy, nonatomic) NSString *district;
+@property (copy, nonatomic) NSString *city;
+@property (copy, nonatomic) NSDate *addtime;
+@property (copy, nonatomic) NSDate *modtime;
+
+
+/*
 @property (assign, nonatomic) double distance;
 @property (copy, nonatomic) NSString *cityregion;
-@property (copy, nonatomic) NSString *name;
+
 @property (copy, nonatomic) NSString *address;
 @property (copy, nonatomic) NSString *description;
-@property (assign, nonatomic) double longitude;
-@property (assign, nonatomic) double latitude;
-@property (copy, nonatomic) NSString *img;
+
+@property (copy, nonatomic) NSString *img;*/
 
 -(Judian *)initWithDic:(NSDictionary *)dic;
-+(NSArray *)arrayWithArrayDic:(NSArray *)array;
++(NSMutableArray *)arrayWithArrayDic:(NSArray *)array;
 @end

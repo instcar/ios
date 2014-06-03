@@ -21,11 +21,20 @@
 //"userid": 2,//房主用户ID
 //"username": "测试用户2"//房主昵称
 
-@property (assign, nonatomic) long ID;
-@property (assign, nonatomic) long lineid;
-@property (assign, nonatomic) long userid;
-@property (assign, nonatomic) int seatnum;
+@property (assign, nonatomic) int ID;
+@property (copy, nonatomic) NSString *openfire;
+@property (assign, nonatomic) int user_id;
+@property (assign, nonatomic) int line_id;
+@property (assign, nonatomic) float price;
 @property (assign, nonatomic) int status;
+@property (copy, nonatomic) NSDate *start_time;
+@property (assign, nonatomic) int max_seat_num;
+@property (assign, nonatomic) int booked_seat_num;
+@property (copy, nonatomic) NSString *description;
+@property (copy, nonatomic) NSDate *addtime;
+@property (copy, nonatomic) NSDate *modtime;
+
+/*
 @property (assign, nonatomic) int leftseatnum;
 
 @property (copy, nonatomic) NSString *username;
@@ -36,7 +45,7 @@
 @property (copy, nonatomic) NSString *startaddr;
 @property (copy, nonatomic) NSString *stopaddr;
 @property (copy, nonatomic) NSString *wayaddr;
-@property (copy, nonatomic) NSString *linename;
+@property (copy, nonatomic) NSString *linename;*/
 
 
 -(Room *)initWithDic:(NSDictionary *)dic;

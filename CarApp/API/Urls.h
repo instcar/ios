@@ -152,7 +152,7 @@
      @pram rows (int) 每页条数
      @pram all (int) 是否回去全部据点信息
      */
-    #define API_POST_GetListLineByTag [NSString stringWithFormat:@"%@server/line/listlinebypointid",PHPHOST]
+    #define API_POST_GetListLineByTag [NSString stringWithFormat:@"%@server/line/listline",PHPHOST]
     /**
      根据线路ID获取线路详情
      */
@@ -248,7 +248,10 @@
      乘客退出房间
      */
     #define API_POST_QuitRoom [NSString stringWithFormat:@"%@server/room/quit",PHPHOST]
-
+    /**
+     查询房间信息
+     */
+    #define API_POST_Getroom [NSString stringWithFormat:@"%@server/room/getroominfo",PHPHOST]
     /**
      查询某条路线的房间列表
      */
@@ -260,8 +263,8 @@
     #define API_POST_Getroomusers [NSString stringWithFormat:@"%@server/room/getroomusers",PHPHOST]
 
     /**
-     查询单个房间信息
+     查询静态全景图
      */
-
+    #define API_POST_Getpanorama(lng,lat) [NSString stringWithFormat:@"http://api.map.baidu.com/panorama?width=320&height=150&location=%f,%f&fov=360&ak=IYgKop9i0EVOLwKIf5GQHBei",lng,lat];
 
 #endif

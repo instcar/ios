@@ -273,10 +273,9 @@
     NSString *siID = [XMPPStream generateUUID];
     
     XMPPMessage *xmessage = [XMPPMessage messageWithType:@"groupchat" to:[XMPPJID jidWithString: [AppUtility groupNameFromRoomID:message.roomid]] elementID:siID];
-    
     NSXMLElement *receipt = [NSXMLElement elementWithName:@"request" xmlns:@"urn:xmpp:receipts"];
     //发送到xmpp时对内容进行加密，客户端接受的时候进行解密
-    [xmessage addBody:[message.content stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+   [xmessage addBody:[message.content stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     [xmessage addChild:receipt];
     [[XmppManager sharedInstance].xmppStream sendElement:xmessage];
 }

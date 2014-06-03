@@ -151,7 +151,7 @@
     UILabel *timerLable = (UILabel *)[self.view viewWithTag:22222];
     UILabel *pnumLabel = (UILabel *)[self.view viewWithTag:33333];
     
-    NSString *startDate = [AppUtility strFromDate:self.room.startingtime withFormate:@"yyyy年MM月dd HH:mm"];
+    NSString *startDate = [AppUtility strFromDate:self.room.start_time withFormate:@"yyyy年MM月dd HH:mm"];
     
     [timerLable setText:[NSString stringWithFormat:@"时间:%@",startDate]];
     /*

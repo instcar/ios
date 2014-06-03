@@ -61,10 +61,10 @@ typedef enum {
 {
 	@synchronized(self) {
 		if (flowHelp == nil) {
-			flowHelp = [[FlowHelpView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - KFlowHelpViewWidth, 64+44+30, KFlowHelpViewWidth, KFlowHelpViewHeight)];
+			flowHelp = [[FlowHelpView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - KFlowHelpViewWidth, 75, KFlowHelpViewWidth, KFlowHelpViewHeight)];
             LocateRect = flowHelp.frame;
 		}
-        [flowHelp setFrame:CGRectMake(SCREEN_WIDTH - KFlowHelpViewWidth, 64+44+30, KFlowHelpViewWidth, KFlowHelpViewHeight)];
+        [flowHelp setFrame:CGRectMake(SCREEN_WIDTH - KFlowHelpViewWidth, 75, KFlowHelpViewWidth, KFlowHelpViewHeight)];
         flowHelp.touchEnable = NO;
 	}
 	return flowHelp;
@@ -87,7 +87,8 @@ typedef enum {
 		_mainBtn.frame	= self.bounds;
 		_mainBtn.userInteractionEnabled = NO;
 		[self addSubview:_mainBtn];
-
+        
+        
 		self.tapState = YES;
 		// 修改人 mrlu 背景色透明
 		// 修改前开始
@@ -126,23 +127,19 @@ typedef enum {
 
 	return self;
 }
-
--(void)setData:(NSDictionary *)data
+- (void)setRoom:(Room *)room
 {
-    if (data) {
-//        [_data release];
-        _data = data;
+    if (room)
+    {
+        _room = room;
     }
-    [self reflashView:data];
+    [self reflashView:room];
 }
 
--(void)reflashView:(NSDictionary *)data
+-(void)reflashView:(Room*)room
 {
-    Room *room = [[Room alloc]initWithDic:[data valueForKey:@"room"]];
-    
-    int currentPassengers = [((NSArray *)[data valueForKey:@"users"]) count];
-    int leftNullSeats = room.seatnum-currentPassengers;
-    int allSeats = room.seatnum;
+    int leftNullSeats = room.max_seat_num-room.booked_seat_num;
+    int allSeats = room.max_seat_num;
     
     [self setAllSeat:allSeats nullSeat:leftNullSeats];
 }
@@ -163,7 +160,7 @@ typedef enum {
 //		}
         self.tapState = !self.tapState;
         [self sendActionsForControlEvents:UIControlEventTouchDown];
-        
+   
         if (self.tapState) {
             
             if(self.groupVC && [self.groupVC respondsToSelector:@selector(refreshRoomInfo)])
@@ -176,7 +173,6 @@ typedef enum {
             } completion:^(BOOL finished) {
                 self.touchEnable = NO;
             }];
-            
         }
         else
         {

@@ -207,7 +207,7 @@
             
             User *user = [User shareInstance];
             [user setPhoneNum:phoneNumbers];
-            [user setPhoneNum:password];
+            [user setUserPwd:password];
             [user setIsSavePwd:YES];
             [user setIsFirstUse:YES];
             
@@ -228,7 +228,7 @@
 #pragma mark - 注册后直接登入
 -(void)userLoginWithAccount:(NSString *)account passWord:(NSString *)password
 {
-     MBProgressHUD *hub = [MBProgressHUD showMessag:@"正在登录" toView:self.view];
+    MBProgressHUD *hub = [MBProgressHUD showMessag:@"正在登录" toView:self.view];
     [APIClient networkUserLoginWithPhone:account password:password success:^(Respone *respone) {
         if (respone.status == kEnumServerStateSuccess) {
             

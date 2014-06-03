@@ -27,7 +27,12 @@
     }
     return self;
 }
-
+- (id)copyWithZone:(NSZone *)zone
+{
+    PeopleDetail *result = [[[self class] allocWithZone:zone] init];
+    
+    return result;
+}
 @end
 
 @implementation People
@@ -38,7 +43,7 @@
     self = [super init];
     if (self) {
         
-        self.ID = [dic isExitKey:@"id"]?[(NSString *)[dic valueForKey:@"id"] longLongValue]:0;
+        self.ID = [dic isExitKey:@"id"]?[[dic valueForKey:@"id"] longLongValue]:0;
         self.headpic = [dic utilityValueForKey:@"headpic"];
         self.name = [dic utilityValueForKey:@"name"];
         self.phone = [dic utilityValueForKey:@"phone"];
@@ -88,7 +93,12 @@
     }
     return mutableArray;
 }
-
+- (id)copyWithZone:(NSZone *)zone
+{
+    People *result = [[[self class] allocWithZone:zone] init];
+    result.detail = [self.detail copy];
+    return result;
+}
 ////从网络获取好友列表
 //+(void)FriendFormServerRequestWithMoreId:(int)moreId success:(void (^)(NSArray *peoples, id json))block failure:(void (^)(void))failureblock
 //{

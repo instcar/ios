@@ -11,7 +11,6 @@
 #import "PListSettingView.h"
 
 @protocol GroupRoomSettingVCDelegate;
-
 @interface GroupRoomSettingViewController : UIViewController<UIAlertViewDelegate,BMKMapViewDelegate>
 {
     int _currentPeople;

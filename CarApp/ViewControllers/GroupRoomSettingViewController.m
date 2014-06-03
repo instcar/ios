@@ -13,6 +13,7 @@
 #import "MapViewController.h"
 #import "AddressImageViewController.h"
 #import "RoomInfoView.h"
+#import "GroupChatViewController.h"
 
 #define kMessageWarnLableTag 100000
 #define kSignPintImageTag  100001

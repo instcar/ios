@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-//@protocol FlowHelpViewDelegate;
+@class Room;
 @interface FlowHelpView : UIControl
 {
 	UIButton *_mainBtn;	// 主要按钮
@@ -18,7 +18,7 @@
 @property (strong, nonatomic) UIImage	*normalImage;
 //@property (assign, nonatomic) id<FlowHelpViewDelegate> delegate;
 @property (assign, nonatomic) BOOL	tapState;
-@property (assign, nonatomic) NSDictionary *data;
+@property (assign, nonatomic) Room *room;
 @property (assign, nonatomic) UIViewController *groupVC;
 
 /**

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "People.h"
 typedef enum
 {
     kPListEventClose = 10,
@@ -22,12 +22,13 @@ typedef enum
 
 @property (assign, nonatomic) BOOL canEdit;
 @property (strong, nonatomic) NSArray *personArray;
-@property (strong, nonatomic) NSDictionary *roomMaster;
+@property (strong, nonatomic) People *roomMaster;
 @property (assign, nonatomic) int seatNum;
-@property (assign, nonatomic) id<PListSettingViewDelegate> delegate;
+@property (weak, nonatomic) id<PListSettingViewDelegate> delegate;
 
--(void)setPersonArray:(NSArray *)personArray RoomMaster:(NSDictionary *)roomMaster Seats:(int)seatNum;
-
+- (void)setPersonArray:(NSArray *)personArray RoomMaster:(People *)roomMaster Seats:(int)seatNum;
+- (void)enterEditSeatMode;
+- (void)reloadView;
 @end
 
 @protocol PListSettingViewDelegate<NSObject>
@@ -39,6 +40,6 @@ typedef enum
  *	@param	index	那个对象
  *	@param	event	操作类型 1关闭 2踢出去
  */
--(void)PListSettingViewDelegate:(PListSettingView *)plistSettingView index:(int)index event:(kPListEvent)event;
+- (void)PListSettingViewDelegate:(PListSettingView *)plistSettingView index:(int)index event:(kPListEvent)event;
 
 @end

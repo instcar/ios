@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "PListSettingView.h"
-
+@class Room;
+@class GroupChatViewController;
 @interface RoomInfoView : UIView
 
 @property (strong, nonatomic) UIButton *headImgView;
@@ -17,11 +18,13 @@
 @property (strong, nonatomic) PListSettingView *pListSettingView;
 @property (strong, nonatomic) UIButton *ensureBtn;
 @property (assign, nonatomic) BOOL enableTouchBg;
-@property (strong, nonatomic) NSDictionary *data;
-@property (strong, nonatomic) UIViewController *groupVC;
-
+@property (assign, nonatomic) GroupChatViewController *groupVC;
+@property (strong, nonatomic) Room *room;
+@property (strong, nonatomic) NSArray *users;
 -(void)show;
 
 -(void)hide:(BOOL)animated;
+
+-(void)setRoomInfo:(Room *)room AndUserInfo:(NSArray *)users;
 
 @end

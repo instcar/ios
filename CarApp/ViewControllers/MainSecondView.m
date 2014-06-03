@@ -99,7 +99,7 @@
     
     for (int i = 0; i < [self.myAllArray count]; i++) {
         Room *room = [self.myAllArray objectAtIndex:i];
-        if (room.userid == user.userId) {
+        if (room.user_id == user.userId) {
             [self.MyRoomArray addObject:room];
         }
         else
@@ -202,7 +202,7 @@
     //创建成功进入聊天室
     GroupChatViewController * gVC = [[GroupChatViewController alloc]init];
     gVC.roomID = room.ID;
-    gVC.isRoomMaster = room.userid == user.userId?YES:NO;
+    gVC.isRoomMaster = room.user_id == user.userId?YES:NO;
     gVC.userState = 2;
     [self.mainVC.navigationController pushViewController:gVC animated:YES];
 }
@@ -214,7 +214,7 @@
     self.currentCommentRoom = room;
     
     //判断是否为房主
-    if (room.userid == masterUser.userId)
+    if (room.user_id == masterUser.userId)
     {   //是房主
         CommentViewController *commentVC = [[CommentViewController alloc]init];
         commentVC.room = room;
@@ -239,7 +239,7 @@
         }
     }
     //    [self.myroomArray removeObjectAtIndex:index];
-    if (room.userid != [User shareInstance].userId) {
+    if (room.user_id != [User shareInstance].userId) {
         _myroompage = 1;
 //        
 //        [NetWorkManager networkExitRoomWithID:[User shareInstance].userId roomID:room.ID success:^(BOOL flag, NSString *msg) {
@@ -356,20 +356,20 @@
     }
 //    Room *room = [_secondTableData objectAtIndex:indexPath.row];
     
-    [cell.routeTitleLabel setText:room.linename];
+    [cell.routeTitleLabel setText:room.description];
     
-    NSString *ddStr = [AppUtility dayStrTimeDate:room.startingtime];
+    NSString *ddStr = [AppUtility dayStrTimeDate:room.start_time];
 //    NSString *timeStr = [AppUtility strFromDate:room.startingtime withFormate:@"HH:mm"];
 
     [cell.routeInfoLabel setText:[NSString stringWithFormat:@"%@",ddStr]];
     if ([ddStr isEqualToString:@"未知"]) {
-        [cell.routeInfoLabel setText:[NSString stringWithFormat:@"%@",[AppUtility strFromDate:room.startingtime withFormate:@"yyyy年MM月dd日 hh:mm"]]];
+        [cell.routeInfoLabel setText:[NSString stringWithFormat:@"%@",[AppUtility strFromDate:room.start_time withFormate:@"yyyy年MM月dd日 hh:mm"]]];
     }
     
-    NSString *startDate = [AppUtility strFromDate:room.startingtime withFormate:@"HH:mm"];
+    NSString *startDate = [AppUtility strFromDate:room.start_time withFormate:@"HH:mm"];
     [cell.routeTimeLabel setText:startDate];
     
-    [cell.routeTimeLabel setTextColor:room.userid == [User shareInstance].userId?[UIColor appNavTitleGreenColor]:[UIColor appNavTitleBlueColor]];
+    [cell.routeTimeLabel setTextColor:room.user_id == [User shareInstance].userId?[UIColor appNavTitleGreenColor]:[UIColor appNavTitleBlueColor]];
     
     [cell.commentBtn addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
     if (indexPath.section == 0) {
@@ -605,7 +605,7 @@
             }
             CommentDetailViewController *commentDetailVC = [[CommentDetailViewController alloc]init];
             commentDetailVC.room = self.currentCommentRoom;
-            commentDetailVC.userid = self.currentCommentRoom.userid;
+            commentDetailVC.userid = self.currentCommentRoom.user_id;
             [self.mainVC.navigationController pushViewController:commentDetailVC animated:YES];
         }
         if (buttonIndex == 2) {

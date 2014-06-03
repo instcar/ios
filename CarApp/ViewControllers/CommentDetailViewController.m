@@ -207,8 +207,8 @@
             return;
         }
         int commentLevel = 3 - segmentControl.selectedSegmentIndex;
-        int userstatus = (self.userid == self.room.userid ? 0:1);//房主评乘客
-        int ownerstatus = (self.userid == self.room.userid ? 1:0);//乘客评房主
+        int userstatus = (self.userid == self.room.user_id ? 0:1);//房主评乘客
+        int ownerstatus = (self.userid == self.room.user_id ? 1:0);//乘客评房主
         /*
         [NetWorkManager networkCommemtWithRoomID:self.room.ID uid:[User shareInstance].userId touid:self.userid content:@"" commentLever:commentLevel userstatus:userstatus yeyxstar:YXControl.currentNum jzwmstar:JZControl.currentNum rxttstar:RXControl.currentNum ownertatus:ownerstatus success:^(BOOL flag, NSString *msg) {
             if (flag) {

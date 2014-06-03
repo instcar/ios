@@ -14,17 +14,19 @@
 {
     self = [super init];
     if (self) {
-        self.ID = [[dic valueForKey:@"id"]longValue];
-        if ([dic valueForKey:@"roomid"]) {
-            self.ID = [[dic valueForKey:@"roomid"]longValue];
-        }   //linewithuid 参数
-        self.lineid = [[dic valueForKey:@"lineid"]longValue];
-        self.userid = [[dic valueForKey:@"userid"]longValue];
-        if ([dic valueForKey:@"roomowneruid"]) {
-            self.userid = [[dic valueForKey:@"roomowneruid"]longValue];
-        }   //linewithuid 参数
-        self.status = [[dic valueForKey:@"status"]intValue];
-        self.seatnum = [[dic valueForKey:@"seatnum"]intValue];
+        self.ID = [[dic valueForKey:@"id"] intValue];
+        self.openfire = [dic valueForKey:@"openfire"];
+        self.user_id = [[dic valueForKey:@"user_id"] intValue];
+        self.line_id = [[dic valueForKey:@"line_id"] intValue];
+        self.price = [[dic valueForKey:@"price"] floatValue];
+        self.status = [[dic valueForKey:@"status"] intValue];
+        self.start_time = [dic valueForKey:@"start_time"];
+        self.max_seat_num = [[dic valueForKey:@"max_seat_num"] intValue];
+        self.booked_seat_num =[[dic valueForKey:@"booked_seat_num"] intValue];
+        self.description = [dic valueForKey:@"description"];
+        self.addtime = [dic valueForKey:@"addtime"];
+        self.modtime = [dic valueForKey:@"addtime"];
+        /*
         self.leftseatnum = [[dic valueForKey:@"leftseatnum"]intValue];
         
         self.username = [AppUtility getStrByNil:[dic valueForKey:@"username"]];
@@ -35,10 +37,8 @@
         self.linename = [AppUtility getStrByNil:[dic valueForKey:@"linename"]];  //linewithuid 参数
         NSString *startingtimeStr = [AppUtility getStrByNil:[dic valueForKey:@"startingtime"]];
         NSString *publishtimeStr = [AppUtility getStrByNil:[dic valueForKey:@"publishtime"]];
-        self.startingtime = [AppUtility dateFromStr:startingtimeStr withFormate:@"yyyy-MM-dd HH:mm:ss"];
-        self.publishtime = [AppUtility dateFromStr:publishtimeStr withFormate:@"yyyy-MM-dd HH:mm:ss"];
-        
-        self.description = [AppUtility getStrByNil:[dic valueForKey:@"description"]];
+    
+        self.publishtime = [AppUtility dateFromStr:publishtimeStr withFormate:@"yyyy-MM-dd HH:mm:ss"];*/
     }
     return self;
 }

@@ -9,19 +9,19 @@
 #import "CusLocateInputView.h"
 
 @implementation CusLocateInputView
-
+@synthesize startLable = _startLable;
+@synthesize startInputView = _startInputView;
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
         //起点输入
-        UILabel *startLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 40, 25)];
-        [startLable setText:@"起点:"];
-        [startLable setBackgroundColor:[UIColor clearColor]];
-        [startLable setFont:AppFont(14)];
-        [startLable setTextColor:[UIColor whiteColor]];
-        [self addSubview:startLable];
+        self.startLable = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 40, 25)];
+        [self.startLable  setBackgroundColor:[UIColor clearColor]];
+        [self.startLable  setFont:AppFont(14)];
+        [self.startLable  setTextColor:[UIColor whiteColor]];
+        [self addSubview:self.startLable];
         
         //定位显示坐标
 //        UILabel *startLocateLable = [[UILabel alloc]initWithFrame:CGRectMake(50, 10, 200, 25)];
@@ -47,18 +47,19 @@
         [toolBar addSubview:confirmKeyBtn];
         
         //手动输入label
-        UITextField *startInputView = [[UITextField alloc]initWithFrame:CGRectMake(50, 10, 200, 25)];
-        [startInputView setBorderStyle:UITextBorderStyleNone];
-        [startInputView setBackgroundColor:[UIColor clearColor]];
-        [startInputView setFont:AppFont(14)];
-        [startInputView setTextColor:[UIColor whiteColor]];
-        [startInputView setDelegate:self];
-        [startInputView setLeftViewMode:UITextFieldViewModeUnlessEditing];
-        [startInputView setAdjustsFontSizeToFitWidth:YES];
-        _startInputView = startInputView;
-        [_startInputView setInputAccessoryView:toolBar];
-        [self addSubview:startInputView];
+        self.startInputView = [[UITextField alloc]initWithFrame:CGRectMake(50, 10, 200, 25)];
+        [self.startInputView setBorderStyle:UITextBorderStyleNone];
+        [self.startInputView setBackgroundColor:[UIColor clearColor]];
+        [self.startInputView setFont:AppFont(14)];
+        [self.startInputView setReturnKeyType:UIReturnKeyDone];
+        [self.startInputView setTextColor:[UIColor whiteColor]];
+        [self.startInputView setDelegate:self];
+        [self.startInputView setLeftViewMode:UITextFieldViewModeUnlessEditing];
+        [self.startInputView setAdjustsFontSizeToFitWidth:YES];
+        [self.startInputView setInputAccessoryView:toolBar];
+        [self addSubview:self.startInputView];
         
+        /*
         //定位按钮
         _locateBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_locateBtn setFrame:CGRectMake(self.frame.size.width - 60, 5, 35, 35)];
@@ -66,12 +67,25 @@
         [_locateBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
         [_locateBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
         [_locateBtn addTarget:self action:@selector(locateBtnAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:_locateBtn];
+        [self addSubview:_locateBtn];*/
         
     }
     return self;
 }
-
+- (void)startLocate
+{
+    //判断是否授权定位
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+    {
+        [_startInputView setLeftView:_activity];
+        //    [_startLocateLable setText:@""];
+        [_activity startAnimating];
+        if(self.delegate && [self.delegate respondsToSelector:@selector(locateBtnAction:)])
+        {
+            [self.delegate locateBtnAction:nil];
+        }
+    }
+}
 - (void)locateBtnAction:(UIButton *)sender
 {
     [_startInputView setLeftView:_activity];
@@ -85,6 +99,10 @@
 
 - (void)inputModeChange:(int)type
 {
+    /*
+     *  注释by Liang Zhao
+     */
+    /*
     [UIView beginAnimations:@"inputViewAnimation" context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:0.3];
@@ -103,7 +121,7 @@
         [self.delegate inputModeChange:type];
     }
     
-    [UIView commitAnimations];
+    [UIView commitAnimations];*/
     
 
 }
@@ -126,7 +144,28 @@
 {
     [self inputModeChange:1];
 }
-
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (![textField.text isEqualToString:@""])
+    {
+        if ([_delegate respondsToSelector:@selector(inputViewShouldReturn:)])
+        {
+            [_delegate inputViewShouldReturn:self];
+        }
+        [textField resignFirstResponder];
+    }
+       return YES;
+}
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString *tmpStr;
+    tmpStr = textField.text ;
+    tmpStr = [tmpStr stringByReplacingCharactersInRange:range withString:string];
+    if ([_delegate respondsToSelector:@selector(inputViewTextChanged:WithText:)]) {
+        [_delegate inputViewTextChanged:self WithText:tmpStr];
+    }
+    return YES;
+}
 #pragma mark - keybord
 -(void)hideKeyBorad:(UITapGestureRecognizer *)tappp
 {

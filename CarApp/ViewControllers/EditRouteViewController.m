@@ -13,7 +13,8 @@
 #import "XmppManager.h"
 #import "MapViewController.h"
 #import "AddressImageViewController.h"
-
+#import "LinePoint.h"
+#import "Judian.h"
 #define kDateSelectControlTag 50000
 #define kPassengerControlTag 60000
 #define kInfoTxvTag 70000
@@ -62,65 +63,19 @@
     }
     
     _boolll = YES;
+    [self setTitle:self.line.name];
+    [self setMessageText:[NSString stringWithFormat:@"接客地址：%@",self.line.wayaddr]];
     
-    UIView * mainView = [[UIView alloc]initWithFrame:[AppUtility mainViewFrame]];
-    [mainView setTag:kmainViewTag];
-    [mainView setBackgroundColor:[UIColor appBackgroundColor]];
-    [self.view addSubview:mainView];
-    
-    UIImage * naviBarImage = [UIImage imageNamed:@"navgationbar_64"];
-    naviBarImage = [naviBarImage stretchableImageWithLeftCapWidth:4 topCapHeight:10];
-    
-    UINavigationBar *navBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
-    [navBar setBackgroundImage:naviBarImage forBarMetrics:UIBarMetricsDefault];
-    [mainView addSubview:navBar];
-    
-    if (kDeviceVersion < 7.0) {
-        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, navBar.frame.size.height, navBar.frame.size.width, 1)];
-        [lineView setBackgroundColor:[UIColor lightGrayColor]];
-        [navBar addSubview:lineView];
-    }
-    
-    UIButton * backButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    [backButton setFrame:CGRectMake(0, 20, 70, 44)];
-    [backButton setBackgroundColor:[UIColor clearColor]];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_normal@2x"] forState:UIControlStateNormal];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"btn_back_pressed@2x"] forState:UIControlStateHighlighted];
-    [backButton addTarget:self action:@selector(backToMain) forControlEvents:UIControlEventTouchUpInside];
-    [navBar addSubview:backButton];
-    
-    UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 27, 200, 30)];
-    [titleLabel setBackgroundColor:[UIColor clearColor]];
-    [titleLabel setText:self.line.name];
-    [titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [titleLabel setTextColor:[UIColor appNavTitleColor]];
-    [titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:18]];
-    [navBar addSubview:titleLabel];
-    
-    UIImage * welcomeImage = [UIImage imageNamed:@"nav_hint@2x"];
-    //    welcomeImage = [welcomeImage stretchableImageWithLeftCapWidth:8 topCapHeight:10];
-    //导航栏下方的欢迎条
-    UIImageView * welcomeImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, 320, 49)];
-    [welcomeImgView setImage:welcomeImage];
-    [mainView addSubview:welcomeImgView];
-    
-    UILabel * warnLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 300, 44)];
-    [warnLabel setBackgroundColor:[UIColor clearColor]];
-    [warnLabel setText:@"为了您和司机的方便，请到标志物等候上车"];
-    [warnLabel setTextAlignment:NSTextAlignmentCenter];
-    [warnLabel setTextColor:[UIColor whiteColor]];
-    [warnLabel setFont:[UIFont appGreenWarnFont]];
-    [welcomeImgView addSubview:warnLabel];
-    
-    UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 64+44, 320, SCREEN_HEIGHT - 44-64)];
+    UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 44, 320, SCREEN_HEIGHT)];
     [scrollView setTag:kScrollViewTag];
     [scrollView setBackgroundColor:[UIColor clearColor]];
-    [scrollView setContentSize:CGSizeMake(320, 320+154 -64 +240)];
+    [scrollView setContentSize:CGSizeMake(320, 645)];
     [scrollView setDelegate:self];
     [scrollView setShowsVerticalScrollIndicator:NO];
-    [mainView insertSubview:scrollView belowSubview:navBar];
+    [self.view insertSubview:scrollView belowSubview:_messageBgView];
     
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 150)];
+    [headView setBackgroundColor:[UIColor clearColor]];
     [scrollView addSubview:headView];
     
     UIImageView * photoImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 150)];
@@ -128,7 +83,10 @@
     photoImgView.contentMode =  UIViewContentModeScaleAspectFill;
     [photoImgView setClipsToBounds:YES];
     [photoImgView setTag:60001];
-    [photoImgView setImageWithURL:[NSURL URLWithString:self.line.img] placeholderImage:[UIImage imageNamed:@"delt_pic_b"]];
+    CLLocationCoordinate2D coord = [self getStartGeo];
+    
+    NSString *url = API_POST_Getpanorama(coord.longitude, coord.latitude);
+    [photoImgView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"delt_pic_b"]];
     [photoImgView setUserInteractionEnabled:YES];
     [photoImgView setBackgroundColor:[UIColor placeHoldColor]];
     [headView addSubview:photoImgView];
@@ -157,7 +115,7 @@
     [mapViewMask setBackgroundImage:[UIImage imageNamed:@"bg_map@2x"] forState:UIControlStateNormal];
     [mapViewMask addTarget:self action:@selector(maptapAction:) forControlEvents:UIControlEventTouchUpInside];
     [headView addSubview:mapViewMask];
-    
+    /*
     UIView * photoBlackView = [[UIView alloc]initWithFrame:CGRectMake(0, 150-20, 320, 20)];
     [photoBlackView setBackgroundColor:[UIColor blackColor]];
     [photoBlackView setAlpha:0.6];
@@ -252,26 +210,37 @@
     [distanceLabel.layer setMasksToBounds:YES];
     NSString *distance = [AppUtility LantitudeLongitudeDist:self.line.stoplongitude other_Lat:self.line.stoplatitude self_Lon:self.line.startlongitude self_Lat:self.line.startlatitude];
     [distanceLabel setText:distance];
-    [passBackView addSubview:distanceLabel];
+    [passBackView addSubview:distanceLabel];*/
     
-
-    UILabel * departureLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 225, 100, 20)];
+    UIImageView *timeImgView = [[UIImageView alloc] initWithFrame:CGRectMake(5, headView.current_y_h+5, 18, 18)];
+    [timeImgView setImage: [UIImage imageNamed:@"ic_release_time@2x.png"]];
+    [scrollView addSubview:timeImgView];
+    
+    UILabel * departureLabel = [[UILabel alloc]initWithFrame:CGRectMake(timeImgView.current_x_w, headView.current_y_h+5, 100, 20)];
     [departureLabel setBackgroundColor:[UIColor clearColor]];
     [departureLabel setTextAlignment:NSTextAlignmentLeft];
     [departureLabel setTextColor:[UIColor textGrayColor]];
     [departureLabel setFont:[UIFont fontWithName:kFangZhengFont size:10]];
     [departureLabel setText:@"出发时间"];
     [scrollView addSubview:departureLabel];
-
+    
+    _datePicker = [[MGConferenceDatePicker alloc] initWithFrame:CGRectMake(0, departureLabel.current_y_h+5,scrollView.current_w, 80)];
+    [_datePicker setBackgroundColor:[UIColor clearColor]];
+    [scrollView addSubview:_datePicker];
+    /*
     //日期点击
     DateSelectControl *dateSelectControl = [[DateSelectControl alloc]initWithFrame:CGRectMake((320-233)/2, 250, 233, 45)];
     dateSelectControl.tag = kDateSelectControlTag;
     [dateSelectControl addTarget:self action:@selector(timeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [dateSelectControl setDate:[NSDate date]];
-    [scrollView addSubview:dateSelectControl];
+    [scrollView addSubview:dateSelectControl];*/
 
     
-    UILabel * seatsLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 305, 100, 20)];
+    UIImageView *seatImgView = [[UIImageView alloc] initWithFrame:CGRectMake(5, _datePicker.current_y_h+5, 18, 18)];
+    [seatImgView setImage: [UIImage imageNamed:@"ic_release_seat@2x.png"]];
+    [scrollView addSubview:seatImgView];
+    
+    UILabel * seatsLabel = [[UILabel alloc]initWithFrame:CGRectMake(seatImgView.current_x_w, _datePicker.current_y_h+5, 100, 20)];
     [seatsLabel setBackgroundColor:[UIColor clearColor]];
     [seatsLabel setTextAlignment:NSTextAlignmentLeft];
     [seatsLabel setTextColor:[UIColor textGrayColor]];
@@ -279,14 +248,22 @@
     [seatsLabel setText:@"空余车位"];
     [scrollView addSubview:seatsLabel];
 
-    
+    _peoplePicker = [[SelectPassengerNumPicker alloc] initWithFrame:CGRectMake(0, seatsLabel.current_y_h+5, scrollView.current_w, 80)];
+    [_peoplePicker setPassengerNum:4];
+    [_peoplePicker  setBackgroundColor:[UIColor clearColor]];
+    [scrollView addSubview:_peoplePicker];
     //乘客数
+    /*
     PassengerControl *passengerControl = [[PassengerControl alloc]initWithFrame:CGRectMake((320-233)/2, 330, 233, 45) NormalImage:[UIImage imageNamed:@"ic_seat_none@2x"] SelectImage:[UIImage imageNamed:@"ic_seat@2x"] indexs:4 size:CGSizeMake(20, 30)];
     passengerControl.tag = kPassengerControlTag;
     passengerControl.currentNum = 4;
-    [scrollView addSubview:passengerControl];
+    [scrollView addSubview:passengerControl];*/
+    UIImageView *textImgView = [[UIImageView alloc] initWithFrame:CGRectMake(5, _peoplePicker.current_y_h+5, 18, 18)];
+    [textImgView setImage: [UIImage imageNamed:@"ic_release_input@2x.png"]];
+    [scrollView addSubview:textImgView];
+
     
-    UILabel * infoLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 380, 100, 20)];
+    UILabel * infoLabel = [[UILabel alloc]initWithFrame:CGRectMake(textImgView.current_x_w, _peoplePicker.current_y_h+5, 100, 20)];
     [infoLabel setBackgroundColor:[UIColor clearColor]];
     [infoLabel setTextAlignment:NSTextAlignmentLeft];
     [infoLabel setTextColor:[UIColor textGrayColor]];
@@ -294,7 +271,7 @@
     [infoLabel setText:@"附加信息"];
     [scrollView addSubview:infoLabel];
     
-    UIImageView *infoBgImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 320+154 -64, 300, 80)];
+    UIImageView *infoBgImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, infoLabel.current_y_h+5, 300, 80)];
     [infoBgImageView setImage:[[UIImage imageNamed:@"ipt_message"] stretchableImageWithLeftCapWidth:5 topCapHeight:5]];
     [scrollView addSubview:infoBgImageView];
     
@@ -311,7 +288,7 @@
     [confirmKeyBtn addTarget:self action:@selector(hideKeyBorad:) forControlEvents:UIControlEventTouchUpInside];
     [toolBar addSubview:confirmKeyBtn];
     
-    UITextView * infoTxv = [[UITextView alloc]initWithFrame:CGRectMake(10, 320+154 -64, 300, 80)];
+    UITextView * infoTxv = [[UITextView alloc]initWithFrame:infoBgImageView.frame];
     [infoTxv setTag:kInfoTxvTag];
     [infoTxv setEditable:YES];
     [infoTxv setBackgroundColor:[UIColor clearColor]];
@@ -324,17 +301,7 @@
 //    [infoTxv.layer setShadowOffset:CGSizeMake(0, 2)];
 //    [infoTxv.layer setShadowOpacity:0.8];
     [scrollView addSubview:infoTxv];
-        
-//    UIView * backGroundView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, _windowHeight)];
-//    backGroundView.userInteractionEnabled =YES;
-//    [backGroundView setTag:1099];
-//    [backGroundView setBackgroundColor:[UIColor blackColor]];
-//    [backGroundView setAlpha:0.8];
-//    [backGroundView setHidden:YES];
-//    [mainView addSubview:backGroundView];
-//    [backGroundView release];
-    
-    
+    /*
     UIButton * routeBtnBg = [UIButton buttonWithType:UIButtonTypeCustom];
     [routeBtnBg setFrame:CGRectMake((320-233)/2, 320+252 -64-4.5, 240, 40)];
     [routeBtnBg setBackgroundColor:[UIColor clearColor]];
@@ -350,24 +317,10 @@
 //    [routeBtnBg.titleLabel setFont:[UIFont fontWithName:kFangZhengFont size:15]];
     [routeBtnBg addTarget:self action:@selector(routtt:) forControlEvents:UIControlEventTouchUpInside];
     [routeBtnBg setUserInteractionEnabled:YES];
-    [scrollView addSubview:routeBtnBg];
-    
-//    UIButton * routeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [routeBtn setFrame:CGRectMake((320-233)/2 + 5, 320+252 -64-4.5 + 5 ,35.0, 35.0)];
-//    [routeBtn setBackgroundColor:[UIColor whiteColor]];
-//    [routeBtn setBackgroundImage:[UIImage imageNamed:@"btn_empty@2x"] forState:UIControlStateNormal];
-//    [routeBtn.layer setBorderWidth:1.0];
-//    [routeBtn.layer setBorderColor:[UIColor appLightGrayColor].CGColor];
-//    [routeBtn.layer setCornerRadius:35.0/2.0];
-//    [routeBtn.layer setMasksToBounds:YES];
-//    [routeBtn setImage:[UIImage imageNamed:@"ic_arrow@2x"] forState:UIControlStateNormal];
-//    [routeBtn setContentMode:UIViewContentModeCenter];
-//    [routeBtn addTarget:self action:@selector(routtt:) forControlEvents:UIControlEventTouchUpInside];
-//    [scrollView addSubview:routeBtn];
-    
+    [scrollView addSubview:routeBtnBg];*/
     
     UIButton * confirmBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [confirmBtn setFrame:CGRectMake((320-233)/2, 320+316 -64, 233, 38)];
+    [confirmBtn setFrame:CGRectMake((320-233)/2, infoTxv.current_y_h+10, 233, 38)];
     [confirmBtn setBackgroundColor:[UIColor clearColor]];
     [confirmBtn setBackgroundImage:[[UIImage imageNamed:@"btn_fillet_green_normal"] stretchableImageWithLeftCapWidth:20 topCapHeight:10] forState:UIControlStateNormal];
     [confirmBtn setBackgroundImage:[[UIImage imageNamed:@"btn_fillet_green_pressed"] stretchableImageWithLeftCapWidth:20 topCapHeight:10] forState:UIControlStateHighlighted];
@@ -418,35 +371,14 @@
     [self.mapView viewWillDisappear];
     self.mapView.delegate = nil;
 }
-
--(void)routtt:(UIButton *)sender
-{
-    _boolll = !_boolll;
-    [sender setSelected:_boolll];
-}
-
 -(void)confirmmm
 {
-
-    long uid = [User shareInstance].userId;
-    long lineid = self.line.ID;
-    NSString *startingtime = self.selectDateStr;
-    if (!startingtime) {
+    NSDate *date = [_datePicker getCurrentDate];
+    if (!date || [date compare:[NSDate date]] == NSOrderedAscending) {
         [UIAlertView showAlertViewWithTitle:@"错误" message:@"时间必须大于当前时间" cancelTitle:@"确定"];
         return;
     }
-    else
-    {
-        NSDate *date = [AppUtility dateFromStr:startingtime withFormate:@"yyyyMMddHHmmss"];
-        if ([date compare:[NSDate date]] == NSOrderedAscending) {
-            [UIAlertView showAlertViewWithTitle:@"错误" message:@"时间必须大于当前时间" cancelTitle:@"确定"];
-            return;
-        }
-    }
-    
-    PassengerControl *passengerControl = (PassengerControl *)[self.view viewWithTag:kPassengerControlTag];
-    int seatNum = passengerControl.currentNum;
-    UITextView *textView = (UITextView *)[self.view viewWithTag:kInfoTxvTag];
+    int seatNum = [_peoplePicker getPassengetNum];
     
     if (seatNum == 0) {
         [UIAlertView showAlertViewWithTitle:@"拼车发布信息有误" message:@"发布空位不能为0" cancelTitle:@"取消"];
@@ -471,6 +403,30 @@
     } failure:^(NSError *error) {
         
     }];*/
+    [APIClient networkCreatRoomWithUser_id:[User shareInstance].userId line_id:self.line.ID price:self.line.price description:self.line.description start_time:date  max_seat_num:seatNum success:^(Respone *respone) {
+        if (respone.status == kEnumServerStateSuccess)
+        {
+            __block typeof(self) bSelf = self;
+            DLog(@"%@",respone.data);
+            [SVProgressHUD showSuccessWithStatus:respone.msg];
+            
+            //创建成功进入聊天室
+            GroupChatViewController * gVC = [[GroupChatViewController alloc]init];
+            gVC.roomID = [(NSString *)[respone.data valueForKey:@"id"] intValue];
+            gVC.openfireRoomName = [respone.data valueForKey:@"openfire"];
+            gVC.remainSeat = seatNum;
+            gVC.isRoomMaster = YES;
+            gVC.userState = 0;
+            [bSelf.navigationController pushViewController:gVC animated:YES];
+        }
+        else
+        {
+            [SVProgressHUD showErrorWithStatus:respone.msg];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+
 }
 
 -(void)enterChatRoom:(NSNumber *)roomidNum
@@ -510,7 +466,8 @@
     [self.mapView removeAnnotations:self.mapView.annotations];
     BMKPointAnnotation* addPoint = [[BMKPointAnnotation alloc]init];
     [addPoint setTitle:self.line.startaddr];
-    [addPoint setCoordinate:CLLocationCoordinate2DMake(self.line.startlatitude, self.line.startlongitude)];
+   
+    [addPoint setCoordinate:[self getStartGeo]];
     [self.mapView addAnnotation:addPoint];
 }
 
@@ -587,7 +544,13 @@
     [addressImageViewController setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
     [self presentViewController:addressImageViewController animated:YES completion:^{}];
 }
-
+#pragma mark - Inter
+-(CLLocationCoordinate2D)getStartGeo
+{
+    LinePoint *point = [self.line.list objectAtIndex:0];
+    Judian *jd = point.geo;
+    return CLLocationCoordinate2DMake(jd.lat,jd.lng);
+}
 #pragma mark - bmkMapViewDelegate methods
 -(void)mapView:(BMKMapView *)mapView didSelectAnnotationView:(BMKAnnotationView *)view
 {
@@ -614,15 +577,34 @@
 - (BMKAnnotationView *)mapView:(BMKMapView *)mapview viewForAnnotation:(id <BMKAnnotation>)annotation
 {
 	if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
-		BMKAnnotationView* view = nil;
-        view = [mapview dequeueReusableAnnotationViewWithIdentifier:@"start_nodeAddress"];
+        BMKAnnotationView *view = [mapview dequeueReusableAnnotationViewWithIdentifier:@"start_node"];
+        
         if (view == nil) {
-            view = [[BMKAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:@"start_nodeAddress"];
-            view.image = [UIImage imageNamed:@"tag_map@2x"];
-            view.centerOffset = CGPointMake(0, -(view.frame.size.height * 0.0));
-            view.canShowCallout = TRUE;
+            view = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"start_node"];
+            view.image = [UIImage imageNamed:@"pt_green@2x.png"];
+            view.centerOffset = CGPointMake(0, -(view.frame.size.height * 0.5));
+            view.canShowCallout = YES;
+            
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(4, 10, 28, 13)];
+            [label setTag:888888];
+            [label setTextAlignment:NSTextAlignmentCenter];
+            [label setFont:[UIFont systemFontOfSize:13]];
+            [label setTextColor:[UIColor whiteColor]];
+            [label setBackgroundColor:[UIColor clearColor]];
+            [label setText:@"起点"];
+            [view addSubview:label];
+        }
+        else
+        {
+            UILabel *label = (UILabel *)[view viewWithTag:888888];
+            if (label)
+            {
+                [label setText:@"起点"];
+            }
+            [view setNeedsDisplay];
         }
         view.annotation = annotation;
+        [(BMKPinAnnotationView *)view setAnimatesDrop:NO];
         BMKCoordinateRegion adjustedRegion = [_mapView regionThatFits:BMKCoordinateRegionMake(annotation.coordinate, BMKCoordinateSpanMake(0.01, 0.01))];
         [self.mapView setRegion:adjustedRegion animated:NO];
         [self.mapView setCenterCoordinate:annotation.coordinate animated:NO];
@@ -669,7 +651,7 @@
         [UIView setAnimationDuration:keyboardTransitionDuration];
         [UIView setAnimationCurve:keyboardTransitionAnimationCurve];
         [UIView setAnimationBeginsFromCurrentState:YES];
-        scrollView.frame = CGRectMake(0, (64+44  - keyboardEndFrameWindow.size.height+39), 320, SCREEN_HEIGHT - 44-64);
+        scrollView.frame = CGRectMake(0, (142- keyboardEndFrameWindow.size.height), 320, SCREEN_HEIGHT);
         [UIView commitAnimations];
     }
 
@@ -694,7 +676,7 @@
     [UIView setAnimationDuration:keyboardTransitionDuration];
     [UIView setAnimationCurve:keyboardTransitionAnimationCurve];
     [UIView setAnimationBeginsFromCurrentState:YES];
-    scrollView.frame = CGRectMake(0, 64+44 , 320, SCREEN_HEIGHT - 44-64);
+    scrollView.frame = CGRectMake(0, 44, 320, SCREEN_HEIGHT);
     [UIView commitAnimations];
 }
 

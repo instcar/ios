@@ -30,10 +30,12 @@
     for (int i = 0; i < KCELLNUM; i++) {
         
         UIView *btnView = [[UIView alloc]initWithFrame:CGRectMake(i*80, 0, 80, 80)];
+//        [btnView setBackgroundColor:[UIColor clearColor]];
         btnView.tag = 100+i;
         [self addSubview:btnView];
         
-        UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, 60)];
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setFrame:CGRectMake(0, 0, 60, 60)];
         btn.tag = 200+i;
         btn.layer.cornerRadius = 30.;
         btn.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -73,9 +75,7 @@
 {
     for (int i = 0; i < KCELLNUM; i++) {
         UIView *btnView = [self viewWithTag:100+i];
-        UIButton *btn = (UIButton *)[btnView viewWithTag:200+i];
-        btn.userInteractionEnabled = _canEdit;
-        
+        UIButton *btn = (UIButton *)[btnView viewWithTag:200+i];        
         UILabel *titleLable = (UILabel *)[btnView viewWithTag:222];
         UIImageView *image = (UIImageView *)[btnView viewWithTag:333];
         
@@ -87,34 +87,38 @@
             btn.userInteractionEnabled = NO;
             //座位空
             if (i >= [_personArray count] && i <= _seatNum-1) {
-                [btn setBackgroundImage:[UIImage imageNamed:@"seat_empty"] forState:UIControlStateNormal];
+                [btn setImage:[UIImage imageNamed:@"seat_empty@wx.png"] forState:UIControlStateNormal];
+                [btn setTitle:@"空位" forState:UIControlStateNormal];
                 [titleLable setText:@"空位"];
             }
             
             //座位关闭
             if (i >= [_personArray count] && i > _seatNum-1) {
-                [btn setBackgroundImage:[UIImage imageNamed:@"seat_empty"] forState:UIControlStateNormal];
-                [titleLable setText:@"关闭"];
+                [btn setImage:[UIImage imageNamed:@"seat_close@2x.png"] forState:UIControlStateNormal];
+                [btn setTitle:@"关闭" forState:UIControlStateNormal];
+
+                [titleLable setText:@"已关闭"];
             }
         }
         else
         {
             btn.userInteractionEnabled = _canEdit;
-            if (i==0 && [[[_personArray objectAtIndex:0]valueForKey:@"id"]longValue]==[[self.roomMaster valueForKey:@"id"]longValue]) {
+            /*
+            if (i==0 && [[[_personArray objectAtIndex:0]valueForKey:@"id"]longValue]==self.roomMaster.ID) {
                 [image setImage:[UIImage imageNamed:@"seat_owners@2x"]];
-            }
+            }*/
 
             [btn setImageWithURL:[NSURL URLWithString:[[_personArray objectAtIndex:i] valueForKey:@"headpic"]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"delt_user_s"]];
             [image setHidden:NO];
-            [titleLable setText:[[_personArray objectAtIndex:i] valueForKey:@"username"]];
+            People *user = [_personArray objectAtIndex:i];
+            [titleLable setText:user.name];
         }
         
     }
 }
 
--(void)setPersonArray:(NSArray *)personArray RoomMaster:(NSDictionary *)roomMaster Seats:(int)seatNum
+-(void)setPersonArray:(NSArray *)personArray RoomMaster:(People *)roomMaster Seats:(int)seatNum
 {
-
     self.personArray = personArray;
     self.seatNum = seatNum;
     self.roomMaster = roomMaster;
@@ -139,17 +143,37 @@
 -(void)pListCellAction:(UIButton *)sender
 {
     DLog(@"点击了乘员:%d",sender.tag-200);
+    int index = sender.tag - 200;
+    UIView *btnView = [self viewWithTag:100+sender.tag-200];
+    UILabel *titleLable = (UILabel *)[btnView viewWithTag:222];
     
+    NSString *title = [sender titleForState:UIControlStateNormal];
+    if ([title isEqualToString:@"空位"])
+    {
+        _seatNum --;
+        [sender setImage:[UIImage imageNamed:@"seat_add@2x.png"] forState:UIControlStateNormal];
+        [sender setTitle:@"关闭" forState:UIControlStateNormal];
+        [titleLable setText:@"打开座位"];
+
+    }
+    else if([title isEqualToString:@"关闭"])
+    {
+        _seatNum ++;
+        [sender setImage:[UIImage imageNamed:@"seat_close@2x.png"] forState:UIControlStateNormal];
+        [sender setTitle:@"空位" forState:UIControlStateNormal];
+        [titleLable setText:@"关闭座位"];
+    }
+    /*
     if(self.delegate && [self.delegate respondsToSelector:@selector(PListSettingViewDelegate:index:event:)])
     {
         int index = sender.tag - 200;
         
         [self.delegate PListSettingViewDelegate:self index:index event:kPListEventNull];
         
-//        //判断按钮显示
+        //判断按钮显示
 //        if (self.personArray == nil || [self.personArray count]<=0 ||index >= [self.personArray count]) {
-//            
-//            //座位空
+            
+           //座位空
 //            if (index >= [self.personArray count] && index <= self.seatNum-1) {
 //            
 //                [self.delegate PListSettingViewDelegate:self index:index event:kPListEventClose];
@@ -165,7 +189,7 @@
 //        {
 //            [self.delegate PListSettingViewDelegate:self index:index event:kPListEventNull];
 //        }
-    }
+    }*/
 }
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -175,5 +199,60 @@
     // Drawing code
 }
 */
+/*
+ * 添加函数 By Liang Zhao
+ */
+#pragma mark - FunctionSeatMode
+-(void)enterEditSeatMode
+{
+    for (int i = 0; i < KCELLNUM; i++)
+    {
+        UIView *btnView = [self viewWithTag:100+i];
+        UIButton *btn = (UIButton *)[btnView viewWithTag:200+i];
+     
+        
+        UILabel *titleLable = (UILabel *)[btnView viewWithTag:222];
+        UIImageView *image = (UIImageView *)[btnView viewWithTag:333];
+        
+        [btn setImage:nil forState:UIControlStateNormal];
+        
+        //判断按钮显示
+        if (_personArray == nil || [_personArray count]<=0 ||i >= [_personArray count]) {
+            [image setHidden:YES];
+            btn.userInteractionEnabled = YES;
+            //座位空
+            if (i >= [_personArray count] && i <= _seatNum-1) {
+                [btn setImage:[UIImage imageNamed:@"seat_close@2x.png"] forState:UIControlStateNormal];
+                [titleLable setText:@"关闭座位"];
+            }
+            
+            //座位关闭
+            if (i >= [_personArray count] && i > _seatNum-1) {
+                [btn setImage:[UIImage imageNamed:@"seat_add@2x.png"] forState:UIControlStateNormal];
+                [titleLable setText:@"打开座位"];
+            }
+        }
+        else
+        {
+            btn.userInteractionEnabled = NO;
+            if (i==0 && [[[_personArray objectAtIndex:0]valueForKey:@"id"]longValue]==[[self.roomMaster valueForKey:@"id"]longValue]) {
+                [image setImage:[UIImage imageNamed:@"seat_owners@2x"]];
+            }
+            
+            [btn setImageWithURL:[NSURL URLWithString:[[_personArray objectAtIndex:i] valueForKey:@"headpic"]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"delt_user_s"]];
+            [image setHidden:NO];
+            [titleLable setText:[[_personArray objectAtIndex:i] valueForKey:@"username"]];
+        }
+    }
 
+}
+- (void) addUser
+{
+    
+}
+- (void) deleteUser
+{
+    
+}
+    
 @end

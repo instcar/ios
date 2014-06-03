@@ -287,9 +287,9 @@
 
 #pragma mark - 房间
 //创建房间
-+ (void)networkCreatRoomWithUser_phone:(NSString *)user_phone line_id:(int)line_id price:(int)price description:(NSString *)description start_time:(NSString *)start_time max_seat_num:(int)max_seat_num success:(void (^)(Respone *))success failure:(void (^)(NSError *))failure
++ (void)networkCreatRoomWithUser_id:(int)user_id line_id:(int)line_id price:(int)price description:(NSString *)description start_time:(NSDate *)start_time max_seat_num:(int)max_seat_num success:(void (^)(Respone *))success failure:(void (^)(NSError *))failure
 {
-    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:user_phone,@"user_id",[NSNumber numberWithInt:line_id],@"line_id",[NSNumber numberWithInt:price],@"price",description,@"description",start_time,@"start_time",[NSNumber numberWithInt:max_seat_num ],@"max_seat_num",nil];
+    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:user_id],@"user_id",[NSNumber numberWithInt:line_id],@"line_id",[NSNumber numberWithInt:price],@"price",description,@"description",start_time,@"start_time",[NSNumber numberWithInt:max_seat_num ],@"max_seat_num",nil];
     [NetTool httpPostRequest:API_POST_CreatRoom WithFormdata:formData WithSuccess:^(Respone *resultDic) {
         success(resultDic);
     } failure:^(NSError *error) {
@@ -322,7 +322,7 @@
 //修改房间最大座位数
 +(void)networkChangemaxseatnumWithroom_id:(int)room_id max_seat_num:(int)max_seat_num success:(void (^)(Respone *))success failure:(void (^)(NSError *))failure
 {
-    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:room_id],@"room_id",max_seat_num,@"max_seat_num",nil];
+    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:room_id],@"room_id",[NSNumber numberWithInt:max_seat_num],@"max_seat_num",nil];
     [NetTool httpPostRequest:API_POST_Changeroommaxseatnum WithFormdata:formData WithSuccess:^(Respone *resultDic) {
         success(resultDic);
     } failure:^(NSError *error) {
@@ -373,7 +373,17 @@
         failure(error);
     }];
 }
+//查询某个房间信息
++ (void) networkGetroomsWithRoom_id:(int)room_id success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure
+{
+    NSMutableDictionary *formData = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:room_id],@"room_id",nil];
+    [NetTool httpPostRequest:API_POST_Getroom WithFormdata:formData WithSuccess:^(Respone *resultDic) {
+        success(resultDic);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
 
+}
 //查询某条路线的房间列表
 + (void) networkGetlineroomsWithline_id:(int)line_id success:(void (^)(Respone *respone))success failure:(void (^)(NSError * error))failure
 {

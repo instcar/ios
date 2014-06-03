@@ -160,11 +160,8 @@ static XmppManager *sharedXmppManagerInstance = nil;
     //设为默认设置
     [self.xmppRoom fetchConfigurationForm];
     [self.xmppRoom addDelegate:self delegateQueue:dispatch_get_main_queue()];
-    
     NSXMLElement *historyElement=[NSXMLElement elementWithName:@"history"];
-    
     [self.xmppRoom joinRoomUsingNickname:username history:historyElement password:KRoomPass];
-    
     self.createGroupRoomResult = [resultState copy];
 }
 
@@ -264,9 +261,9 @@ static XmppManager *sharedXmppManagerInstance = nil;
 //    if ([self.chatDelegate respondsToSelector:@selector(getNewMessage:Message:)]) {
 //        [self.chatDelegate getNewMessage:self Message:message];
 //    }
-    
-    //回执判断
     /*
+    //回执判断
+    
     NSXMLElement *request = [message elementForName:@"request"];
     if (request)
     {
@@ -293,7 +290,7 @@ static XmppManager *sharedXmppManagerInstance = nil;
             }
         }
     }
-    */
+     */
 }
 
 - (void)xmppStream:(XMPPStream *)sender didReceivePresence:(XMPPPresence *)presence

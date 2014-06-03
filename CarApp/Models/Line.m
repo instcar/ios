@@ -7,32 +7,38 @@
 //
 
 #import "Line.h"
-
+#import "LinePoint.h"
 @implementation Line
 
 -(Line *)initWithDic:(NSDictionary *)dic
 {
     self = [super init];
     if (self) {
-        self.ID = [[dic valueForKey:@"id"]intValue];
+        self.ID = [[dic valueForKey:@"id"] intValue];
+        self.name = [dic valueForKey:@"name"];
+        self.description = [dic valueForKey:@"description"];
+        self.price = [[dic valueForKey:@"id"] floatValue];
+        self.addtime = [dic valueForKey:@"addtime"];
+        self.modtime = [dic valueForKey:@"modtime"];
+        self.list = [LinePoint arrayWithArrayDic:[dic objectForKey:@"list"]];
+        /*
         self.jidianid = [[dic valueForKey:@"jidianid"]intValue];
-        self.name = [AppUtility getStrByNil:[dic valueForKey:@"name"]];
         self.cityregion = [AppUtility getStrByNil:[dic valueForKey:@"cityregion"]];
         self.startaddr = [AppUtility getStrByNil:[dic valueForKey:@"startaddr"]];
         self.wayaddr = [AppUtility getStrByNil:[dic valueForKey:@"wayaddr"]];
         self.stopaddr = [AppUtility getStrByNil:[dic valueForKey:@"stopaddr"]];
-        self.description = [AppUtility getStrByNil:[dic valueForKey:@"description"]];
+
         self.img = [AppUtility getStrByNil:[dic valueForKey:@"img"]];
         self.distance = [[dic valueForKey:@"distance"]doubleValue];
         self.startlongitude = [[dic valueForKey:@"startlongitude"]doubleValue];
         self.startlatitude = [[dic valueForKey:@"startlatitude"]doubleValue];
         self.stoplongitude = [[dic valueForKey:@"stoplongitude"]doubleValue];
-        self.stoplatitude = [[dic valueForKey:@"stoplatitude"]doubleValue];
+        self.stoplatitude = [[dic valueForKey:@"stoplatitude"]doubleValue];*/
     }
     return self;
 }
 
-+(NSArray *)arrayWithArrayDic:(NSArray *)array
++(NSMutableArray *)arrayWithArrayDic:(NSArray *)array
 {
     NSMutableArray * mutableArray = [[NSMutableArray alloc]init];
     [mutableArray removeAllObjects];

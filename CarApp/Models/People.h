@@ -40,7 +40,7 @@
 //}
 
 
-@interface  PeopleDetail: NSObject
+@interface  PeopleDetail: NSObject<NSCopying>
 
 @property (copy, nonatomic) NSString *id_number;        //省份证id
 @property (copy, nonatomic) NSString *signature;        //签名
@@ -48,7 +48,7 @@
 @property (assign, nonatomic) BOOL show_home_addr;      //是否保密
 @property (copy, nonatomic) NSString *comp_addr;        //公司地址
 @property (assign, nonatomic) BOOL show_comp_addr;      //是否保密
-@property (retain, nonatomic) NSDictionary *info;       //省份证图片地址
+@property (copy, nonatomic) NSDictionary *info;       //省份证图片地址
 
 //初始话对象
 - (PeopleDetail *)initFromDic:(NSDictionary *)dic;
@@ -60,7 +60,7 @@
 
 @end
 
-@interface  People: NSObject
+@interface  People: NSObject<NSCopying>
 
 @property (assign, nonatomic)long ID;               //用户id
 @property (copy, nonatomic) NSString *name;         //用户名字
@@ -71,7 +71,7 @@
 @property (copy, nonatomic)NSString *headpic;       //用户头像
 @property (copy, nonatomic)NSString *phone;         //手机号
 @property (copy, nonatomic)NSString *email;         //邮箱
-@property (retain, nonatomic)PeopleDetail *detail;  //用户详细信息
+@property (copy, nonatomic)PeopleDetail *detail;  //用户详细信息
 
 //@property (retain, nonatomic)NSDate *addTime;       //注册时间
 //@property (retain, nonatomic)NSDate *modTime;       //修改时间
